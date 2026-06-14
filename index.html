@@ -23,70 +23,133 @@
   <body>
     <!-- ══ PANTALLA AUTH ══ -->
     <div id="auth-screen">
-      <div class="auth-bg">
-        <div class="ab ab1"></div>
-        <div class="ab ab2"></div>
-        <div class="ab ab3"></div>
-        <div class="auth-particles" id="auth-particles"></div>
-      </div>
-      <div class="auth-split">
-        <!-- Lado izquierdo — presentación -->
-        <div class="auth-left">
-          <div class="al-logo">⚗️ <span>Yachay Lab</span></div>
-          <h2 class="al-headline">
-            El laboratorio que<br /><em>ninguna escuela rural</em><br />puede
-            costear.
-          </h2>
-          <p class="al-desc">
-            15 simuladores interactivos de física y química, tutor socrático con
-            IA y práctica adaptativa — completamente gratis.
-          </p>
-          <div class="al-stats">
-            <div class="al-stat">
-              <strong>15</strong><span>Simuladores</span>
-            </div>
-            <div class="al-stat"><strong>2</strong><span>Áreas STEM</span></div>
-            <div class="al-stat">
-              <strong>IA</strong><span>Tutor Socrático</span>
-            </div>
-            <div class="al-stat"><strong>0$</strong><span>Costo</span></div>
-          </div>
-          <div class="al-features">
-            <div class="al-feat">✓ Funciona sin laboratorio físico</div>
-            <div class="al-feat">✓ Disponible en español e inglés</div>
-            <div class="al-feat">✓ Sin anuncios, sin costo</div>
+      <!-- Canvas de fondo animado -->
+      <canvas id="auth-canvas"></canvas>
+
+      <!-- Lado izquierdo -->
+      <div class="auth-left">
+        <div class="al-logo">
+          <div class="al-logo-icon">⚗️</div>
+          <div class="al-logo-text">
+            <span class="al-logo-name">Yachay Lab</span>
+            <span class="al-logo-tag">STEM · IA · Perú</span>
           </div>
         </div>
-        <!-- Lado derecho — formulario -->
-        <div class="auth-right">
-          <div class="auth-card">
-            <div class="ac-header">
-              <h1 class="ac-title">Yachay <em>Lab</em></h1>
-              <p class="ac-sub" data-i18n="login.sub">
-                Laboratorio virtual STEM con IA
-              </p>
-            </div>
-            <div class="ac-tabs">
-              <button
-                class="ac-tab active"
-                id="tab-login"
-                onclick="switchTab('login')"
-                data-i18n="login.tab"
-              >
-                Iniciar sesión
-              </button>
-              <button
-                class="ac-tab"
-                id="tab-register"
-                onclick="switchTab('register')"
-                data-i18n="register.tab"
-              >
-                Registrarse
-              </button>
-            </div>
-            <div id="form-login">
-              <div class="field">
-                <label data-i18n="login.email">Correo electrónico</label>
+
+        <div class="al-hero">
+          <div class="al-chip">🏆 DSH Hacks V1 · Innovación STEM</div>
+          <h1 class="al-headline">
+            El laboratorio que<br />
+            <span class="al-gradient-text">ninguna escuela rural</span><br />
+            puede costear.
+          </h1>
+          <p class="al-desc">
+            15 simuladores interactivos de física y química, tutor socrático con
+            IA y práctica adaptativa — completamente gratis para toda
+            Latinoamérica.
+          </p>
+        </div>
+
+        <!-- Stats animados -->
+        <div class="al-stats">
+          <div class="al-stat">
+            <div class="al-stat-num" data-target="15">0</div>
+            <div class="al-stat-lbl">Simuladores</div>
+          </div>
+          <div class="al-stat-div"></div>
+          <div class="al-stat">
+            <div class="al-stat-num" data-target="2">0</div>
+            <div class="al-stat-lbl">Áreas STEM</div>
+          </div>
+          <div class="al-stat-div"></div>
+          <div class="al-stat">
+            <div class="al-stat-num al-stat-txt">IA</div>
+            <div class="al-stat-lbl">Tutor Socrático</div>
+          </div>
+          <div class="al-stat-div"></div>
+          <div class="al-stat">
+            <div class="al-stat-num al-stat-txt">0$</div>
+            <div class="al-stat-lbl">Costo</div>
+          </div>
+        </div>
+
+        <!-- Checks -->
+        <div class="al-features">
+          <div class="al-feat">
+            <span class="al-feat-check">✓</span>Funciona sin laboratorio físico
+          </div>
+          <div class="al-feat">
+            <span class="al-feat-check">✓</span>Disponible en español e inglés
+          </div>
+          <div class="al-feat">
+            <span class="al-feat-check">✓</span>Sin anuncios, completamente
+            gratis
+          </div>
+        </div>
+
+        <!-- Usuarios activos ficticios -->
+        <div class="al-social-proof">
+          <div class="al-avatars">
+            <span>🧑‍🎓</span><span>👩‍🔬</span><span>👨‍💻</span><span>🦋</span
+            ><span>🚀</span>
+          </div>
+          <div class="al-proof-txt">
+            <strong>+571 estudiantes</strong> ya usan Yachay Lab
+          </div>
+        </div>
+      </div>
+
+      <!-- Lado derecho — formulario -->
+      <div class="auth-right">
+        <div class="auth-card">
+          <!-- Header -->
+          <div class="ac-header">
+            <div class="ac-logo-badge">⚗️</div>
+            <h1 class="ac-title">Yachay <em>Lab</em></h1>
+            <p class="ac-sub" data-i18n="login.sub">
+              Laboratorio virtual STEM con IA
+            </p>
+          </div>
+
+          <!-- Tabs -->
+          <div class="ac-tabs">
+            <button
+              class="ac-tab active"
+              id="tab-login"
+              onclick="switchTab('login')"
+              data-i18n="login.tab"
+            >
+              Iniciar sesión
+            </button>
+            <button
+              class="ac-tab"
+              id="tab-register"
+              onclick="switchTab('register')"
+              data-i18n="register.tab"
+            >
+              Registrarse
+            </button>
+          </div>
+
+          <!-- LOGIN -->
+          <div id="form-login">
+            <div class="field">
+              <label data-i18n="login.email">Correo electrónico</label>
+              <div class="field-wrap">
+                <svg
+                  class="field-ico"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <path
+                    d="M2 5l8 5 8-5M2 5v10a1 1 0 001 1h14a1 1 0 001-1V5a1 1 0 00-1-1H3a1 1 0 00-1 1z"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                  />
+                </svg>
                 <input
                   type="email"
                   id="l-email"
@@ -94,16 +157,41 @@
                   autocomplete="email"
                 />
               </div>
-              <div class="field">
-                <div class="field-top">
-                  <label data-i18n="login.pass">Contraseña</label>
-                  <a
-                    href="auth/forgot-password.html"
-                    class="forgot-link"
-                    data-i18n="login.forgot"
-                    >¿Olvidaste tu contraseña?</a
-                  >
-                </div>
+            </div>
+            <div class="field">
+              <div class="field-top">
+                <label data-i18n="login.pass">Contraseña</label>
+                <a
+                  href="auth/forgot-password.html"
+                  class="forgot-link"
+                  data-i18n="login.forgot"
+                  >¿Olvidaste?</a
+                >
+              </div>
+              <div class="field-wrap">
+                <svg
+                  class="field-ico"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <rect
+                    x="3"
+                    y="9"
+                    width="14"
+                    height="10"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M7 9V6a3 3 0 016 0v3"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                  />
+                </svg>
                 <input
                   type="password"
                   id="l-pass"
@@ -112,27 +200,73 @@
                   onkeydown="if (event.key === 'Enter') doLogin();"
                 />
               </div>
-              <div class="auth-err" id="login-err"></div>
-              <button
-                class="btn-auth"
-                onclick="doLogin()"
-                data-i18n="login.btn"
-              >
-                Iniciar sesión
-              </button>
             </div>
-            <div id="form-register" style="display: none">
-              <div class="field">
-                <label data-i18n="reg.name">Nombre completo</label>
+            <div class="auth-err" id="login-err"></div>
+            <button class="btn-auth" onclick="doLogin()" data-i18n="login.btn">
+              <span>Iniciar sesión</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M3 8h10M9 4l4 4-4 4"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <!-- REGISTRO -->
+          <div id="form-register" style="display: none">
+            <div class="field">
+              <label data-i18n="reg.name">Nombre completo</label>
+              <div class="field-wrap">
+                <svg
+                  class="field-ico"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <circle
+                    cx="10"
+                    cy="7"
+                    r="3"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                  />
+                </svg>
                 <input
                   type="text"
                   id="r-name"
-                  placeholder="Tu nombre"
+                  placeholder="Tu nombre completo"
                   autocomplete="name"
                 />
               </div>
-              <div class="field">
-                <label data-i18n="reg.email">Correo electrónico</label>
+            </div>
+            <div class="field">
+              <label data-i18n="reg.email">Correo electrónico</label>
+              <div class="field-wrap">
+                <svg
+                  class="field-ico"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <path
+                    d="M2 5l8 5 8-5M2 5v10a1 1 0 001 1h14a1 1 0 001-1V5a1 1 0 00-1-1H3a1 1 0 00-1 1z"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                  />
+                </svg>
                 <input
                   type="email"
                   id="r-email"
@@ -140,26 +274,76 @@
                   autocomplete="email"
                 />
               </div>
-              <div class="field">
-                <label data-i18n="reg.pass">Contraseña</label>
+            </div>
+            <div class="field">
+              <label data-i18n="reg.pass">Contraseña</label>
+              <div class="field-wrap">
+                <svg
+                  class="field-ico"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <rect
+                    x="3"
+                    y="9"
+                    width="14"
+                    height="10"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M7 9V6a3 3 0 016 0v3"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                  />
+                </svg>
                 <input
                   type="password"
                   id="r-pass"
                   placeholder="Mínimo 6 caracteres"
                   oninput="strengthMeter(this.value)"
                 />
-                <div class="strength-wrap">
-                  <div class="strength-bar">
-                    <div id="sb1"></div>
-                    <div id="sb2"></div>
-                    <div id="sb3"></div>
-                    <div id="sb4"></div>
-                  </div>
-                  <span id="slabel" class="strength-lbl"></span>
-                </div>
               </div>
-              <div class="field">
-                <label data-i18n="reg.pass2">Confirmar contraseña</label>
+              <div class="strength-wrap">
+                <div class="strength-bar">
+                  <div id="sb1"></div>
+                  <div id="sb2"></div>
+                  <div id="sb3"></div>
+                  <div id="sb4"></div>
+                </div>
+                <span id="slabel" class="strength-lbl"></span>
+              </div>
+            </div>
+            <div class="field">
+              <label data-i18n="reg.pass2">Confirmar contraseña</label>
+              <div class="field-wrap">
+                <svg
+                  class="field-ico"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                >
+                  <rect
+                    x="3"
+                    y="9"
+                    width="14"
+                    height="10"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                  />
+                  <path
+                    d="M7 9V6a3 3 0 016 0v3"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                  />
+                </svg>
                 <input
                   type="password"
                   id="r-pass2"
@@ -167,35 +351,63 @@
                   onkeydown="if (event.key === 'Enter') doRegister();"
                 />
               </div>
-              <div class="auth-err" id="reg-err"></div>
-              <button
-                class="btn-auth"
-                onclick="doRegister()"
-                data-i18n="reg.btn"
-              >
-                Crear cuenta gratis
-              </button>
             </div>
-            <div class="auth-divider">
-              <span data-i18n="login.or">o continúa sin cuenta</span>
-            </div>
-            <button class="btn-guest" onclick="enterGuest()">
-              <span class="bg-ico">🌍</span>
-              <span data-i18n="login.guest">Entrar como invitado</span>
-              <span class="bg-arrow">→</span>
+            <div class="auth-err" id="reg-err"></div>
+            <button class="btn-auth" onclick="doRegister()" data-i18n="reg.btn">
+              <span>Crear cuenta gratis</span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M3 8h10M9 4l4 4-4 4"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </button>
-            <div class="auth-lang">
-              <button
-                onclick="setLang('es')"
-                id="alang-es"
-                class="alang active"
+          </div>
+
+          <!-- Divider -->
+          <div class="auth-divider">
+            <span data-i18n="login.or">o continúa sin cuenta</span>
+          </div>
+
+          <!-- Botón invitado -->
+          <button class="btn-guest" onclick="enterGuest()">
+            <div class="bg-globe">🌍</div>
+            <div class="bg-body">
+              <span class="bg-title" data-i18n="login.guest"
+                >Continuar como invitado</span
               >
-                🇵🇪 ES
-              </button>
-              <button onclick="setLang('en')" id="alang-en" class="alang">
-                🇺🇸 EN
-              </button>
+              <span class="bg-sub"
+                >Tu sesión se identifica por tu ubicación</span
+              >
             </div>
+            <svg
+              class="bg-arrow"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M3 8h10M9 4l4 4-4 4"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+
+          <!-- Idioma -->
+          <div class="auth-lang">
+            <button onclick="setLang('es')" id="alang-es" class="alang active">
+              🇵🇪 ES
+            </button>
+            <button onclick="setLang('en')" id="alang-en" class="alang">
+              🇺🇸 EN
+            </button>
           </div>
         </div>
       </div>

@@ -671,7 +671,7 @@ function launchApp(user) {
   showToast(welcomeMsg);
 }
 
-// Banner de invitado con info de localidad
+// Banner de invitado — diseño profesional
 function renderGuestBanner(user) {
   const isGuest = typeof user === "object" ? user.guest : user === true;
   let bar = document.getElementById("guest-bar");
@@ -687,38 +687,48 @@ function renderGuestBanner(user) {
   const country = u.country && u.country !== "—" ? u.country : "";
   const ip = u.ip && u.ip !== "—" ? u.ip : "";
   const shortId = u.shortId || (u.guestId ? u.guestId.slice(-8) : "—");
-  const loc = city ? `${city}, ${country}` : country || "—";
+  const loc = city && country ? `${city}, ${country}` : country || "";
   const isBack = u.isReturning;
+  const greeting = isBack
+    ? LANG === "es"
+      ? "Bienvenido de vuelta"
+      : "Welcome back"
+    : LANG === "es"
+      ? "Sesión de invitado"
+      : "Guest session";
 
   bar = document.createElement("div");
   bar.id = "guest-bar";
   bar.className = "guest-bar";
   bar.innerHTML = `
-    <div class="gb-left">
-      <span class="gb-ico">${flag}</span>
-      <div class="gb-info">
-        <span class="gb-main">
-          ${
-            isBack
-              ? LANG === "es"
-                ? "¡Bienvenido de vuelta, invitado!"
-                : "Welcome back, guest!"
-              : LANG === "es"
-                ? "Modo invitado — el progreso no se guarda en la nube"
-                : "Guest mode — progress is not saved to cloud"
-          }
-        </span>
-        <span class="gb-loc">
-          📍 ${loc}${ip ? " · IP: " + ip : ""} · 🪪 ID: ${shortId}
-        </span>
+    <div class="gb-inner">
+      <!-- Izquierda: ícono + texto -->
+      <div class="gb-left">
+        <div class="gb-flag-wrap">
+          <span class="gb-flag">${flag}</span>
+          <span class="gb-online-dot"></span>
+        </div>
+        <div class="gb-text">
+          <span class="gb-greeting">${greeting}</span>
+          <div class="gb-meta">
+            ${loc ? `<span class="gb-chip">📍 ${loc}</span>` : ""}
+            ${ip ? `<span class="gb-chip">🌐 ${ip}</span>` : ""}
+            <span class="gb-chip">🪪 ${shortId}</span>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="gb-right">
-      <button class="gb-btn" onclick="exitGuest()">
-        ${LANG === "es" ? "Crear cuenta →" : "Sign up →"}
-      </button>
-      <button class="gb-close" onclick="this.closest('.guest-bar').remove()" title="Cerrar">✕</button>
+      <!-- Derecha: CTA + cerrar -->
+      <div class="gb-right">
+        <button class="gb-cta" onclick="exitGuest()">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm3.5 7.5h-5a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1z"/><path d="M10.854 5.646a.5.5 0 0 1 0 .708L9.207 8l1.647 1.646a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2a.5.5 0 0 1 .708 0z"/></svg>
+          ${LANG === "es" ? "Crear cuenta gratis" : "Create free account"}
+        </button>
+        <button class="gb-dismiss" onclick="this.closest('.guest-bar').style.animation='guestBarOut .3s ease forwards';setTimeout(()=>this.closest('.guest-bar').remove(),280)" title="Cerrar">
+          <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
     </div>`;
+
   document
     .getElementById("main")
     .insertBefore(bar, document.getElementById("content"));
@@ -1167,10 +1177,152 @@ document.addEventListener("input", (e) => {
   }
 });
 
+// ── CANVAS ANIMADO DE AUTH ──────────────────────────────────
+(function initAuthCanvas() {
+  const cv = document.getElementById("auth-canvas");
+  if (!cv) return;
+  const ctx = cv.getContext("2d");
+  let W, H, nodes, raf;
+
+  function resize() {
+    W = cv.width = window.innerWidth;
+    H = cv.height = window.innerHeight;
+  }
+
+  function makeNodes() {
+    const count = Math.floor((W * H) / 18000);
+    return Array.from({ length: count }, () => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.45,
+      vy: (Math.random() - 0.5) * 0.45,
+      r: Math.random() * 2 + 0.8,
+      // color aleatorio entre púrpura, azul y verde
+      hue: [245, 268, 160][Math.floor(Math.random() * 3)],
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Gradiente de fondo
+    const bg = ctx.createRadialGradient(
+      W * 0.35,
+      H * 0.5,
+      0,
+      W * 0.35,
+      H * 0.5,
+      W * 0.7,
+    );
+    bg.addColorStop(0, "rgba(20,16,60,.95)");
+    bg.addColorStop(0.6, "rgba(8,12,30,1)");
+    bg.addColorStop(1, "rgba(4,6,18,1)");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Orbe izquierdo
+    const orb1 = ctx.createRadialGradient(
+      W * 0.15,
+      H * 0.4,
+      0,
+      W * 0.15,
+      H * 0.4,
+      W * 0.35,
+    );
+    orb1.addColorStop(0, "rgba(90,95,224,.12)");
+    orb1.addColorStop(1, "rgba(90,95,224,0)");
+    ctx.fillStyle = orb1;
+    ctx.fillRect(0, 0, W, H);
+
+    // Orbe derecho
+    const orb2 = ctx.createRadialGradient(
+      W * 0.8,
+      H * 0.6,
+      0,
+      W * 0.8,
+      H * 0.6,
+      W * 0.3,
+    );
+    orb2.addColorStop(0, "rgba(128,86,214,.1)");
+    orb2.addColorStop(1, "rgba(128,86,214,0)");
+    ctx.fillStyle = orb2;
+    ctx.fillRect(0, 0, W, H);
+
+    // Mover y dibujar nodos
+    nodes.forEach((n) => {
+      n.x += n.vx;
+      n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${n.hue},80%,75%,.55)`;
+      ctx.fill();
+    });
+
+    // Líneas entre nodos cercanos
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 120) {
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(165,180,255,${(0.18 * (1 - d / 120)).toFixed(3)})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+    raf = requestAnimationFrame(draw);
+  }
+
+  resize();
+  nodes = makeNodes();
+  draw();
+  window.addEventListener("resize", () => {
+    resize();
+    nodes = makeNodes();
+  });
+
+  // Detener cuando se oculta la pantalla auth
+  const obs = new MutationObserver(() => {
+    const s = document.getElementById("auth-screen");
+    if (s && s.style.display === "none") {
+      cancelAnimationFrame(raf);
+      obs.disconnect();
+    }
+  });
+  obs.observe(document.getElementById("auth-screen") || document.body, {
+    attributes: true,
+    attributeFilter: ["style"],
+  });
+})();
+
+// ── CONTADOR ANIMADO DE STATS ────────────────────────────────
+function animateCounters() {
+  document.querySelectorAll(".al-stat-num[data-target]").forEach((el) => {
+    const target = parseInt(el.dataset.target);
+    let current = 0;
+    const step = Math.ceil(target / 30);
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      el.textContent = current;
+    }, 40);
+  });
+}
+
 // ── INIT ──
 document.addEventListener("DOMContentLoaded", () => {
   setLang(LANG);
-  // Si hay sesión activa, ir directo a la app
+  setTimeout(animateCounters, 400);
   const ses = getSession();
   if (ses) {
     launchApp(ses);
