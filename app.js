@@ -1331,6 +1331,25 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("auth-screen").style.display = "flex";
 });
 
+// ── SCROLL REVEAL ──
+function initScrollReveal() {
+  const obs = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("visible");
+          obs.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+  );
+
+  document.querySelectorAll(".reveal, .reveal-card").forEach((el) => {
+    obs.observe(el);
+  });
+}
+
 /* ═══════════════════════════════════════════════════════
    SIMULADORES · PRÁCTICA · TUTOR
 ═══════════════════════════════════════════════════════ */
@@ -1374,6 +1393,7 @@ function go(id) {
     initHeroCanvas();
     updateHomeElo();
     if (typeof Events !== "undefined") Events.init();
+    setTimeout(initScrollReveal, 100);
   }
   if (id === "ranking") typeof Rankings !== "undefined" && Rankings.init();
   if (id === "logros")
@@ -1525,34 +1545,44 @@ const SIMS = {
     formula: "1/f = 1/do + 1/di",
   },
   energia: {
-    title: "⚡ Energía Mecánica",
-    desc: "Conservación Ep + Ec = cte",
-    formula: "Ep=mgh  |  Ec=½mv²",
+    title: "⚡ Mechanical Energy",
+    desc: "Conservation Ep + Ec = constant — energy transforms but never disappears",
+    formula: "Ep=mgh  |  Ec=½mv²  |  E=Ep+Ec",
   },
   ph: {
-    title: "🧪 pH y Ácido-Base",
-    desc: "Escala logarítmica de acidez",
+    title: "🧪 pH & Acid-Base",
+    desc: "Logarithmic acidity scale — from 0 (acid) to 14 (base)",
     formula: "pH = -log[H⁺]  |  pOH = 14-pH",
   },
   gases: {
-    title: "💨 Gases Ideales",
-    desc: "Relación presión, volumen y temperatura",
+    title: "💨 Ideal Gases",
+    desc: "Pressure, volume and temperature relationship",
     formula: "PV = nRT  (R=0.0821 L·atm/mol·K)",
   },
   reacciones: {
-    title: "⚗️ Reacciones Químicas",
-    desc: "Perfil energético de Arrhenius",
+    title: "⚗️ Chemical Reactions",
+    desc: "Arrhenius energy profile and activation energy",
     formula: "k = A·e^(-Ea/RT)",
   },
   titulacion: {
-    title: "🧫 Titulación",
-    desc: "Curva de neutralización ácido-base",
-    formula: "n_ácido = n_base (punto eq.)",
+    title: "🧫 Titration",
+    desc: "Acid-base neutralization curve",
+    formula: "n_acid = n_base (equivalence point)",
   },
   tabla: {
-    title: "📋 Tabla Periódica",
-    desc: "Propiedades de los elementos",
+    title: "📋 Periodic Table",
+    desc: "Interactive properties of the chemical elements",
     formula: "",
+  },
+  estatica1: {
+    title: "🏗️ Statics I",
+    desc: "Forces in equilibrium — resultant force and torque balance",
+    formula: "ΣF = 0  |  Στ = 0  |  F = m·g",
+  },
+  estatica2: {
+    title: "⚖️ Statics II",
+    desc: "Center of mass and distributed loads on structures",
+    formula: "x_cm = Σmᵢxᵢ/Σmᵢ  |  τ = F·d",
   },
 };
 
@@ -1594,6 +1624,8 @@ function openSim(id) {
     reacciones: SIM_REAC,
     titulacion: SIM_TIT,
     tabla: SIM_TABLA,
+    estatica1: SIM_ESTATICA1,
+    estatica2: SIM_ESTATICA2,
   };
   setTimeout(() => {
     if (fn[id]) fn[id]("setup");
@@ -3738,4 +3770,252 @@ function addMsg(role, text) {
 function ask(q) {
   document.getElementById("chat-input").value = q;
   sendChat();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STATICS I — Forces in Equilibrium
+   ΣF = 0 · Στ = 0
+═══════════════════════════════════════════════════════════════ */
+function SIM_ESTATICA1(action) {
+  if (action === "setup") {
+    slider("f1", "Force 1 (F₁)", 0, 200, 80, 1, "N", (v) => {
+      document.getElementById("f1v").textContent = v + "N";
+      SIM_ESTATICA1("draw");
+    });
+    slider("a1", "Angle F₁", 0, 360, 30, 1, "°", (v) => {
+      document.getElementById("a1v").textContent = v + "°";
+      SIM_ESTATICA1("draw");
+    });
+    slider("f2", "Force 2 (F₂)", 0, 200, 60, 1, "N", (v) => {
+      document.getElementById("f2v").textContent = v + "N";
+      SIM_ESTATICA1("draw");
+    });
+    slider("a2", "Angle F₂", 0, 360, 150, 1, "°", (v) => {
+      document.getElementById("a2v").textContent = v + "°";
+      SIM_ESTATICA1("draw");
+    });
+    slider("f3", "Force 3 (F₃)", 0, 200, 40, 1, "N", (v) => {
+      document.getElementById("f3v").textContent = v + "N";
+      SIM_ESTATICA1("draw");
+    });
+    slider("a3", "Angle F₃", 0, 360, 270, 1, "°", (v) => {
+      document.getElementById("a3v").textContent = v + "°";
+      SIM_ESTATICA1("draw");
+    });
+    SIM_ESTATICA1("draw");
+  }
+  if (action === "draw" || action === "play") {
+    const g = ctx();
+    const W = g.canvas.width,
+      H = g.canvas.height;
+    g.clearRect(0, 0, W, H);
+    grid(g, W, H);
+    const cx = W / 2,
+      cy = H / 2;
+
+    const forces = [
+      {
+        f: +document.getElementById("f1")?.value || 80,
+        a: +document.getElementById("a1")?.value || 30,
+        col: "#5A5FE0",
+      },
+      {
+        f: +document.getElementById("f2")?.value || 60,
+        a: +document.getElementById("a2")?.value || 150,
+        col: "#EF4444",
+      },
+      {
+        f: +document.getElementById("f3")?.value || 40,
+        a: +document.getElementById("a3")?.value || 270,
+        col: "#10B981",
+      },
+    ];
+
+    // Draw point
+    g.beginPath();
+    g.arc(cx, cy, 10, 0, Math.PI * 2);
+    g.fillStyle = "#0A0E1A";
+    g.fill();
+    g.strokeStyle = "#5A5FE0";
+    g.lineWidth = 3;
+    g.stroke();
+
+    let rx = 0,
+      ry = 0;
+    forces.forEach(({ f, a, col }) => {
+      const rad = (a * Math.PI) / 180;
+      const fx = f * Math.cos(rad);
+      const fy = -f * Math.sin(rad);
+      rx += fx;
+      ry += fy;
+      arrow(g, cx, cy, cx + fx, cy + fy, col, `${f}N`);
+    });
+
+    // Resultant
+    const rm = Math.sqrt(rx * rx + ry * ry);
+    if (rm > 1)
+      arrow(g, cx, cy, cx + rx, cy + ry, "#F59E0B", `R=${rm.toFixed(1)}N`);
+
+    // Equilibrant
+    if (rm > 1) {
+      g.setLineDash([6, 3]);
+      arrow(g, cx, cy, cx - rx, cy - ry, "#8056D6", `E=${rm.toFixed(1)}N`);
+      g.setLineDash([]);
+    }
+
+    const eq = rm < 3;
+    document.getElementById("sim-results").innerHTML = `
+      <div class="res-row"><span>Resultant Force R</span><strong>${rm.toFixed(2)} N</strong></div>
+      <div class="res-row"><span>ΣFx</span><strong>${rx.toFixed(2)} N</strong></div>
+      <div class="res-row"><span>ΣFy</span><strong>${(-ry).toFixed(2)} N</strong></div>
+      <div class="res-row"><span>Equilibrium</span><strong style="color:${eq ? "#10B981" : "#EF4444"}">${eq ? "✅ System balanced" : "❌ Not balanced"}</strong></div>`;
+  }
+  if (action === "reset") {
+    SIM_ESTATICA1("draw");
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STATICS II — Center of Mass & Torques
+   Στ = 0  |  x_cm = Σmᵢxᵢ/Σmᵢ
+═══════════════════════════════════════════════════════════════ */
+function SIM_ESTATICA2(action) {
+  if (action === "setup") {
+    slider("m1", "Mass 1 (m₁)", 1, 100, 30, 1, "kg", (v) => {
+      document.getElementById("m1v").textContent = v + "kg";
+      SIM_ESTATICA2("draw");
+    });
+    slider("x1", "Position x₁", 0, 100, 20, 1, "m", (v) => {
+      document.getElementById("x1v").textContent = v + "m";
+      SIM_ESTATICA2("draw");
+    });
+    slider("m2", "Mass 2 (m₂)", 1, 100, 50, 1, "kg", (v) => {
+      document.getElementById("m2v").textContent = v + "kg";
+      SIM_ESTATICA2("draw");
+    });
+    slider("x2", "Position x₂", 0, 100, 80, 1, "m", (v) => {
+      document.getElementById("x2v").textContent = v + "m";
+      SIM_ESTATICA2("draw");
+    });
+    slider("m3", "Mass 3 (m₃)", 1, 100, 20, 1, "kg", (v) => {
+      document.getElementById("m3v").textContent = v + "kg";
+      SIM_ESTATICA2("draw");
+    });
+    slider("x3", "Position x₃", 0, 100, 50, 1, "m", (v) => {
+      document.getElementById("x3v").textContent = v + "m";
+      SIM_ESTATICA2("draw");
+    });
+    SIM_ESTATICA2("draw");
+  }
+  if (action === "draw" || action === "play") {
+    const g = ctx();
+    const W = g.canvas.width,
+      H = g.canvas.height;
+    g.clearRect(0, 0, W, H);
+
+    const g_ = 9.8;
+    const masses = [
+      {
+        m: +document.getElementById("m1")?.value || 30,
+        x: +document.getElementById("x1")?.value || 20,
+        col: "#5A5FE0",
+        lbl: "m₁",
+      },
+      {
+        m: +document.getElementById("m2")?.value || 50,
+        x: +document.getElementById("x2")?.value || 80,
+        col: "#EF4444",
+        lbl: "m₂",
+      },
+      {
+        m: +document.getElementById("m3")?.value || 20,
+        x: +document.getElementById("x3")?.value || 50,
+        col: "#10B981",
+        lbl: "m₃",
+      },
+    ];
+
+    const maxX = 100;
+    const scaleX = (W - 60) / maxX;
+    const beamY = H / 2;
+
+    // Beam
+    g.fillStyle = "#D4A853";
+    g.fillRect(30, beamY - 8, W - 60, 16);
+    g.fillStyle = "#B8943F";
+    g.fillRect(30, beamY + 8, W - 60, 4);
+
+    // Masses
+    const Mtot = masses.reduce((a, m) => a + m.m, 0);
+    const xcm = masses.reduce((a, m) => a + m.m * m.x, 0) / Mtot;
+
+    masses.forEach(({ m, x, col, lbl }) => {
+      const px = 30 + x * scaleX;
+      const h = 20 + m * 1.5;
+      // Weight force arrow
+      g.fillStyle = col;
+      g.strokeStyle = col;
+      g.lineWidth = 2;
+      g.beginPath();
+      g.moveTo(px, beamY - 8);
+      g.lineTo(px, beamY - 8 - h);
+      g.stroke();
+      g.beginPath();
+      g.arc(px, beamY - 8 - h, h * 0.3, 0, Math.PI * 2);
+      g.fillStyle = col + "33";
+      g.fill();
+      g.strokeStyle = col;
+      g.lineWidth = 2;
+      g.stroke();
+      // Label
+      g.fillStyle = col;
+      g.font = "bold 12px Plus Jakarta Sans";
+      g.textAlign = "center";
+      g.fillText(`${lbl}=${m}kg`, px, beamY - 8 - h - 14);
+      // Down arrow (weight)
+      arrow(
+        g,
+        px,
+        beamY + 12,
+        px,
+        beamY + 12 + m * 0.8,
+        col,
+        `${(m * g_).toFixed(0)}N`,
+      );
+    });
+
+    // Center of mass indicator
+    const cmpx = 30 + xcm * scaleX;
+    g.fillStyle = "#F59E0B";
+    g.strokeStyle = "#F59E0B";
+    g.lineWidth = 3;
+    g.beginPath();
+    g.moveTo(cmpx, beamY + 20);
+    g.lineTo(cmpx - 12, beamY + 38);
+    g.lineTo(cmpx + 12, beamY + 38);
+    g.closePath();
+    g.fill();
+    g.fillStyle = "#0A0E1A";
+    g.font = "bold 11px Plus Jakarta Sans";
+    g.textAlign = "center";
+    g.fillText(`CM = ${xcm.toFixed(1)}m`, cmpx, beamY + 52);
+
+    // Support reaction
+    const R = Mtot * g_;
+    g.fillStyle = "#8056D6";
+    g.font = "bold 11px Plus Jakarta Sans";
+    g.textAlign = "center";
+    g.fillText(`R = ${R.toFixed(0)}N ↑`, cmpx, beamY - 22);
+    arrow(g, cmpx, beamY + 8, cmpx, beamY - 20, "#8056D6");
+
+    document.getElementById("sim-results").innerHTML = `
+      <div class="res-row"><span>Total Mass Σm</span><strong>${Mtot.toFixed(1)} kg</strong></div>
+      <div class="res-row"><span>Center of Mass x_cm</span><strong>${xcm.toFixed(2)} m</strong></div>
+      <div class="res-row"><span>Total Weight W</span><strong>${(Mtot * g_).toFixed(1)} N</strong></div>
+      <div class="res-row"><span>Support Reaction R</span><strong>${(Mtot * g_).toFixed(1)} N ↑</strong></div>
+      <div class="res-row"><span>Torque Balance</span><strong style="color:#10B981">✅ ΣF=0 · Στ=0</strong></div>`;
+  }
+  if (action === "reset") {
+    SIM_ESTATICA2("draw");
+  }
 }

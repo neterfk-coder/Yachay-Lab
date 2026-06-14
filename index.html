@@ -427,21 +427,19 @@
         </div>
         <nav id="sb-nav">
           <div class="nav-section">
-            <div class="nav-label" data-i18n="nav.general">General</div>
+            <div class="nav-label">General</div>
             <button onclick="go('home')" class="nav-btn active" id="nb-home">
-              <span class="ni">🏠</span><span data-i18n="nav.home">Inicio</span>
+              <span class="ni">🏠</span><span>Home</span>
             </button>
             <button onclick="go('tutor')" class="nav-btn" id="nb-tutor">
-              <span class="ni">🤖</span
-              ><span data-i18n="nav.tutor">Tutor IA</span
-              ><span class="nav-pill">IA</span>
+              <span class="ni">🤖</span><span>AI Tutor</span
+              ><span class="nav-pill">AI</span>
             </button>
             <button onclick="go('practica')" class="nav-btn" id="nb-practica">
-              <span class="ni">🎯</span
-              ><span data-i18n="nav.practice">Práctica</span>
+              <span class="ni">🎯</span><span>Practice</span>
             </button>
             <button onclick="go('batalla')" class="nav-btn" id="nb-batalla">
-              <span class="ni">⚔️</span><span>Batalla</span
+              <span class="ni">⚔️</span><span>Battle</span
               ><span class="nav-pill battle-pill">VS</span>
             </button>
             <button onclick="go('ranking')" class="nav-btn" id="nb-ranking">
@@ -449,88 +447,101 @@
               ><span class="nav-pill new-pill">LIVE</span>
             </button>
             <button onclick="go('logros')" class="nav-btn" id="nb-logros">
-              <span class="ni">🎖️</span><span>Logros</span>
+              <span class="ni">🎖️</span><span>Achievements</span>
             </button>
             <button onclick="go('perfil')" class="nav-btn" id="nb-perfil">
-              <span class="ni">👤</span
-              ><span data-i18n="nav.profile">Mi Perfil</span>
+              <span class="ni">👤</span><span>My Profile</span>
             </button>
           </div>
           <div class="nav-section">
-            <div class="nav-label" data-i18n="nav.physics">Física</div>
+            <div class="nav-label">⚡ Physics</div>
             <button onclick="openSim('mru')" class="nav-btn" id="nb-mru">
-              <span class="ni">➡️</span>MRU
+              <span class="ni">➡️</span>URM
             </button>
             <button onclick="openSim('mrua')" class="nav-btn" id="nb-mrua">
               <span class="ni">🚀</span>MRUA
             </button>
             <button onclick="openSim('caida')" class="nav-btn" id="nb-caida">
-              <span class="ni">🍎</span
-              ><span data-i18n="sim.caida">Caída Libre</span>
+              <span class="ni">🍎</span>Free Fall
             </button>
             <button onclick="openSim('tiro')" class="nav-btn" id="nb-tiro">
-              <span class="ni">🎯</span
-              ><span data-i18n="sim.tiro">Tiro Parabólico</span>
+              <span class="ni">🎯</span>Projectile Motion
             </button>
             <button
               onclick="openSim('pendulo')"
               class="nav-btn"
               id="nb-pendulo"
             >
-              <span class="ni">⏱️</span
-              ><span data-i18n="sim.pendulo">Péndulo</span>
+              <span class="ni">⏱️</span>Pendulum
             </button>
             <button onclick="openSim('hooke')" class="nav-btn" id="nb-hooke">
-              <span class="ni">🔧</span>Ley de Hooke
+              <span class="ni">🔧</span>Hooke's Law
             </button>
             <button onclick="openSim('ondas')" class="nav-btn" id="nb-ondas">
-              <span class="ni">〰️</span><span data-i18n="sim.ondas">Ondas</span>
+              <span class="ni">〰️</span>Waves
             </button>
             <button onclick="openSim('ohm')" class="nav-btn" id="nb-ohm">
-              <span class="ni">⚡</span
-              ><span data-i18n="sim.ohm">Ley de Ohm</span>
+              <span class="ni">⚡</span>Ohm's Law
             </button>
             <button onclick="openSim('optica')" class="nav-btn" id="nb-optica">
-              <span class="ni">🔭</span
-              ><span data-i18n="sim.optica">Óptica</span>
+              <span class="ni">🔭</span>Optics
             </button>
             <button
               onclick="openSim('energia')"
               class="nav-btn"
               id="nb-energia"
             >
-              <span class="ni">⚡</span
-              ><span data-i18n="sim.energia">Energía</span>
+              <span class="ni">⚡</span>Mech. Energy
+            </button>
+            <button
+              onclick="openSim('estatica1')"
+              class="nav-btn"
+              id="nb-estatica1"
+            >
+              <span class="ni">🏗️</span>Statics I
+              <span
+                class="nav-pill"
+                style="background: rgba(16, 185, 129, 0.3); color: #10b981"
+                >NEW</span
+              >
+            </button>
+            <button
+              onclick="openSim('estatica2')"
+              class="nav-btn"
+              id="nb-estatica2"
+            >
+              <span class="ni">⚖️</span>Statics II
+              <span
+                class="nav-pill"
+                style="background: rgba(16, 185, 129, 0.3); color: #10b981"
+                >NEW</span
+              >
             </button>
           </div>
           <div class="nav-section">
-            <div class="nav-label" data-i18n="nav.chemistry">Química</div>
+            <div class="nav-label">🧪 Chemistry</div>
             <button onclick="openSim('ph')" class="nav-btn" id="nb-ph">
-              <span class="ni">🧪</span>pH y Ácido-Base
+              <span class="ni">🧪</span>pH & Acid-Base
             </button>
             <button onclick="openSim('gases')" class="nav-btn" id="nb-gases">
-              <span class="ni">💨</span
-              ><span data-i18n="sim.gases">Gases Ideales</span>
+              <span class="ni">💨</span>Ideal Gases
             </button>
             <button
               onclick="openSim('reacciones')"
               class="nav-btn"
               id="nb-reacciones"
             >
-              <span class="ni">⚗️</span
-              ><span data-i18n="sim.reacciones">Reacciones</span>
+              <span class="ni">⚗️</span>Reactions
             </button>
             <button
               onclick="openSim('titulacion')"
               class="nav-btn"
               id="nb-titulacion"
             >
-              <span class="ni">🧫</span
-              ><span data-i18n="sim.titulacion">Titulación</span>
+              <span class="ni">🧫</span>Titration
             </button>
             <button onclick="openSim('tabla')" class="nav-btn" id="nb-tabla">
-              <span class="ni">📋</span
-              ><span data-i18n="sim.tabla">Tabla Periódica</span>
+              <span class="ni">📋</span>Periodic Table
             </button>
           </div>
         </nav>
@@ -590,18 +601,16 @@
               <canvas id="hero-canvas"></canvas>
               <div class="hh-content">
                 <div class="hh-chip">
-                  🏆 DSH Hacks V1 &nbsp;·&nbsp; IA + Educación STEM
-                  &nbsp;·&nbsp; Amazonía Peruana
+                  🏆 DSH Hacks V1 &nbsp;·&nbsp; AI + STEM Education
+                  &nbsp;·&nbsp; Latin America
                 </div>
                 <h1 class="hh-title">
-                  El laboratorio que<br /><em>transforma</em> el aprendizaje
-                  STEM
+                  The lab that<br /><em>transforms</em> STEM learning
                 </h1>
                 <p class="hh-desc">
-                  Millones de estudiantes latinoamericanos nunca acceden a un
-                  laboratorio real. Yachay Lab lo cambia — simuladores
-                  interactivos con IA, disponibles en cualquier dispositivo,
-                  completamente gratis.
+                  Millions of Latin American students never access a real lab.
+                  Yachay Lab changes that — interactive simulators with AI,
+                  available on any device, completely free.
                 </p>
                 <div class="hh-btns">
                   <button class="hb-primary" onclick="openSim('tiro')">
@@ -615,43 +624,43 @@
                         d="M3 8a5 5 0 1 0 10 0A5 5 0 0 0 3 8zm5-1.5L11 8l-3 1.5V6.5z"
                       />
                     </svg>
-                    Explorar simuladores
+                    Explore simulators
                   </button>
                   <button class="hb-secondary" onclick="go('tutor')">
-                    🤖 Hablar con Yachay IA
+                    🤖 Talk to Yachay AI
                   </button>
                   <button
                     class="hb-secondary"
-                    onclick="Ranking.openRanking()"
+                    onclick="go('batalla')"
                     style="
-                      background: rgba(245, 158, 11, 0.15);
-                      border-color: rgba(245, 158, 11, 0.3);
-                      color: #fbd38d;
+                      background: rgba(239, 68, 68, 0.15);
+                      border-color: rgba(239, 68, 68, 0.3);
+                      color: #fca5a5;
                     "
                   >
-                    🏆 Ver Ranking
+                    ⚔️ Battle Mode
                   </button>
                 </div>
               </div>
               <div class="hh-metrics">
                 <div class="hm-item">
-                  <div class="hm-num">15</div>
-                  <div class="hm-lbl">Simuladores</div>
+                  <div class="hm-num">17</div>
+                  <div class="hm-lbl">Simulators</div>
                 </div>
                 <div class="hm-div"></div>
                 <div class="hm-item">
                   <div class="hm-num">2</div>
-                  <div class="hm-lbl">Áreas STEM</div>
+                  <div class="hm-lbl">STEM Areas</div>
                 </div>
                 <div class="hm-div"></div>
                 <div class="hm-item">
-                  <div class="hm-num">IA</div>
-                  <div class="hm-lbl">Tutor socrático</div>
+                  <div class="hm-num">AI</div>
+                  <div class="hm-lbl">Socratic Tutor</div>
                 </div>
                 <div class="hm-div"></div>
                 <div class="hm-item">
                   <div class="hm-num">100%</div>
-                  <div class="hm-lbl">Gratuito</div>
+                  <div class="hm-lbl">Free</div>
                 </div>
               </div>
             </section>
@@ -763,78 +772,131 @@
             </div>
             <!-- /events-zone -->
 
-            <!-- PROBLEMA QUE RESUELVE -->
-            <section class="home-problem">
+            <!-- THE PROBLEM -->
+            <section class="home-problem reveal">
               <div class="prob-text">
-                <div class="section-chip">🎯 El problema</div>
-                <h2>¿Por qué Yachay Lab existe?</h2>
+                <div class="section-chip">🎯 The problem</div>
+                <h2>Why does Yachay Lab exist?</h2>
                 <p>
-                  En el Perú y América Latina, más del
-                  <strong>70% de escuelas rurales</strong> no tienen laboratorio
-                  de ciencias. Los estudiantes memorizan fórmulas sin entender
-                  el fenómeno real detrás.
+                  In Peru and Latin America, more than
+                  <strong>70% of rural schools</strong> have no science lab.
+                  Students memorize formulas without understanding the real
+                  phenomenon behind them.
                 </p>
                 <p>
-                  Yachay Lab convierte cualquier dispositivo con navegador en un
-                  laboratorio completo — con física animada en tiempo real,
-                  química interactiva y un tutor de IA que guía sin dar
-                  respuestas.
+                  Yachay Lab turns any browser-enabled device into a complete
+                  lab — with real-time animated physics, interactive chemistry
+                  and an AI tutor that guides without giving direct answers.
                 </p>
               </div>
               <div class="prob-cards">
-                <div class="pc-item">
+                <div class="pc-item reveal-card">
                   <div class="pci-ico">🏫</div>
-                  <strong>Sin laboratorio físico</strong
-                  ><span>Yachay Lab lo reemplaza digitalmente</span>
+                  <strong>No physical lab</strong
+                  ><span>Yachay Lab replaces it digitally</span>
                 </div>
-                <div class="pc-item">
+                <div class="pc-item reveal-card">
                   <div class="pci-ico">💸</div>
-                  <strong>Sin presupuesto</strong
-                  ><span>100% gratis, sin anuncios, sin límites</span>
+                  <strong>No budget</strong
+                  ><span>100% free, no ads, no limits</span>
                 </div>
-                <div class="pc-item">
+                <div class="pc-item reveal-card">
                   <div class="pci-ico">📡</div>
-                  <strong>Conectividad limitada</strong
-                  ><span>Funciona offline con fallback local</span>
+                  <strong>Limited connectivity</strong
+                  ><span>Works offline with local fallback</span>
                 </div>
-                <div class="pc-item">
+                <div class="pc-item reveal-card">
                   <div class="pci-ico">🌐</div>
-                  <strong>Barrera del idioma</strong
-                  ><span>Interfaz en español e inglés</span>
+                  <strong>Language barrier</strong
+                  ><span>Interface in Spanish and English</span>
                 </div>
               </div>
             </section>
 
-            <!-- SIMULADORES DESTACADOS -->
-            <section class="home-sims">
+            <!-- INTERACTIVE SIMULATORS -->
+            <section class="home-sims reveal">
               <div class="section-header">
-                <div class="section-chip">⚡ Laboratorio</div>
-                <h2>Simuladores interactivos</h2>
-                <p>Ingresa tus datos y observa el fenómeno en tiempo real</p>
+                <div class="section-chip">⚡ Laboratory</div>
+                <h2>Interactive Simulators</h2>
+                <p>Enter your data and observe the phenomenon in real time</p>
               </div>
               <div class="sim-grid">
-                <div class="sg-card featured" onclick="openSim('tiro')">
+                <div
+                  class="sg-card featured reveal-card"
+                  onclick="openSim('tiro')"
+                  style="--delay: 0s"
+                >
                   <div
                     class="sgc-top"
                     style="
                       background: linear-gradient(135deg, #6366f1, #8b5cf6);
                     "
                   >
-                    <span class="sgc-ico">🎯</span>
-                    <span class="sgc-badge">Física</span>
+                    <span class="sgc-ico">🎯</span
+                    ><span class="sgc-badge">Physics</span>
                   </div>
                   <div class="sgc-body">
-                    <h3>Tiro Parabólico</h3>
+                    <h3>Projectile Motion</h3>
                     <p>
-                      Lanza proyectiles, ajusta ángulo y velocidad. Visualiza la
-                      parábola en tiempo real.
+                      Launch projectiles, adjust angle and speed. Visualize the
+                      parabola in real time.
                     </p>
                     <div class="sgc-formula">
                       x = v₀cos(θ)·t &nbsp;|&nbsp; y = v₀sin(θ)·t − ½gt²
                     </div>
                   </div>
                 </div>
-                <div class="sg-card" onclick="openSim('pendulo')">
+                <div
+                  class="sg-card reveal-card"
+                  onclick="openSim('estatica1')"
+                  style="--delay: 0.05s"
+                >
+                  <div
+                    class="sgc-top"
+                    style="
+                      background: linear-gradient(135deg, #10b981, #0ea5e9);
+                    "
+                  >
+                    <span class="sgc-ico">🏗️</span
+                    ><span class="sgc-badge">NEW · Physics</span>
+                  </div>
+                  <div class="sgc-body">
+                    <h3>Statics I</h3>
+                    <p>
+                      Forces in equilibrium — visualize resultant and
+                      equilibrant vectors in real time.
+                    </p>
+                    <div class="sgc-formula">ΣF = 0 &nbsp;|&nbsp; Στ = 0</div>
+                  </div>
+                </div>
+                <div
+                  class="sg-card reveal-card"
+                  onclick="openSim('estatica2')"
+                  style="--delay: 0.1s"
+                >
+                  <div
+                    class="sgc-top"
+                    style="
+                      background: linear-gradient(135deg, #f59e0b, #ef4444);
+                    "
+                  >
+                    <span class="sgc-ico">⚖️</span
+                    ><span class="sgc-badge">NEW · Physics</span>
+                  </div>
+                  <div class="sgc-body">
+                    <h3>Statics II</h3>
+                    <p>
+                      Center of mass and distributed loads — see how structures
+                      reach balance.
+                    </p>
+                    <div class="sgc-formula">x_cm = Σmᵢxᵢ / Σmᵢ</div>
+                  </div>
+                </div>
+                <div
+                  class="sg-card reveal-card"
+                  onclick="openSim('pendulo')"
+                  style="--delay: 0.15s"
+                >
                   <div
                     class="sgc-top"
                     style="
@@ -842,166 +904,146 @@
                     "
                   >
                     <span class="sgc-ico">⏱️</span
-                    ><span class="sgc-badge">Física</span>
+                    ><span class="sgc-badge">Physics</span>
                   </div>
                   <div class="sgc-body">
-                    <h3>Péndulo Simple</h3>
+                    <h3>Simple Pendulum</h3>
                     <p>
-                      Mide el período real y compara con T = 2π√(L/g). Cambia
-                      gravedad entre planetas.
+                      Measure the real period and compare with T = 2π√(L/g).
+                      Change gravity between planets.
                     </p>
                   </div>
                 </div>
-                <div class="sg-card" onclick="openSim('ph')">
+                <div
+                  class="sg-card reveal-card"
+                  onclick="openSim('ph')"
+                  style="--delay: 0.2s"
+                >
                   <div
                     class="sgc-top"
                     style="
-                      background: linear-gradient(135deg, #10b981, #0ea5e9);
+                      background: linear-gradient(135deg, #8b5cf6, #ec4899);
                     "
                   >
                     <span class="sgc-ico">🧪</span
-                    ><span class="sgc-badge">Química</span>
+                    ><span class="sgc-badge">Chemistry</span>
                   </div>
                   <div class="sgc-body">
-                    <h3>pH y Ácido-Base</h3>
+                    <h3>pH & Acid-Base</h3>
                     <p>
-                      Escala de pH visual con colores reales. Observa cómo
-                      cambian los iones H⁺ y OH⁻.
+                      Visual pH scale with real colors. Observe how H⁺ and OH⁻
+                      ions change.
                     </p>
                   </div>
                 </div>
-                <div class="sg-card" onclick="openSim('gases')">
-                  <div
-                    class="sgc-top"
-                    style="
-                      background: linear-gradient(135deg, #f59e0b, #ef4444);
-                    "
-                  >
-                    <span class="sgc-ico">💨</span
-                    ><span class="sgc-badge">Química</span>
-                  </div>
-                  <div class="sgc-body">
-                    <h3>Gases Ideales</h3>
-                    <p>
-                      PV = nRT con partículas animadas. Ajusta presión, volumen
-                      y temperatura.
-                    </p>
-                  </div>
-                </div>
-                <div class="sg-card" onclick="openSim('caida')">
-                  <div
-                    class="sgc-top"
-                    style="
-                      background: linear-gradient(135deg, #ec4899, #8b5cf6);
-                    "
-                  >
-                    <span class="sgc-ico">🍎</span
-                    ><span class="sgc-badge">Física</span>
-                  </div>
-                  <div class="sgc-body">
-                    <h3>Caída Libre</h3>
-                    <p>
-                      Simula caída en Tierra, Luna, Marte y Júpiter. Observa la
-                      diferencia de gravedad.
-                    </p>
-                  </div>
-                </div>
-                <div class="sg-card see-all" onclick="openSim('ohm')">
+                <div
+                  class="sg-card reveal-card"
+                  onclick="openSim('gases')"
+                  style="--delay: 0.25s"
+                >
                   <div
                     class="sgc-top"
                     style="
                       background: linear-gradient(135deg, #14b8a6, #6366f1);
                     "
                   >
-                    <span class="sgc-ico">⚡</span
-                    ><span class="sgc-badge">Física</span>
+                    <span class="sgc-ico">💨</span
+                    ><span class="sgc-badge">Chemistry</span>
                   </div>
                   <div class="sgc-body">
-                    <h3>Ley de Ohm</h3>
+                    <h3>Ideal Gases</h3>
                     <p>
-                      Circuito DC con electrones animados. Ajusta voltaje y
-                      resistencia en tiempo real.
+                      PV = nRT with animated particles. Adjust pressure, volume
+                      and temperature.
                     </p>
                   </div>
                 </div>
               </div>
               <div class="sim-grid-more">
+                <button class="btn-outline" onclick="openSim('caida')">
+                  🍎 Free Fall
+                </button>
                 <button class="btn-outline" onclick="openSim('hooke')">
-                  🔧 Hooke
+                  🔧 Hooke's Law
                 </button>
                 <button class="btn-outline" onclick="openSim('ondas')">
-                  〰️ Ondas
+                  〰️ Waves
+                </button>
+                <button class="btn-outline" onclick="openSim('ohm')">
+                  ⚡ Ohm's Law
                 </button>
                 <button class="btn-outline" onclick="openSim('optica')">
-                  🔭 Óptica
+                  🔭 Optics
                 </button>
                 <button class="btn-outline" onclick="openSim('energia')">
-                  ⚡ Energía
+                  ⚡ Mech. Energy
                 </button>
                 <button class="btn-outline" onclick="openSim('reacciones')">
-                  ⚗️ Reacciones
+                  ⚗️ Reactions
                 </button>
                 <button class="btn-outline" onclick="openSim('titulacion')">
-                  🧫 Titulación
+                  🧫 Titration
                 </button>
                 <button class="btn-outline" onclick="openSim('tabla')">
-                  📋 Tabla Periódica
+                  📋 Periodic Table
+                </button>
+                <button class="btn-outline" onclick="openSim('mru')">
+                  ➡️ URM
                 </button>
                 <button class="btn-outline" onclick="openSim('mrua')">
                   🚀 MRUA
                 </button>
-                <button class="btn-outline" onclick="openSim('mru')">
-                  ➡️ MRU
-                </button>
               </div>
             </section>
 
-            <!-- TUTOR IA + PRÁCTICA -->
-            <section class="home-features">
+            <!-- AI TUTOR + PRACTICE -->
+            <section class="home-features reveal">
               <div class="hf-card ai-card" onclick="go('tutor')">
                 <div class="hfc-icon">🤖</div>
-                <h3>Tutor Yachay IA</h3>
+                <h3>Yachay AI Tutor</h3>
                 <p>
-                  Impulsado por Groq + LLaMA 3.3. Responde con el método
-                  socrático — nunca da la respuesta directa, guía al estudiante
-                  a descubrirla.
+                  Powered by Groq + LLaMA 3.3. Responds with the Socratic method
+                  — never gives the direct answer, guides the student to
+                  discover it.
                 </p>
                 <div class="hfc-demo">
                   <div class="demo-msg a">
-                    ¿Por qué la Luna tiene menos gravedad que la Tierra? 🌕
+                    Why does the Moon have less gravity than Earth? 🌕
                   </div>
                   <div class="demo-msg b">
-                    Interesante pregunta. Antes de responder, ¿qué crees que
-                    determina la gravedad de un planeta? ¿Su tamaño, su masa, o
-                    algo más? 🌿
+                    Great question! Before answering, what do you think
+                    determines a planet's gravity — its size, mass, or something
+                    else? 🌿
                   </div>
                 </div>
-                <button class="hfc-btn">Conversar con Yachay →</button>
+                <button class="hfc-btn">Chat with Yachay →</button>
               </div>
               <div class="hf-card elo-card" onclick="go('practica')">
                 <div class="hfc-icon">📈</div>
-                <h3>Práctica adaptativa con Elo</h3>
+                <h3>Adaptive Practice with Elo</h3>
                 <p>
-                  Sistema de rating inteligente que ajusta la dificultad
-                  automáticamente. Mientras más aciertas, más desafiantes son
-                  las preguntas.
+                  Smart rating system that adjusts difficulty automatically. The
+                  more you get right, the more challenging the questions become.
                 </p>
                 <div class="elo-demo">
-                  <div class="ed-label">Tu rating actual</div>
+                  <div class="ed-label">Your current rating</div>
                   <div class="ed-elo" id="home-elo">1000</div>
                   <div class="ed-bar">
                     <div class="ed-fill" id="home-elo-fill"></div>
                   </div>
                   <div class="ed-range">
-                    <span>600</span><span>Principiante</span><span>1400+</span>
+                    <span>600</span><span>Beginner</span><span>1400+</span>
                   </div>
                 </div>
                 <div
                   class="elo-demo"
                   style="margin-top: 10px; cursor: pointer"
-                  onclick="Streak.openPanel()"
+                  onclick="
+                    event.stopPropagation();
+                    Streak && Streak.openPanel();
+                  "
                 >
-                  <div class="ed-label">Tu racha 🔥</div>
+                  <div class="ed-label">Your streak 🔥</div>
                   <div
                     style="
                       display: flex;
@@ -1025,23 +1067,23 @@
                     <div
                       style="font-size: 11px; color: rgba(255, 255, 255, 0.4)"
                     >
-                      días seguidos
+                      days in a row
                     </div>
                   </div>
                   <div
                     style="font-size: 11.5px; color: #a5b4ff; font-weight: 600"
                   >
-                    Ver mi racha completa →
+                    View full streak →
                   </div>
                 </div>
-                <button class="hfc-btn">Practicar ahora →</button>
+                <button class="hfc-btn">Practice now →</button>
               </div>
             </section>
 
-            <!-- TECH STACK / TRANSPARENCIA -->
-            <section class="home-tech">
-              <div class="section-chip">🛠️ Implementación técnica</div>
-              <h2>Construido con tecnología de punta</h2>
+            <!-- TECH STACK -->
+            <section class="home-tech reveal">
+              <div class="section-chip">🛠️ Technical implementation</div>
+              <h2>Built with cutting-edge technology</h2>
               <div class="tech-pills">
                 <span>🎙️ Web Speech API</span>
                 <span>⚡ Groq API</span>
@@ -1051,7 +1093,8 @@
                 <span>🌍 ipapi.co</span>
                 <span>💾 localStorage</span>
                 <span>🌐 Vanilla JS</span>
-                <span>📐 Sistema Elo</span>
+                <span>📐 Elo System</span>
+                <span>🏗️ Statics I &amp; II</span>
               </div>
             </section>
           </div>
