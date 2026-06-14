@@ -1477,6 +1477,11 @@ function kill() {
 }
 
 // ── NAVEGACIÓN ──
+function scrollTop() {
+  document.getElementById("content")?.scrollTo(0, 0);
+  window.scrollTo(0, 0);
+}
+
 function go(id) {
   kill();
   document
@@ -1504,6 +1509,9 @@ function go(id) {
     if (typeof Events !== "undefined") Events.init();
     setTimeout(initScrollReveal, 100);
   }
+  // Footer solo en home
+  const footer = document.getElementById("yl-footer");
+  if (footer) footer.style.display = id === "home" ? "block" : "none";
   if (id === "ranking") typeof Rankings !== "undefined" && Rankings.init();
   if (id === "logros")
     typeof Achievements !== "undefined" && Achievements.render();
@@ -3744,8 +3752,11 @@ function answer(sel, correct, opts, topic) {
 ══════════════════════════════════════════════════════ */
 
 // ⚠️  Para cambiar la clave: edita solo esta línea
-const GROQ_KEY = "gsk_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-window.GROQ_KEY_APP = GROQ_KEY; // Compartir con exam.js
+// ⚠️ Para desarrollo local: pon tu clave en config/keys.js
+// config/keys.js está en .gitignore — nunca se sube a GitHub
+// Para producción: déjala vacía y usa un backend proxy
+const GROQ_KEY = window.GROQ_KEY_LOCAL || "";
+window.GROQ_KEY_APP = GROQ_KEY;
 const GROQ_MODEL = "llama-3.3-70b-versatile";
 const GROQ_SYS = `Eres Yachay, tutor socrático de física y química para estudiantes de secundaria en la Amazonía peruana.
 Reglas estrictas:
@@ -3788,6 +3799,11 @@ async function sendChat() {
 
   // ── GROQ API ──
   try {
+    // Verificar que la clave no sea el placeholder
+    if (!GROQ_KEY || GROQ_KEY.startsWith("gsk_XXXX")) {
+      throw new Error("NO_KEY");
+    }
+
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -3797,10 +3813,16 @@ async function sendChat() {
       body: JSON.stringify({
         model: GROQ_MODEL,
         max_tokens: 600,
-        temperature: 0.75,
+        temperature: 0.85,
         messages: [{ role: "system", content: GROQ_SYS }, ...S.chatH],
       }),
     });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      console.warn("Groq error:", res.status, errData);
+      throw new Error(`HTTP_${res.status}`);
+    }
 
     const data = await res.json();
     const reply = data?.choices?.[0]?.message?.content?.trim();
@@ -3809,68 +3831,185 @@ async function sendChat() {
     if (reply) {
       S.chatH.push({ role: "assistant", content: reply });
       addMsg("a", reply);
-      // ── Registrar sesión de tutor en racha ──
       if (typeof Streak !== "undefined") {
-        Streak.register("tutor", { label: "🤖 Sesión con Tutor Yachay" });
+        Streak.register("tutor", { label: "🤖 AI Tutor session" });
       }
     } else {
-      // Groq respondió pero sin contenido (raro) → fallback
       addMsg("a", localBot(msg));
     }
   } catch (e) {
-    // Sin internet o error de red → fallback silencioso
     document.getElementById(tid)?.remove();
     const reply = localBot(msg);
     S.chatH.push({ role: "assistant", content: reply });
     addMsg("a", reply);
+    // Solo mostrar aviso si es clave no configurada
+    if (e.message === "NO_KEY") {
+      console.info(
+        "ℹ️ Groq key not configured — using local responses. Add your key at line ~1931 in app.js",
+      );
+    }
   }
 }
 
 // Respuestas locales inteligentes (fallback sin API)
+// Cada tema tiene múltiples respuestas para evitar repetición
+const _botResponses = {
+  mru: [
+    "In URM, velocity never changes — like a canoe drifting on a calm river with no current. The formula is x = x₀ + v·t. If the river had a current, would the velocity still be constant? 🌊",
+    "Uniform Rectilinear Motion means zero acceleration — the object moves at exactly the same speed forever. Using x = v·t, if v = 5 m/s and t = 3 s, how far does it travel? 🎯",
+    "Think of URM as a ball rolling on a perfectly flat, frictionless surface. x = x₀ + v·t tells us position at any moment. What do you think happens to the graph of position vs time? 📈",
+  ],
+  mrua: [
+    "In MRUA, acceleration is constant — like a stone rolling down a hill that gains speed at a fixed rate. The key formulas are v = v₀ + at and x = x₀ + v₀t + ½at². How is this different from URM? 🪨",
+    "MRUA means the velocity changes by the same amount every second. If a = 2 m/s², after 3 seconds the velocity increases by 6 m/s. What would the velocity-time graph look like? 📊",
+    "Imagine a ball dropped from a tree in the Amazon — it speeds up as it falls. That's MRUA with a = g = 9.8 m/s². What do you think determines how fast it reaches the ground? 🌳",
+  ],
+  caida: [
+    "In free fall, only gravity acts on the object — no air resistance. On Earth g = 9.8 m/s². Interestingly, a feather and a rock fall at the same rate in a vacuum. Why do you think air changes this? 🍃",
+    "Free fall follows y = ½gt². On the Moon (g = 1.6 m/s²), objects fall much slower than on Earth. If you dropped a rock from 20 m on the Moon vs Earth, where would it take longer? 🌙",
+    'Every second of free fall, the object gains 9.8 m/s of velocity. After 3 seconds: v = 29.4 m/s. What do you think "terminal velocity" means and why does it happen? 🦅',
+  ],
+  tiro: [
+    "Projectile motion has two independent components: horizontal (constant velocity) and vertical (free fall). The path is always a parabola. At what angle do you think the range is maximized? 🎯",
+    "Think of throwing a mango horizontally from a tree — it moves forward at constant speed but also falls due to gravity. The formulas: x = v₀cos(θ)·t and y = v₀sin(θ)·t - ½gt². What happens at θ = 90°? 🥭",
+    "The horizontal velocity never changes in projectile motion, but vertical velocity increases every second. At the peak of the trajectory, what is the vertical velocity? 🏹",
+  ],
+  pendulo: [
+    "The pendulum period T = 2π√(L/g) depends only on length and gravity — not mass! A heavy and light pendulum swing at the same rate. Why do you think mass doesn't matter here? ⏱️",
+    "On the Moon (g = 1.6 m/s²), a pendulum swings much slower than on Earth (g = 9.8 m/s²). If T on Earth is 2s, what would T be on the Moon? Hint: T is proportional to 1/√g. 🌙",
+    "A grandfather clock uses a pendulum to keep time. If the pendulum is too long, the clock runs slow. Why? Think about what happens to T when L increases in T = 2π√(L/g). 🕰️",
+  ],
+  hooke: [
+    "Hooke's Law: F = k·x — force is proportional to deformation. If you double the stretch, the force doubles. What do you think happens to the spring if you stretch it beyond its elastic limit? 🔧",
+    "Think of a spring like a rubber band — up to a point, the more you stretch it, the more it pulls back with equal force. If k = 50 N/m and x = 0.2 m, what is the restoring force? 🌿",
+    "Every spring has a spring constant k. A stiff spring has a large k, a soft one has a small k. If two springs have the same stretch x, which one exerts more force? 💪",
+  ],
+  ph: [
+    "pH = -log[H⁺]. At pH 7, [H⁺] = [OH⁻] — pure water. Below 7 is acidic (more H⁺), above 7 is basic (more OH⁻). The Amazon River has pH ~5 — is it acidic or basic, and why? 🌊",
+    "The pH scale is logarithmic: pH 4 is 10× more acidic than pH 5! Lemon juice has pH ~2, battery acid has pH ~0. What do you think happens to your stomach lining if pH drops too low? 🍋",
+    "pH = -log[H⁺]. If [H⁺] = 10⁻³ mol/L, then pH = 3 (acidic). Can you calculate the pH if [H⁺] = 10⁻¹⁰ mol/L? Is that solution acidic, basic or neutral? 🧪",
+  ],
+  gases: [
+    "PV = nRT: Pressure × Volume = moles × R × Temperature. If you compress a gas (decrease V) at constant T, pressure must increase. This is why a bicycle pump gets warm — can you explain why? 💨",
+    "Ideal gas law PV = nRT assumes molecules have no volume and no interactions. Real gases deviate at high pressure. If T doubles at constant V and n, what happens to P? 🌡️",
+    "Think of gas molecules like bees in a jar — the more you heat them, the faster they move and the harder they hit the walls (pressure). If you double T (in Kelvin) and keep V constant, P doubles. Why Kelvin and not Celsius? 🐝",
+  ],
+  ohm: [
+    "Ohm's Law: V = I·R. If resistance doubles and voltage stays the same, current halves. Think of it like a river: voltage is the slope, current is the water flow, resistance is the narrowness of the channel. What happens if you widen the channel? ⚡",
+    "V = I·R means current (I) is driven by voltage (V) and limited by resistance (R). If V = 12V and R = 4Ω, what is I? And what would happen to I if R doubled? 🔌",
+    "Power P = V·I = V²/R = I²·R. That's why high-resistance components get hot — they dissipate more power as heat. If I doubles (same R), how does power change? 💡",
+  ],
+  newton: [
+    "Newton's Second Law: F = m·a. If you apply the same force to a heavy truck and a bicycle, the bicycle accelerates much more. Why? What does this tell you about the relationship between mass and acceleration? 🚲",
+    "F = m·a means force causes acceleration — not velocity! A constant force produces constant acceleration. If m = 5 kg and F = 20 N, what is a? And what if mass doubled? ⚖️",
+    "Think of F = m·a like paddling in the Amazon: the harder you paddle (F), the faster you accelerate (a), but a heavier canoe (m) responds less. Can you apply this to a rocket launch? 🚀",
+  ],
+  energia: [
+    "Energy conservation: Ep + Ec = constant. As a bird dives from a tree, potential energy (mgh) converts to kinetic energy (½mv²). At the lowest point, all energy is kinetic. Where is all the potential energy? 🦅",
+    "Ep = mgh and Ec = ½mv². At the top of a waterfall, a droplet has maximum Ep. As it falls, Ep converts to Ec. If the fall is 20m, what is the speed at the bottom? (Use energy conservation) 💧",
+    "A pendulum perfectly demonstrates energy conservation: maximum Ep at the peaks, maximum Ec at the bottom. In real life, the pendulum slows down — where does the energy go? ⏱️",
+  ],
+  default: [
+    "Great question! In science, we always start by identifying the variables involved. What quantities do you think are changing in this situation? 🌿",
+    "Interesting! Before I guide you, what do you already know about this topic? Sometimes the answer is closer than you think. 🤔",
+    "Let's think about this step by step. First, what is the system we're analyzing? What forces, quantities or relationships are involved? 🔬",
+    "Good question! Think of an analogy from nature: rivers, trees, animals. Can you find a parallel between this concept and something you've observed in real life? 🌳",
+    "This is a fundamental concept! Start by drawing a diagram or writing down the known variables. What information do you have, and what are you trying to find? 📐",
+  ],
+};
+
+let _botLastIndex = {}; // Evitar repetir la misma respuesta seguida
+
 function localBot(m) {
   const ml = m.toLowerCase();
-  if (ml.includes("mru") || ml.includes("velocidad constante"))
-    return "🚗 En el MRU la velocidad nunca cambia, como una canoa en un río sin corriente. La fórmula es x = x₀ + v·t. ¿Qué crees que pasaría si la velocidad sí cambiara con el tiempo?";
-  if (ml.includes("mrua") || ml.includes("aceleración"))
-    return "🚀 En el MRUA la aceleración es constante, como una piedra rodando por una colina. La fórmula es x = x₀ + v₀t + ½at². ¿Sabes qué diferencia hay entre velocidad y aceleración?";
-  if (ml.includes("caída") || ml.includes("caida") || ml.includes("gravedad"))
-    return "🍎 En caída libre solo actúa la gravedad: v = g·t y y = ½g·t². En la Luna, g = 1.6 m/s², mucho menos que en la Tierra. ¿Por qué crees que una pluma y una piedra caen igual en el vacío?";
+
+  let key = "default";
   if (
+    ml.includes("urm") ||
+    ml.includes("mru") ||
+    ml.includes("uniform rectilinear") ||
+    ml.includes("constant velocity")
+  )
+    key = "mru";
+  else if (
+    ml.includes("mrua") ||
+    ml.includes("acceleration") ||
+    ml.includes("uniform acceleration")
+  )
+    key = "mrua";
+  else if (
+    ml.includes("free fall") ||
+    ml.includes("caida") ||
+    ml.includes("gravity") ||
+    ml.includes("gravedad")
+  )
+    key = "caida";
+  else if (
+    ml.includes("projectile") ||
+    ml.includes("parabolic") ||
+    ml.includes("tiro")
+  )
+    key = "tiro";
+  else if (
+    ml.includes("pendulum") ||
+    ml.includes("pendulo") ||
+    ml.includes("period")
+  )
+    key = "pendulo";
+  else if (
+    ml.includes("hooke") ||
+    ml.includes("spring") ||
+    ml.includes("resorte")
+  )
+    key = "hooke";
+  else if (
     ml.includes("ph") ||
-    ml.includes("ácido") ||
-    ml.includes("acido") ||
-    ml.includes("base")
+    ml.includes("acid") ||
+    ml.includes("base") ||
+    ml.includes("ácido")
   )
-    return "🧪 El pH = −log[H⁺]. Menor pH = más ácido. El limón tiene pH ~2, el agua tiene 7. ¿Por qué crees que el agua de lluvia en la Amazonía puede tener pH ligeramente ácido?";
-  if (ml.includes("hooke") || ml.includes("resorte"))
-    return "🔧 La Ley de Hooke dice F = k·x. Si doblas la deformación x, la fuerza también se duplica. ¿Qué pasaría si estiras el resorte más allá de su límite elástico?";
-  if (ml.includes("péndulo") || ml.includes("pendulo"))
-    return "⏱️ El período T = 2π√(L/g) solo depende de la longitud y la gravedad, ¡no de la masa! Si llevas el péndulo a la Luna donde g=1.6, ¿sería el período mayor o menor que en la Tierra?";
-  if (ml.includes("ohm") || ml.includes("corriente") || ml.includes("voltaje"))
-    return "⚡ La Ley de Ohm: I = V/R. Si duplicas la resistencia manteniendo el mismo voltaje, la corriente se reduce a la mitad. ¿Qué crees que pasa con la potencia P = V·I en ese caso?";
-  if (
+    key = "ph";
+  else if (
     ml.includes("gas") ||
-    ml.includes("pv") ||
-    ml.includes("presion") ||
-    ml.includes("presión")
+    ml.includes("pv=") ||
+    ml.includes("pressure") ||
+    ml.includes("presion")
   )
-    return "💨 PV = nRT: si mantienes la temperatura constante y reduces el volumen a la mitad, la presión se duplica (Ley de Boyle). ¿Por qué crees que los pulmones funcionan bajo este principio?";
-  if (
-    ml.includes("energía") ||
-    ml.includes("energia") ||
-    ml.includes("cinética") ||
-    ml.includes("potencial")
+    key = "gases";
+  else if (
+    ml.includes("ohm") ||
+    ml.includes("current") ||
+    ml.includes("voltage") ||
+    ml.includes("resistance") ||
+    ml.includes("corriente")
   )
-    return "⚡ La energía mecánica total se conserva: Ep + Ec = constante. Cuando un objeto cae, la Ep (mgh) se convierte en Ec (½mv²). ¿En qué punto de la caída tiene más energía cinética?";
-  if (
-    ml.includes("onda") ||
-    ml.includes("frecuencia") ||
-    ml.includes("amplitud")
+    key = "ohm";
+  else if (
+    ml.includes("newton") ||
+    ml.includes("force") ||
+    ml.includes("fuerza") ||
+    ml.includes("mass")
   )
-    return "〰️ Las ondas se describen con y = A·sin(kx − ωt). La amplitud A determina la energía y la frecuencia f determina el tono (en sonido). ¿Qué crees que cambia cuando subes el volumen de la música?";
-  if (ml.includes("newton") || ml.includes("fuerza"))
-    return "⚖️ La 2ª Ley de Newton dice F = m·a. Si aplicas la misma fuerza a una masa mayor, la aceleración será menor. ¿Por qué es más difícil empujar un camión que una bicicleta?";
-  return `🌿 Gran pregunta sobre "${m.slice(0, 30)}...". En ciencia siempre empezamos identificando las variables del sistema. ¿Qué variables crees que están involucradas en este fenómeno?`;
+    key = "newton";
+  else if (
+    ml.includes("energy") ||
+    ml.includes("kinetic") ||
+    ml.includes("potential") ||
+    ml.includes("energia")
+  )
+    key = "energia";
+
+  const pool = _botResponses[key] || _botResponses.default;
+  const last = _botLastIndex[key] ?? -1;
+
+  // Elegir índice diferente al último
+  let idx;
+  do {
+    idx = Math.floor(Math.random() * pool.length);
+  } while (idx === last && pool.length > 1);
+  _botLastIndex[key] = idx;
+
+  return pool[idx];
 }
 
 function addMsg(role, text) {
