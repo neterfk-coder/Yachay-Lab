@@ -1320,12 +1320,81 @@
                 <button class="ptab active" onclick="showPTab('edit', this)">
                   ✏️ Edit profile
                 </button>
+                <button class="ptab" onclick="showPTab('progress', this)">
+                  📈 Progress
+                </button>
                 <button class="ptab" onclick="showPTab('logros', this)">
                   🏆 Achievements
                 </button>
                 <button class="ptab" onclick="showPTab('config', this)">
                   ⚙️ Settings
                 </button>
+              </div>
+              <!-- Tab Progress -->
+              <div class="ptab-content" id="ptab-progress">
+                <div class="progress-section">
+                  <div class="progress-header">
+                    <h3 class="prog-title">Elo Progress</h3>
+                    <div class="prog-filters">
+                      <button
+                        class="prog-filter active"
+                        onclick="ProgressChart.render('f', this)"
+                      >
+                        ⚡ Physics
+                      </button>
+                      <button
+                        class="prog-filter"
+                        onclick="ProgressChart.render('q', this)"
+                      >
+                        🧪 Chemistry
+                      </button>
+                      <button
+                        class="prog-filter"
+                        onclick="ProgressChart.render('m', this)"
+                      >
+                        📐 Math
+                      </button>
+                    </div>
+                  </div>
+                  <div class="prog-stats-row">
+                    <div class="prog-stat">
+                      <div class="prs-num" id="prog-current">1000</div>
+                      <div class="prs-lbl">Current Elo</div>
+                    </div>
+                    <div class="prog-stat">
+                      <div class="prs-num" id="prog-best">1000</div>
+                      <div class="prs-lbl">Best Elo</div>
+                    </div>
+                    <div class="prog-stat">
+                      <div class="prs-num" id="prog-games">0</div>
+                      <div class="prs-lbl">Questions</div>
+                    </div>
+                    <div class="prog-stat">
+                      <div class="prs-num" id="prog-win">0%</div>
+                      <div class="prs-lbl">Win rate</div>
+                    </div>
+                  </div>
+                  <div class="prog-chart-wrap">
+                    <canvas id="elo-chart" height="200"></canvas>
+                    <div
+                      class="prog-empty"
+                      id="prog-empty"
+                      style="display: none"
+                    >
+                      <div class="pe-icon">📈</div>
+                      <div class="pe-txt">
+                        Answer questions to see your progress here
+                      </div>
+                      <button class="pe-btn" onclick="go('practica')">
+                        Start practicing →
+                      </button>
+                    </div>
+                  </div>
+                  <div class="prog-milestones">
+                    <div class="pm-label">Elo milestones</div>
+                    <div class="pm-row" id="pm-row"></div>
+                  </div>
+                </div>
               </div>
               <div class="ptab-content active" id="ptab-edit">
                 <div class="perfil-form">
@@ -1450,6 +1519,9 @@
                 </div>
               </div>
               <div class="ptab-content" id="ptab-logros">
+                <div class="logros-header">
+                  <div class="lh-tip">💡 Click any achievement to share it</div>
+                </div>
                 <div class="logros-grid" id="logros-grid"></div>
               </div>
               <div class="ptab-content" id="ptab-config">
@@ -2118,6 +2190,13 @@
     </div>
 
     <div id="toast" class="toast-notif" style="display: none"></div>
+    <!-- Canvas oculto para generar imagen de logro -->
+    <canvas
+      id="share-canvas"
+      width="600"
+      height="340"
+      style="display: none"
+    ></canvas>
     <script src="supabase.js"></script>
     <script src="supabase-sync.js"></script>
     <script src="app.js"></script>
@@ -2126,6 +2205,7 @@
     <script src="rankings.js"></script>
     <script src="events.js"></script>
     <script src="battle.js"></script>
+    <script src="progress.js"></script>
   </body>
 </html>
 

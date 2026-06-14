@@ -323,7 +323,7 @@ function switchTab(tab) {
   document.getElementById("reg-err").textContent = "";
 }
 
-function doLogin() {
+async function doLogin() {
   const email = document.getElementById("l-email").value.trim().toLowerCase();
   const pass = document.getElementById("l-pass").value;
   const err = document.getElementById("login-err");
@@ -336,19 +336,49 @@ function doLogin() {
     err.textContent = t("err.email");
     return;
   }
-  const users = getUsers();
-  if (!users[email] || users[email].pass !== btoa(pass)) {
-    err.textContent = t("err.notfound");
-    return;
+
+  // ── Intentar Supabase Auth primero ──
+  if (window._supa && typeof SupaAuth !== "undefined") {
+    const btn = document.querySelector("#form-login .btn-auth");
+    if (btn) {
+      btn.textContent = "Signing in...";
+      btn.disabled = true;
+    }
+    const { data, profile, error } = await SupaAuth.signIn(email, pass);
+    if (btn) {
+      btn.textContent = "Sign in";
+      btn.disabled = false;
+    }
+    if (error) {
+      // Fallback a localStorage si Supabase falla
+      const users = getUsers();
+      if (!users[email] || users[email].pass !== btoa(pass)) {
+        err.textContent = t("err.notfound");
+        return;
+      }
+    }
+  } else {
+    // Fallback localStorage
+    const users = getUsers();
+    if (!users[email] || users[email].pass !== btoa(pass)) {
+      err.textContent = t("err.notfound");
+      return;
+    }
   }
-  localStorage.setItem(
-    SES,
-    JSON.stringify({ email, name: users[email].name, guest: false }),
-  );
-  launchApp({ email, name: users[email].name, guest: false });
+
+  const name = (() => {
+    try {
+      const u = getUsers();
+      return u[email]?.name || email.split("@")[0];
+    } catch {
+      return email.split("@")[0];
+    }
+  })();
+  localStorage.setItem(SES, JSON.stringify({ email, name, guest: false }));
+  launchApp({ email, name, guest: false });
 }
 
-function doRegister() {
+async function doRegister() {
   const name = document.getElementById("r-name").value.trim();
   const email = document.getElementById("r-email").value.trim().toLowerCase();
   const pass = document.getElementById("r-pass").value;
@@ -371,17 +401,35 @@ function doRegister() {
     err.textContent = t("err.match");
     return;
   }
-  const users = getUsers();
-  if (users[email]) {
-    err.textContent = t("err.exists");
-    return;
+
+  // ── Registrar en Supabase Auth ──
+  if (window._supa && typeof SupaAuth !== "undefined") {
+    const btn = document.querySelector("#form-register .btn-auth");
+    if (btn) {
+      btn.textContent = "Creating account...";
+      btn.disabled = true;
+    }
+    const { data, error } = await SupaAuth.signUp(email, pass, name);
+    if (btn) {
+      btn.textContent = "Create free account";
+      btn.disabled = false;
+    }
+    if (error && !error.includes("already registered")) {
+      err.textContent = error;
+      return;
+    }
   }
-  users[email] = {
-    name,
-    pass: btoa(pass),
-    createdAt: new Date().toISOString(),
-  };
-  localStorage.setItem(DB, JSON.stringify(users));
+
+  // Guardar también en localStorage (fallback)
+  const users = getUsers();
+  if (!users[email]) {
+    users[email] = {
+      name,
+      pass: btoa(pass),
+      createdAt: new Date().toISOString(),
+    };
+    localStorage.setItem(DB, JSON.stringify(users));
+  }
   localStorage.setItem(SES, JSON.stringify({ email, name, guest: false }));
   launchApp({ email, name, guest: false });
 }
@@ -1004,7 +1052,6 @@ function renderPerfil() {
 
 function renderLogros(prof, ps) {
   const earned = new Set(prof.logros || []);
-  // Auto-otorgar logros
   if (ps.sims >= 1) earned.add("sim_1");
   if (ps.sims >= 5) earned.add("sim_5");
   if (ps.sims >= 10) earned.add("sim_10");
@@ -1022,6 +1069,16 @@ function renderLogros(prof, ps) {
       <div class="logro-ico">${l.ico}</div>
       <div class="logro-name">${l.name}</div>
       <div class="logro-desc">${l.desc}</div>
+      ${
+        earned.has(l.id)
+          ? `
+        <button class="logro-share-btn"
+          onclick="event.stopPropagation();ShareBadge.share(${JSON.stringify(l).replace(/"/g, "&quot;")})"
+          title="Share achievement">
+          📤 Share
+        </button>`
+          : ""
+      }
     </div>`,
   ).join("");
 }
@@ -1036,6 +1093,9 @@ function showPTab(tab, btn) {
   btn.classList.add("active");
   document.getElementById("ptab-" + tab).classList.add("active");
   if (tab === "logros") renderLogros(getProfile(), getPStats());
+  if (tab === "progress" && typeof ProgressChart !== "undefined") {
+    setTimeout(() => ProgressChart.render("f"), 100);
+  }
 }
 
 function setFav(fav, btn) {
@@ -3636,6 +3696,14 @@ function answer(sel, correct, opts, topic) {
     Math.max(400, Math.min(2000, elo + K * ((ok ? 1 : 0) - exp))),
   );
   document.getElementById("elo-" + topic).textContent = S.elo[topic];
+  // ── Disparar evento para la gráfica de progreso ──
+  document.dispatchEvent(
+    new CustomEvent("eloChanged", { detail: { topic, elo: S.elo[topic] } }),
+  );
+  // Guardar Elo en localStorage
+  const eloStore = JSON.parse(localStorage.getItem("yl_elo") || "{}");
+  eloStore[topic] = S.elo[topic];
+  localStorage.setItem("yl_elo", JSON.stringify(eloStore));
   document.getElementById("qfeed").textContent = ok
     ? "✅ ¡Correcto!"
     : "❌ Era: " + opts[correct];
