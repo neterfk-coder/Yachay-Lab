@@ -553,6 +553,9 @@ async function enterGuest() {
         : `Hello from ${flag} ${locName}! 👋`;
     showToast(msg, 4000);
 
+    // Sincronizar sesión de invitado con Supabase
+    if (typeof SupaSync !== "undefined") SupaSync.syncGuestSession(session);
+
     launchApp(session);
   } catch (err) {
     console.error("enterGuest error:", err);
@@ -662,6 +665,10 @@ function launchApp(user) {
   go("home");
   setTimeout(initHeroCanvas, 100);
   updateHomeElo();
+  // Mostrar onboarding si es primera visita
+  setTimeout(() => {
+    if (typeof Onboarding !== "undefined") Onboarding.maybeShow();
+  }, 1500);
 
   const welcomeMsg = user.guest
     ? LANG === "es"
@@ -1318,6 +1325,48 @@ function animateCounters() {
     }, 40);
   });
 }
+
+// ── ONBOARDING ──────────────────────────────────────────────
+const Onboarding = (() => {
+  let step = 1;
+  const SEEN_KEY = "yl_onboarding_done";
+
+  function show() {
+    const el = document.getElementById("onboarding");
+    if (el) el.style.display = "flex";
+  }
+
+  function next() {
+    step++;
+    [1, 2, 3].forEach((i) => {
+      const slide = document.getElementById("ob-slide-" + i);
+      const dot = document.getElementById("ob-s" + i);
+      if (slide) slide.style.display = i === step ? "block" : "none";
+      if (dot) {
+        dot.classList.toggle("ob-active", i === step);
+        if (i < step) dot.style.background = "rgba(90,95,224,.5)";
+      }
+    });
+  }
+
+  function finish(simId) {
+    const el = document.getElementById("onboarding");
+    if (el) {
+      el.style.animation = "fadeOut .3s ease forwards";
+      setTimeout(() => (el.style.display = "none"), 280);
+    }
+    localStorage.setItem(SEEN_KEY, "1");
+    if (simId) setTimeout(() => openSim(simId), 350);
+  }
+
+  function maybeShow() {
+    if (!localStorage.getItem(SEEN_KEY)) {
+      setTimeout(show, 1200);
+    }
+  }
+
+  return { show, next, finish, maybeShow };
+})();
 
 // ── INIT ──
 document.addEventListener("DOMContentLoaded", () => {

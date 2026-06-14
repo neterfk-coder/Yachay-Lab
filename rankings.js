@@ -203,26 +203,43 @@ const Rankings = (() => {
     }
   }
 
-  // ── CARGAR todos los usuarios (demo + reales del device) ──────
-  function loadUsers() {
+  // ── CARGAR todos los usuarios (Supabase primero, demo como fallback) ──────
+  async function loadUsers() {
     const me = getCurrentUser();
-    // Guardar "yo" en el ranking global del device
+    // Guardar "yo" en Supabase
+    if (me) SupaSync.syncProfile();
+
+    // Intentar cargar desde Supabase
+    if (window._supa) {
+      try {
+        const data = await SupaSync.fetchRanking("elo", 50);
+        if (data && data.length > 0) {
+          const realIds = new Set(data.map((u) => u.id));
+          const demoFiltered = DEMO_USERS.filter((d) => !realIds.has(d.id));
+          // Marcar el usuario actual
+          allUsers = data.map((u) => ({ ...u, isMe: u.id === me?.id }));
+          // Solo agregar demos si hay pocos usuarios reales
+          if (data.length < 5) allUsers = [...allUsers, ...demoFiltered];
+          return allUsers;
+        }
+      } catch (e) {
+        console.warn("Ranking fetch failed, using local:", e);
+      }
+    }
+
+    // Fallback local
     if (me) {
       const global = JSON.parse(localStorage.getItem(GLOBAL_KEY) || "{}");
       global[me.id] = { ...me, lastSeen: new Date().toISOString() };
       localStorage.setItem(GLOBAL_KEY, JSON.stringify(global));
     }
-    // Combinar demo + reales
     const stored = JSON.parse(localStorage.getItem(GLOBAL_KEY) || "{}");
     const realUsers = Object.values(stored).map((u) => ({
       ...u,
       isMe: u.id === me?.id,
     }));
-
-    // Merge: si ya existe un demo con el mismo nombre, quitar el demo
     const realIds = new Set(realUsers.map((u) => u.id));
     const demoFiltered = DEMO_USERS.filter((d) => !realIds.has(d.id));
-
     allUsers = [...realUsers, ...demoFiltered];
     return allUsers;
   }
@@ -233,9 +250,16 @@ const Rankings = (() => {
   }
 
   // ── INICIALIZAR vista ────────────────────────────────────────
-  function init() {
-    loadUsers();
+  async function init() {
+    await loadUsers();
     render();
+    // Suscribirse a cambios en tiempo real
+    if (window._supa) {
+      SupaSync.subscribeRanking(async () => {
+        await loadUsers();
+        render();
+      });
+    }
     startAutoRefresh();
   }
 
@@ -836,11 +860,14 @@ const Achievements = (() => {
     el.innerHTML = `
       <div class="an-ico">${achievement.ico}</div>
       <div class="an-body">
-        <div class="an-title">¡Logro desbloqueado!</div>
+        <div class="an-title">Achievement unlocked!</div>
         <div class="an-name">${achievement.name}</div>
         <div class="an-xp">+${achievement.xp} XP</div>
       </div>`;
     document.body.appendChild(el);
+    // Sincronizar con Supabase
+    if (typeof SupaSync !== "undefined")
+      SupaSync.syncAchievement(achievement.id);
     setTimeout(() => {
       el.classList.add("an-out");
       setTimeout(() => el.remove(), 400);
