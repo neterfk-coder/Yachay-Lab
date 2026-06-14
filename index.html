@@ -436,6 +436,17 @@
             <button onclick="go('practica')" class="nav-btn" id="nb-practica">
               <span class="ni">🎯</span><span>Practice</span>
             </button>
+            <button onclick="go('examen')" class="nav-btn" id="nb-examen">
+              <span class="ni">📝</span><span>AI Exam</span
+              ><span
+                class="nav-pill"
+                style="
+                  background: linear-gradient(135deg, #10b981, #0ea5e9);
+                  color: #fff;
+                "
+                >NEW</span
+              >
+            </button>
             <button onclick="go('batalla')" class="nav-btn" id="nb-batalla">
               <span class="ni">⚔️</span><span>Battle</span
               ><span class="nav-pill battle-pill">VS</span>
@@ -2163,6 +2174,339 @@
           <!-- /view-batalla -->
         </div>
         <!-- /content -->
+
+        <!-- ══ AI EXAM GENERATOR ══ -->
+        <div class="view" id="view-examen">
+          <div class="exam-wrap">
+            <!-- PANTALLA 1: CONFIGURAR EXAMEN -->
+            <div id="exam-config" class="exam-screen active">
+              <div class="exam-hero">
+                <div class="exam-hero-icon">📝</div>
+                <h1 class="exam-title">AI Exam Generator</h1>
+                <p class="exam-sub">
+                  Groq + LLaMA 3.3 creates a personalized exam based on your Elo
+                  level
+                </p>
+              </div>
+
+              <div class="exam-setup">
+                <div class="exam-setup-grid">
+                  <!-- Materia -->
+                  <div class="exam-field">
+                    <label class="exam-label">📚 Subject</label>
+                    <div class="exam-opts" id="exam-subject-opts">
+                      <button
+                        class="exam-opt active"
+                        data-val="physics"
+                        onclick="Exam.setOpt('subject', 'physics', this)"
+                      >
+                        ⚡ Physics
+                      </button>
+                      <button
+                        class="exam-opt"
+                        data-val="chemistry"
+                        onclick="Exam.setOpt('subject', 'chemistry', this)"
+                      >
+                        🧪 Chemistry
+                      </button>
+                      <button
+                        class="exam-opt"
+                        data-val="math"
+                        onclick="Exam.setOpt('subject', 'math', this)"
+                      >
+                        📐 Mathematics
+                      </button>
+                      <button
+                        class="exam-opt"
+                        data-val="mixed"
+                        onclick="Exam.setOpt('subject', 'mixed', this)"
+                      >
+                        🎲 Mixed
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Dificultad -->
+                  <div class="exam-field">
+                    <label class="exam-label">🎯 Difficulty</label>
+                    <div class="exam-opts" id="exam-diff-opts">
+                      <button
+                        class="exam-opt"
+                        data-val="easy"
+                        onclick="Exam.setOpt('diff', 'easy', this)"
+                      >
+                        🟢 Easy
+                      </button>
+                      <button
+                        class="exam-opt active"
+                        data-val="medium"
+                        onclick="Exam.setOpt('diff', 'medium', this)"
+                      >
+                        🟡 Medium
+                      </button>
+                      <button
+                        class="exam-opt"
+                        data-val="hard"
+                        onclick="Exam.setOpt('diff', 'hard', this)"
+                      >
+                        🔴 Hard
+                      </button>
+                      <button
+                        class="exam-opt"
+                        data-val="auto"
+                        onclick="Exam.setOpt('diff', 'auto', this)"
+                      >
+                        🤖 Auto (by Elo)
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Número de preguntas -->
+                  <div class="exam-field">
+                    <label class="exam-label">🔢 Number of questions</label>
+                    <div class="exam-opts" id="exam-count-opts">
+                      <button
+                        class="exam-opt"
+                        data-val="5"
+                        onclick="Exam.setOpt('count', '5', this)"
+                      >
+                        5
+                      </button>
+                      <button
+                        class="exam-opt active"
+                        data-val="10"
+                        onclick="Exam.setOpt('count', '10', this)"
+                      >
+                        10
+                      </button>
+                      <button
+                        class="exam-opt"
+                        data-val="15"
+                        onclick="Exam.setOpt('count', '15', this)"
+                      >
+                        15
+                      </button>
+                      <button
+                        class="exam-opt"
+                        data-val="20"
+                        onclick="Exam.setOpt('count', '20', this)"
+                      >
+                        20
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Nombre del estudiante -->
+                  <div class="exam-field">
+                    <label class="exam-label"
+                      >👤 Your name (for the certificate)</label
+                    >
+                    <input
+                      class="exam-input"
+                      id="exam-student-name"
+                      type="text"
+                      placeholder="Your full name"
+                    />
+                  </div>
+                </div>
+
+                <!-- Elo actual -->
+                <div class="exam-elo-info" id="exam-elo-info">
+                  <div class="eei-left">
+                    <div class="eei-label">Your current Elo</div>
+                    <div class="eei-num" id="exam-elo-num">1000</div>
+                  </div>
+                  <div class="eei-right">
+                    <div class="eei-level" id="exam-elo-level">🌱 Beginner</div>
+                    <div class="eei-hint">
+                      AI will adapt the difficulty to your level
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  class="exam-generate-btn"
+                  id="exam-gen-btn"
+                  onclick="Exam.generate()"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  Generate exam with AI
+                </button>
+
+                <!-- Historial -->
+                <div class="exam-history" id="exam-history">
+                  <div class="eh-title">📋 Previous exams</div>
+                  <div id="eh-list" class="eh-list"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANTALLA 2: GENERANDO -->
+            <div id="exam-loading" class="exam-screen">
+              <div class="exam-loading-inner">
+                <div class="el-spinner">
+                  <div class="el-ring"></div>
+                  <div class="el-icon">🤖</div>
+                </div>
+                <h2 class="el-title">Generating your exam...</h2>
+                <div class="el-steps">
+                  <div class="el-step" id="els-1">
+                    ⚡ Analyzing your Elo level
+                  </div>
+                  <div class="el-step" id="els-2">
+                    📝 Creating personalized questions
+                  </div>
+                  <div class="el-step" id="els-3">✅ Preparing the exam</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANTALLA 3: EXAMEN EN CURSO -->
+            <div id="exam-game" class="exam-screen">
+              <div class="exam-header">
+                <div class="exh-left">
+                  <div class="exh-title" id="exh-title">Physics Exam</div>
+                  <div class="exh-sub" id="exh-sub">10 questions · Medium</div>
+                </div>
+                <div class="exh-center">
+                  <div class="exh-progress-text">
+                    <span id="exh-curr">1</span> /
+                    <span id="exh-total">10</span>
+                  </div>
+                  <div class="exh-progress-bar">
+                    <div class="exh-progress-fill" id="exh-fill"></div>
+                  </div>
+                </div>
+                <div class="exh-right">
+                  <div class="exh-timer" id="exh-timer">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      />
+                      <path
+                        d="M12 6v6l4 2"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <span id="exh-time">00:00</span>
+                  </div>
+                  <div class="exh-score">
+                    Score: <span id="exh-score">0</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="exam-question-area">
+                <div class="eqa-num" id="eqa-num">Question 1</div>
+                <div class="eqa-text" id="eqa-text">Loading...</div>
+                <div class="eqa-opts" id="eqa-opts"></div>
+                <div class="eqa-feedback" id="eqa-feedback"></div>
+                <div class="eqa-explanation" id="eqa-explanation"></div>
+              </div>
+
+              <div class="exam-nav">
+                <button
+                  class="exam-skip-btn"
+                  onclick="Exam.skip()"
+                  id="exam-skip"
+                >
+                  Skip →
+                </button>
+                <button
+                  class="exam-next-btn"
+                  onclick="Exam.next()"
+                  id="exam-next"
+                  style="display: none"
+                >
+                  Next question →
+                </button>
+              </div>
+            </div>
+
+            <!-- PANTALLA 4: RESULTADOS + CERTIFICADO -->
+            <div id="exam-results" class="exam-screen">
+              <div class="exam-results-inner">
+                <!-- Resultado principal -->
+                <div class="exr-banner" id="exr-banner">
+                  <div class="exr-grade" id="exr-grade">A</div>
+                  <div class="exr-score-big" id="exr-score-big">0/10</div>
+                  <div class="exr-label" id="exr-label">Excellent!</div>
+                  <div class="exr-pct" id="exr-pct">0%</div>
+                </div>
+
+                <!-- Stats del examen -->
+                <div class="exr-stats">
+                  <div class="exrs-item">
+                    <div class="exrs-num" id="exrs-correct">0</div>
+                    <div class="exrs-lbl">Correct</div>
+                  </div>
+                  <div class="exrs-item">
+                    <div class="exrs-num" id="exrs-wrong">0</div>
+                    <div class="exrs-lbl">Incorrect</div>
+                  </div>
+                  <div class="exrs-item">
+                    <div class="exrs-num" id="exrs-time">0:00</div>
+                    <div class="exrs-lbl">Time</div>
+                  </div>
+                  <div class="exrs-item">
+                    <div class="exrs-num" id="exrs-xp">0</div>
+                    <div class="exrs-lbl">XP earned</div>
+                  </div>
+                </div>
+
+                <!-- Revisión de respuestas -->
+                <div class="exr-review">
+                  <div class="exr-review-title">📋 Answer review</div>
+                  <div id="exr-review-list"></div>
+                </div>
+
+                <!-- Certificado -->
+                <div class="exr-cert" id="exr-cert">
+                  <div class="exrc-header">
+                    <span class="exrc-icon">🏅</span>
+                    <div>
+                      <div class="exrc-title">Certificate of completion</div>
+                      <div class="exrc-sub">
+                        Download and share your achievement
+                      </div>
+                    </div>
+                  </div>
+                  <canvas id="cert-canvas" style="display: none"></canvas>
+                  <div class="exrc-actions">
+                    <button class="exrc-btn-dl" onclick="Exam.downloadCert()">
+                      📥 Download certificate
+                    </button>
+                    <button class="exrc-btn-share" onclick="Exam.shareCert()">
+                      📤 Share
+                    </button>
+                  </div>
+                </div>
+
+                <div class="exr-actions">
+                  <button class="exam-retry-btn" onclick="Exam.retry()">
+                    🔄 New exam
+                  </button>
+                  <button class="exam-home-btn" onclick="Exam.goConfig()">
+                    ← Back
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
     <!-- /app -->
@@ -2206,6 +2550,8 @@
     <script src="events.js"></script>
     <script src="battle.js"></script>
     <script src="progress.js"></script>
+    <script src="exam.js"></script>
+    <script src="notifications.js"></script>
   </body>
 </html>
 

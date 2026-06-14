@@ -1508,6 +1508,7 @@ function go(id) {
   if (id === "logros")
     typeof Achievements !== "undefined" && Achievements.render();
   if (id === "batalla") typeof Battle !== "undefined" && Battle.init();
+  if (id === "examen") typeof Exam !== "undefined" && Exam.init();
   if (id === "tutor") {
     initTutorUI();
     if (!document.getElementById("chat-msgs").children.length) {
@@ -3744,6 +3745,7 @@ function answer(sel, correct, opts, topic) {
 
 // ⚠️  Para cambiar la clave: edita solo esta línea
 const GROQ_KEY = "gsk_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+window.GROQ_KEY_APP = GROQ_KEY; // Compartir con exam.js
 const GROQ_MODEL = "llama-3.3-70b-versatile";
 const GROQ_SYS = `Eres Yachay, tutor socrático de física y química para estudiantes de secundaria en la Amazonía peruana.
 Reglas estrictas:
