@@ -1,0 +1,401 @@
+/* ═══════════════════════════════════════════════════════════
+   YACHAY LAB — VOICE CSS (voice.css)
+   Estilos del reconocimiento y síntesis de voz
+═══════════════════════════════════════════════════════════ */
+
+/* ── ÁREA DE INPUT CON VOZ ──────────────────────────────── */
+.chat-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--surface, #fff);
+  border: 1.5px solid var(--border2, #cdd3ec);
+  border-radius: 14px;
+  padding: 10px 12px;
+  flex-shrink: 0;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+.chat-input-wrap:focus-within {
+  border-color: var(--p, #5a5fe0);
+  box-shadow: 0 0 0 3px rgba(90, 95, 224, 0.1);
+}
+
+.chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── BOTÓN DE MICRÓFONO ─────────────────────────────────── */
+.chat-voice-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--surface2, #f0f2fa);
+  border: 1.5px solid var(--border, #e4e8f5);
+  color: var(--t3, #8892b0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.chat-voice-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle,
+    rgba(90, 95, 224, 0.15) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.chat-voice-btn:hover {
+  background: var(--p-lt, #eeeffe);
+  border-color: var(--p, #5a5fe0);
+  color: var(--p, #5a5fe0);
+  transform: scale(1.08);
+}
+
+.chat-voice-btn:hover::before {
+  opacity: 1;
+}
+
+/* Estado activo — escuchando */
+.chat-voice-btn.voice-active {
+  background: linear-gradient(135deg, #ef4444, #f59e0b);
+  border-color: transparent;
+  color: #fff;
+  box-shadow:
+    0 0 0 4px rgba(239, 68, 68, 0.15),
+    0 4px 14px rgba(239, 68, 68, 0.35);
+  animation: micPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes micPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 4px rgba(239, 68, 68, 0.15),
+      0 4px 14px rgba(239, 68, 68, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(239, 68, 68, 0.08),
+      0 6px 20px rgba(239, 68, 68, 0.45);
+  }
+}
+
+/* ── BARRA DE ONDAS (cuando escucha) ───────────────────── */
+.voice-wave-bar {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 4px;
+  animation: waveIn 0.25s ease;
+}
+
+@keyframes waveIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vw-dots {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 28px;
+}
+
+.vw-dots span {
+  display: block;
+  width: 4px;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #ef4444, #f59e0b);
+  animation: waveBar 0.8s ease-in-out infinite alternate;
+  transition: height 0.12s ease;
+}
+
+.vw-dots span:nth-child(1) {
+  animation-delay: 0s;
+}
+.vw-dots span:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.vw-dots span:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.vw-dots span:nth-child(4) {
+  animation-delay: 0.24s;
+}
+.vw-dots span:nth-child(5) {
+  animation-delay: 0.32s;
+}
+.vw-dots span:nth-child(6) {
+  animation-delay: 0.24s;
+}
+.vw-dots span:nth-child(7) {
+  animation-delay: 0.16s;
+}
+.vw-dots span:nth-child(8) {
+  animation-delay: 0.08s;
+}
+.vw-dots span:nth-child(9) {
+  animation-delay: 0.04s;
+}
+.vw-dots span:nth-child(10) {
+  animation-delay: 0s;
+}
+
+@keyframes waveBar {
+  0% {
+    transform: scaleY(0.3);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scaleY(1.8);
+    opacity: 1;
+  }
+}
+
+.vw-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--t2, #3d4566);
+  flex: 1;
+  animation: labelPulse 2s ease-in-out infinite;
+}
+
+@keyframes labelPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.vw-cancel {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--surface2, #f0f2fa);
+  border: 1.5px solid var(--border, #e4e8f5);
+  color: var(--t3, #8892b0);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.vw-cancel:hover {
+  background: var(--red-lt, #fdeaea);
+  border-color: var(--red, #e84545);
+  color: var(--red, #e84545);
+}
+
+/* ── TRANSCRIPCIÓN EN TIEMPO REAL ──────────────────────── */
+.voice-transcript {
+  display: none;
+  font-size: 13px;
+  color: var(--t2, #3d4566);
+  background: rgba(90, 95, 224, 0.06);
+  border: 1px dashed rgba(90, 95, 224, 0.25);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-top: 4px;
+  font-style: italic;
+  line-height: 1.5;
+  animation: fadeIn 0.2s ease;
+  position: relative;
+}
+
+.voice-transcript::before {
+  content: "🎤";
+  margin-right: 6px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── AVATAR HABLANDO (síntesis) ─────────────────────────── */
+.tutor-avatar.avatar-speaking {
+  animation: avatarSpeak 0.4s ease-in-out infinite alternate;
+  box-shadow:
+    0 0 0 4px rgba(90, 95, 224, 0.2),
+    0 0 20px rgba(90, 95, 224, 0.3);
+}
+
+@keyframes avatarSpeak {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.06);
+  }
+}
+
+/* ── CONTROL DE VOZ POR MENSAJE ─────────────────────────── */
+.msg-voice-ctrl {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 4px;
+  padding-left: 2px;
+}
+
+.mvc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface2, #f0f2fa);
+  border: 1.5px solid var(--border, #e4e8f5);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--t3, #8892b0);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.mvc-btn:hover {
+  background: var(--p-lt, #eeeffe);
+  border-color: var(--p, #5a5fe0);
+  color: var(--p, #5a5fe0);
+}
+
+/* Cuando está reproduciendo */
+.mvc-btn.speaking {
+  background: linear-gradient(
+    135deg,
+    rgba(90, 95, 224, 0.1),
+    rgba(128, 86, 214, 0.1)
+  );
+  border-color: var(--p, #5a5fe0);
+  color: var(--p, #5a5fe0);
+  animation: speakBtnPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes speakBtnPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(90, 95, 224, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(90, 95, 224, 0.08);
+  }
+}
+
+/* Mostrar ícono correcto según estado */
+.mvc-btn .mvc-stop {
+  display: none;
+}
+.mvc-btn.speaking .mvc-play {
+  display: none;
+}
+.mvc-btn.speaking .mvc-stop {
+  display: block;
+}
+.mvc-btn.speaking .mvc-lbl {
+  content: "Detener";
+}
+
+/* ── INDICADOR GLOBAL (esquina superior) ──────────────────*/
+.voice-indicator {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  background: #0a0e1a;
+  border: 1.5px solid rgba(239, 68, 68, 0.4);
+  border-radius: 30px;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  animation: indicatorIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes indicatorIn {
+  from {
+    transform: translateX(-50%) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.vi-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: viDotPulse 1s ease-in-out infinite;
+}
+
+@keyframes viDotPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.7);
+  }
+}
+
+/* ── TOAST VARIANTES ──────────────────────────────────────*/
+.toast-info {
+  border-left: 4px solid var(--p, #5a5fe0) !important;
+}
+.toast-error {
+  border-left: 4px solid var(--red, #e84545) !important;
+}
+.toast-success {
+  border-left: 4px solid var(--grn, #0ea876) !important;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────*/
+@media (max-width: 600px) {
+  .chat-voice-btn {
+    width: 40px;
+    height: 40px;
+  }
+  .vw-dots span {
+    width: 3px;
+  }
+}

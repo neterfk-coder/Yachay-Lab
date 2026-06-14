@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crear cuenta — Yachay Lab</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(
+          135deg,
+          #0f1729 0%,
+          #1a2a50 55%,
+          #0d1e3a 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .bg {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .bg span {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(70px);
+        opacity: 0.15;
+      }
+      .bg .b1 {
+        width: 400px;
+        height: 400px;
+        background: #8b5cf6;
+        top: -100px;
+        right: -100px;
+      }
+      .bg .b2 {
+        width: 300px;
+        height: 300px;
+        background: #6366f1;
+        bottom: -80px;
+        left: -80px;
+      }
+      .bg .b3 {
+        width: 200px;
+        height: 200px;
+        background: #10b981;
+        top: 40%;
+        left: 55%;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 36px 42px;
+        width: 100%;
+        max-width: 420px;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+        animation: fadeUp 0.4s ease;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+      }
+
+      .logo {
+        text-align: center;
+        font-size: 40px;
+        margin-bottom: 6px;
+      }
+      h1 {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 800;
+        color: #0f1729;
+        margin-bottom: 4px;
+      }
+      h1 em {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-style: normal;
+      }
+      .sub {
+        text-align: center;
+        font-size: 13px;
+        color: #94a3b8;
+        margin-bottom: 24px;
+      }
+
+      .field {
+        margin-bottom: 14px;
+      }
+      .field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 5px;
+      }
+      .field input {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1.5px solid #e2e8f4;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #0f1729;
+        outline: none;
+        transition: 0.2s;
+        font-family: inherit;
+      }
+      .field input:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+      }
+      .field input.ok {
+        border-color: #10b981;
+      }
+      .field input.bad {
+        border-color: #ef4444;
+      }
+
+      /* Indicador fortaleza contraseña */
+      .strength-bar {
+        display: flex;
+        gap: 4px;
+        margin-top: 6px;
+      }
+      .strength-bar div {
+        flex: 1;
+        height: 4px;
+        border-radius: 4px;
+        background: #e2e8f4;
+        transition: 0.3s;
+      }
+      .strength-label {
+        font-size: 11px;
+        color: #94a3b8;
+        margin-top: 4px;
+      }
+
+      .err {
+        font-size: 12px;
+        color: #ef4444;
+        font-weight: 500;
+        margin-bottom: 10px;
+        min-height: 16px;
+      }
+
+      .btn-main {
+        width: 100%;
+        padding: 13px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff;
+        border: none;
+        border-radius: 11px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+        transition: 0.2s;
+        margin-bottom: 6px;
+      }
+      .btn-main:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 22px rgba(99, 102, 241, 0.5);
+      }
+
+      .terms {
+        font-size: 11.5px;
+        color: #94a3b8;
+        text-align: center;
+        margin-bottom: 14px;
+      }
+      .terms a {
+        color: #6366f1;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .footer-link {
+        text-align: center;
+        font-size: 13px;
+        color: #94a3b8;
+        margin-top: 18px;
+      }
+      .footer-link a {
+        color: #6366f1;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .footer-link a:hover {
+        text-decoration: underline;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        background: #0f1729;
+        color: #fff;
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        animation: slideIn 0.3s ease;
+        display: none;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateX(20px);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg">
+      <span class="b1"></span><span class="b2"></span><span class="b3"></span>
+    </div>
+
+    <div class="card">
+      <div class="logo">⚗️</div>
+      <h1>Únete a <em>Yachay</em></h1>
+      <p class="sub">Crea tu cuenta gratis y empieza a aprender</p>
+
+      <div class="field">
+        <label>Nombre completo</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Tu nombre completo"
+          autocomplete="name"
+        />
+      </div>
+
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="tucorreo@gmail.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="field">
+        <label>Contraseña</label>
+        <input
+          type="password"
+          id="pass"
+          placeholder="Mínimo 6 caracteres"
+          autocomplete="new-password"
+          oninput="checkStrength(this.value)"
+        />
+        <div class="strength-bar">
+          <div id="sb1"></div>
+          <div id="sb2"></div>
+          <div id="sb3"></div>
+          <div id="sb4"></div>
+        </div>
+        <div class="strength-label" id="slabel"></div>
+      </div>
+
+      <div class="field">
+        <label>Confirmar contraseña</label>
+        <input
+          type="password"
+          id="pass2"
+          placeholder="Repite tu contraseña"
+          autocomplete="new-password"
+          onkeydown="if (event.key === 'Enter') doRegister();"
+        />
+      </div>
+
+      <div class="err" id="err"></div>
+
+      <p class="terms">
+        Al registrarte aceptas nuestros
+        <a href="#">Términos de uso</a> y
+        <a href="#">Política de privacidad</a>
+      </p>
+
+      <button class="btn-main" onclick="doRegister()">
+        Crear cuenta gratis
+      </button>
+
+      <div class="footer-link">
+        ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      const DB = "yl_users",
+        SES = "yl_session";
+      const getUsers = () => {
+        try {
+          return JSON.parse(localStorage.getItem(DB)) || {};
+        } catch {
+          return {};
+        }
+      };
+
+      function checkStrength(p) {
+        const bars = [1, 2, 3, 4].map((i) => document.getElementById("sb" + i));
+        const label = document.getElementById("slabel");
+        const colors = ["#EF4444", "#F59E0B", "#3B82F6", "#10B981"];
+        const labels = ["Muy débil", "Débil", "Buena", "Fuerte"];
+        let score = 0;
+        if (p.length >= 6) score++;
+        if (p.length >= 10) score++;
+        if (/[A-Z]/.test(p) || /[0-9]/.test(p)) score++;
+        if (/[^a-zA-Z0-9]/.test(p)) score++;
+        bars.forEach((b, i) => {
+          b.style.background = i < score ? colors[score - 1] : "#E2E8F4";
+        });
+        label.textContent = p.length > 0 ? labels[Math.max(score - 1, 0)] : "";
+        label.style.color =
+          p.length > 0 ? colors[Math.max(score - 1, 0)] : "#94A3B8";
+      }
+
+      function doRegister() {
+        const name = document.getElementById("name").value.trim();
+        const email = document
+          .getElementById("email")
+          .value.trim()
+          .toLowerCase();
+        const pass = document.getElementById("pass").value;
+        const pass2 = document.getElementById("pass2").value;
+        const err = document.getElementById("err");
+        err.textContent = "";
+
+        if (!name || !email || !pass || !pass2) {
+          err.textContent = "Por favor completa todos los campos.";
+          return;
+        }
+        if (!email.includes("@")) {
+          err.textContent = "Ingresa un correo válido.";
+          return;
+        }
+        if (pass.length < 6) {
+          err.textContent = "La contraseña debe tener mínimo 6 caracteres.";
+          return;
+        }
+        if (pass !== pass2) {
+          err.textContent = "Las contraseñas no coinciden.";
+          return;
+        }
+
+        const users = getUsers();
+        if (users[email]) {
+          err.textContent = "Ese correo ya está registrado.";
+          return;
+        }
+
+        users[email] = {
+          name,
+          pass: btoa(pass),
+          createdAt: new Date().toISOString(),
+        };
+        localStorage.setItem(DB, JSON.stringify(users));
+        localStorage.setItem(
+          SES,
+          JSON.stringify({ email, name, guest: false }),
+        );
+
+        showToast("🎉 ¡Cuenta creada! Bienvenido/a, " + name);
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 1000);
+      }
+
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.style.display = "block";
+        setTimeout(() => {
+          t.style.display = "none";
+        }, 2800);
+      }
+
+      // Si ya hay sesión, redirigir
+      try {
+        if (JSON.parse(localStorage.getItem(SES)))
+          window.location.href = "../index.html";
+      } catch {}
+    </script>
+  </body>
+</html>

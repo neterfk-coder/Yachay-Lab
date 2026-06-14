@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iniciar sesión — Yachay Lab</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        min-height: 100vh;
+        background: linear-gradient(
+          135deg,
+          #0f1729 0%,
+          #1a2a50 55%,
+          #0d1e3a 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      /* Formas de fondo */
+      .bg {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .bg span {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(70px);
+        opacity: 0.15;
+      }
+      .bg .b1 {
+        width: 420px;
+        height: 420px;
+        background: #6366f1;
+        top: -120px;
+        left: -120px;
+      }
+      .bg .b2 {
+        width: 320px;
+        height: 320px;
+        background: #8b5cf6;
+        bottom: -100px;
+        right: -100px;
+      }
+      .bg .b3 {
+        width: 220px;
+        height: 220px;
+        background: #3b82f6;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 20px;
+        padding: 40px 42px;
+        width: 100%;
+        max-width: 400px;
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+        animation: fadeUp 0.4s ease;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+      }
+
+      .logo {
+        text-align: center;
+        font-size: 44px;
+        margin-bottom: 8px;
+      }
+      h1 {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 800;
+        color: #0f1729;
+        letter-spacing: -0.5px;
+        margin-bottom: 4px;
+      }
+      h1 em {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-style: normal;
+      }
+      .sub {
+        text-align: center;
+        font-size: 13px;
+        color: #94a3b8;
+        margin-bottom: 28px;
+      }
+
+      .field {
+        margin-bottom: 16px;
+      }
+      .field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 5px;
+      }
+      .field input {
+        width: 100%;
+        padding: 11px 14px;
+        border: 1.5px solid #e2e8f4;
+        border-radius: 10px;
+        font-size: 14px;
+        color: #0f1729;
+        outline: none;
+        transition: 0.2s;
+        font-family: inherit;
+      }
+      .field input:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+      }
+
+      .field-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .field-row label {
+        margin-bottom: 0;
+      }
+      .forgot-link {
+        font-size: 12px;
+        color: #6366f1;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.15s;
+      }
+      .forgot-link:hover {
+        color: #4f46e5;
+        text-decoration: underline;
+      }
+
+      .err {
+        font-size: 12px;
+        color: #ef4444;
+        font-weight: 500;
+        margin-bottom: 12px;
+        min-height: 16px;
+      }
+
+      .btn-main {
+        width: 100%;
+        padding: 13px;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff;
+        border: none;
+        border-radius: 11px;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+        transition: 0.2s;
+        margin-bottom: 6px;
+      }
+      .btn-main:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 22px rgba(99, 102, 241, 0.5);
+      }
+      .btn-main:active {
+        transform: translateY(0);
+      }
+
+      .divider {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 12px;
+        margin: 18px 0;
+        position: relative;
+      }
+      .divider::before,
+      .divider::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 38%;
+        height: 1px;
+        background: #e2e8f4;
+      }
+      .divider::before {
+        left: 0;
+      }
+      .divider::after {
+        right: 0;
+      }
+
+      .btn-guest {
+        width: 100%;
+        padding: 12px;
+        background: #f8faff;
+        border: 1.5px solid #e2e8f4;
+        border-radius: 11px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #475569;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn-guest:hover {
+        border-color: #6366f1;
+        color: #6366f1;
+        background: #eef2ff;
+      }
+
+      .footer-link {
+        text-align: center;
+        margin-top: 22px;
+        font-size: 13px;
+        color: #94a3b8;
+      }
+      .footer-link a {
+        color: #6366f1;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .footer-link a:hover {
+        text-decoration: underline;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        background: #0f1729;
+        color: #fff;
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        animation: slideIn 0.3s ease;
+        display: none;
+      }
+      @keyframes slideIn {
+        from {
+          transform: translateX(20px);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg">
+      <span class="b1"></span>
+      <span class="b2"></span>
+      <span class="b3"></span>
+    </div>
+
+    <div class="card">
+      <div class="logo">⚗️</div>
+      <h1>Yachay <em>Lab</em></h1>
+      <p class="sub">Bienvenido de vuelta — ingresa a tu cuenta</p>
+
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="tucorreo@gmail.com"
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="field">
+        <div class="field-row">
+          <label>Contraseña</label>
+          <a href="forgot-password.html" class="forgot-link"
+            >¿Olvidaste tu contraseña?</a
+          >
+        </div>
+        <input
+          type="password"
+          id="pass"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          onkeydown="if (event.key === 'Enter') doLogin();"
+        />
+      </div>
+
+      <div class="err" id="err"></div>
+
+      <button class="btn-main" onclick="doLogin()">Iniciar sesión</button>
+
+      <div class="divider">o continúa sin cuenta</div>
+
+      <button class="btn-guest" onclick="enterGuest()">
+        👤 Entrar como invitado
+      </button>
+
+      <div class="footer-link">
+        ¿No tienes cuenta? <a href="register.html">Regístrate gratis</a>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      const DB = "yl_users",
+        SES = "yl_session";
+      const getUsers = () => {
+        try {
+          return JSON.parse(localStorage.getItem(DB)) || {};
+        } catch {
+          return {};
+        }
+      };
+
+      function doLogin() {
+        const email = document
+          .getElementById("email")
+          .value.trim()
+          .toLowerCase();
+        const pass = document.getElementById("pass").value;
+        const err = document.getElementById("err");
+        err.textContent = "";
+
+        if (!email || !pass) {
+          err.textContent = "Por favor completa todos los campos.";
+          return;
+        }
+        if (!email.includes("@")) {
+          err.textContent = "Ingresa un correo válido.";
+          return;
+        }
+
+        const users = getUsers();
+        if (!users[email] || users[email].pass !== btoa(pass)) {
+          err.textContent = "Correo o contraseña incorrectos.";
+          return;
+        }
+
+        localStorage.setItem(
+          SES,
+          JSON.stringify({ email, name: users[email].name, guest: false }),
+        );
+        showToast("✓ ¡Bienvenido, " + users[email].name + "!");
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 900);
+      }
+
+      function enterGuest() {
+        localStorage.setItem(
+          SES,
+          JSON.stringify({ email: "", name: "Invitado", guest: true }),
+        );
+        showToast("👤 Entrando como invitado...");
+        setTimeout(() => {
+          window.location.href = "../index.html";
+        }, 900);
+      }
+
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.style.display = "block";
+        setTimeout(() => {
+          t.style.display = "none";
+        }, 2500);
+      }
+
+      // Si ya hay sesión activa, redirigir directo
+      try {
+        if (JSON.parse(localStorage.getItem(SES))) {
+          window.location.href = "../index.html";
+        }
+      } catch {}
+    </script>
+  </body>
+</html>

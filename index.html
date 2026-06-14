@@ -1,0 +1,1549 @@
+<!doctype html>
+<html lang="es" id="html-root">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yachay Lab — Laboratorio STEM con IA</title>
+    <meta
+      name="description"
+      content="Laboratorio virtual STEM con Inteligencia Artificial. 15 simuladores interactivos de física y química para estudiantes latinoamericanos."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="streak.css" />
+    <link rel="stylesheet" href="voice.css" />
+    <link rel="stylesheet" href="rankings.css" />
+    <link rel="stylesheet" href="events.css" />
+    <link rel="stylesheet" href="ranking.css" />
+  </head>
+  <body>
+    <!-- ══ PANTALLA AUTH ══ -->
+    <div id="auth-screen">
+      <div class="auth-bg">
+        <div class="ab ab1"></div>
+        <div class="ab ab2"></div>
+        <div class="ab ab3"></div>
+        <div class="auth-particles" id="auth-particles"></div>
+      </div>
+      <div class="auth-split">
+        <!-- Lado izquierdo — presentación -->
+        <div class="auth-left">
+          <div class="al-logo">⚗️ <span>Yachay Lab</span></div>
+          <h2 class="al-headline">
+            El laboratorio que<br /><em>ninguna escuela rural</em><br />puede
+            costear.
+          </h2>
+          <p class="al-desc">
+            15 simuladores interactivos de física y química, tutor socrático con
+            IA y práctica adaptativa — completamente gratis.
+          </p>
+          <div class="al-stats">
+            <div class="al-stat">
+              <strong>15</strong><span>Simuladores</span>
+            </div>
+            <div class="al-stat"><strong>2</strong><span>Áreas STEM</span></div>
+            <div class="al-stat">
+              <strong>IA</strong><span>Tutor Socrático</span>
+            </div>
+            <div class="al-stat"><strong>0$</strong><span>Costo</span></div>
+          </div>
+          <div class="al-features">
+            <div class="al-feat">✓ Funciona sin laboratorio físico</div>
+            <div class="al-feat">✓ Disponible en español e inglés</div>
+            <div class="al-feat">✓ Sin anuncios, sin costo</div>
+          </div>
+        </div>
+        <!-- Lado derecho — formulario -->
+        <div class="auth-right">
+          <div class="auth-card">
+            <div class="ac-header">
+              <h1 class="ac-title">Yachay <em>Lab</em></h1>
+              <p class="ac-sub" data-i18n="login.sub">
+                Laboratorio virtual STEM con IA
+              </p>
+            </div>
+            <div class="ac-tabs">
+              <button
+                class="ac-tab active"
+                id="tab-login"
+                onclick="switchTab('login')"
+                data-i18n="login.tab"
+              >
+                Iniciar sesión
+              </button>
+              <button
+                class="ac-tab"
+                id="tab-register"
+                onclick="switchTab('register')"
+                data-i18n="register.tab"
+              >
+                Registrarse
+              </button>
+            </div>
+            <div id="form-login">
+              <div class="field">
+                <label data-i18n="login.email">Correo electrónico</label>
+                <input
+                  type="email"
+                  id="l-email"
+                  placeholder="tucorreo@gmail.com"
+                  autocomplete="email"
+                />
+              </div>
+              <div class="field">
+                <div class="field-top">
+                  <label data-i18n="login.pass">Contraseña</label>
+                  <a
+                    href="auth/forgot-password.html"
+                    class="forgot-link"
+                    data-i18n="login.forgot"
+                    >¿Olvidaste tu contraseña?</a
+                  >
+                </div>
+                <input
+                  type="password"
+                  id="l-pass"
+                  placeholder="••••••••"
+                  autocomplete="current-password"
+                  onkeydown="if (event.key === 'Enter') doLogin();"
+                />
+              </div>
+              <div class="auth-err" id="login-err"></div>
+              <button
+                class="btn-auth"
+                onclick="doLogin()"
+                data-i18n="login.btn"
+              >
+                Iniciar sesión
+              </button>
+            </div>
+            <div id="form-register" style="display: none">
+              <div class="field">
+                <label data-i18n="reg.name">Nombre completo</label>
+                <input
+                  type="text"
+                  id="r-name"
+                  placeholder="Tu nombre"
+                  autocomplete="name"
+                />
+              </div>
+              <div class="field">
+                <label data-i18n="reg.email">Correo electrónico</label>
+                <input
+                  type="email"
+                  id="r-email"
+                  placeholder="tucorreo@gmail.com"
+                  autocomplete="email"
+                />
+              </div>
+              <div class="field">
+                <label data-i18n="reg.pass">Contraseña</label>
+                <input
+                  type="password"
+                  id="r-pass"
+                  placeholder="Mínimo 6 caracteres"
+                  oninput="strengthMeter(this.value)"
+                />
+                <div class="strength-wrap">
+                  <div class="strength-bar">
+                    <div id="sb1"></div>
+                    <div id="sb2"></div>
+                    <div id="sb3"></div>
+                    <div id="sb4"></div>
+                  </div>
+                  <span id="slabel" class="strength-lbl"></span>
+                </div>
+              </div>
+              <div class="field">
+                <label data-i18n="reg.pass2">Confirmar contraseña</label>
+                <input
+                  type="password"
+                  id="r-pass2"
+                  placeholder="Repite tu contraseña"
+                  onkeydown="if (event.key === 'Enter') doRegister();"
+                />
+              </div>
+              <div class="auth-err" id="reg-err"></div>
+              <button
+                class="btn-auth"
+                onclick="doRegister()"
+                data-i18n="reg.btn"
+              >
+                Crear cuenta gratis
+              </button>
+            </div>
+            <div class="auth-divider">
+              <span data-i18n="login.or">o continúa sin cuenta</span>
+            </div>
+            <button class="btn-guest" onclick="enterGuest()">
+              <span class="bg-ico">🌍</span>
+              <span data-i18n="login.guest">Entrar como invitado</span>
+              <span class="bg-arrow">→</span>
+            </button>
+            <div class="auth-lang">
+              <button
+                onclick="setLang('es')"
+                id="alang-es"
+                class="alang active"
+              >
+                🇵🇪 ES
+              </button>
+              <button onclick="setLang('en')" id="alang-en" class="alang">
+                🇺🇸 EN
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ APP PRINCIPAL ══ -->
+    <div id="app" style="display: none">
+      <!-- SIDEBAR -->
+      <aside id="sidebar">
+        <div class="sb-brand">
+          <div class="sb-brand-icon">⚗️</div>
+          <div class="sb-brand-text">
+            <span class="sb-name">Yachay Lab</span>
+            <span class="sb-tagline">STEM · IA · Gratis</span>
+          </div>
+        </div>
+        <nav id="sb-nav">
+          <div class="nav-section">
+            <div class="nav-label" data-i18n="nav.general">General</div>
+            <button onclick="go('home')" class="nav-btn active" id="nb-home">
+              <span class="ni">🏠</span><span data-i18n="nav.home">Inicio</span>
+            </button>
+            <button onclick="go('tutor')" class="nav-btn" id="nb-tutor">
+              <span class="ni">🤖</span
+              ><span data-i18n="nav.tutor">Tutor IA</span
+              ><span class="nav-pill">IA</span>
+            </button>
+            <button onclick="go('practica')" class="nav-btn" id="nb-practica">
+              <span class="ni">🎯</span
+              ><span data-i18n="nav.practice">Práctica</span>
+            </button>
+            <button onclick="go('ranking')" class="nav-btn" id="nb-ranking">
+              <span class="ni">🏆</span><span>Ranking</span
+              ><span class="nav-pill new-pill">LIVE</span>
+            </button>
+            <button onclick="go('logros')" class="nav-btn" id="nb-logros">
+              <span class="ni">🎖️</span><span>Logros</span>
+            </button>
+            <button onclick="go('perfil')" class="nav-btn" id="nb-perfil">
+              <span class="ni">👤</span
+              ><span data-i18n="nav.profile">Mi Perfil</span>
+            </button>
+          </div>
+          <div class="nav-section">
+            <div class="nav-label" data-i18n="nav.physics">Física</div>
+            <button onclick="openSim('mru')" class="nav-btn" id="nb-mru">
+              <span class="ni">➡️</span>MRU
+            </button>
+            <button onclick="openSim('mrua')" class="nav-btn" id="nb-mrua">
+              <span class="ni">🚀</span>MRUA
+            </button>
+            <button onclick="openSim('caida')" class="nav-btn" id="nb-caida">
+              <span class="ni">🍎</span
+              ><span data-i18n="sim.caida">Caída Libre</span>
+            </button>
+            <button onclick="openSim('tiro')" class="nav-btn" id="nb-tiro">
+              <span class="ni">🎯</span
+              ><span data-i18n="sim.tiro">Tiro Parabólico</span>
+            </button>
+            <button
+              onclick="openSim('pendulo')"
+              class="nav-btn"
+              id="nb-pendulo"
+            >
+              <span class="ni">⏱️</span
+              ><span data-i18n="sim.pendulo">Péndulo</span>
+            </button>
+            <button onclick="openSim('hooke')" class="nav-btn" id="nb-hooke">
+              <span class="ni">🔧</span>Ley de Hooke
+            </button>
+            <button onclick="openSim('ondas')" class="nav-btn" id="nb-ondas">
+              <span class="ni">〰️</span><span data-i18n="sim.ondas">Ondas</span>
+            </button>
+            <button onclick="openSim('ohm')" class="nav-btn" id="nb-ohm">
+              <span class="ni">⚡</span
+              ><span data-i18n="sim.ohm">Ley de Ohm</span>
+            </button>
+            <button onclick="openSim('optica')" class="nav-btn" id="nb-optica">
+              <span class="ni">🔭</span
+              ><span data-i18n="sim.optica">Óptica</span>
+            </button>
+            <button
+              onclick="openSim('energia')"
+              class="nav-btn"
+              id="nb-energia"
+            >
+              <span class="ni">⚡</span
+              ><span data-i18n="sim.energia">Energía</span>
+            </button>
+          </div>
+          <div class="nav-section">
+            <div class="nav-label" data-i18n="nav.chemistry">Química</div>
+            <button onclick="openSim('ph')" class="nav-btn" id="nb-ph">
+              <span class="ni">🧪</span>pH y Ácido-Base
+            </button>
+            <button onclick="openSim('gases')" class="nav-btn" id="nb-gases">
+              <span class="ni">💨</span
+              ><span data-i18n="sim.gases">Gases Ideales</span>
+            </button>
+            <button
+              onclick="openSim('reacciones')"
+              class="nav-btn"
+              id="nb-reacciones"
+            >
+              <span class="ni">⚗️</span
+              ><span data-i18n="sim.reacciones">Reacciones</span>
+            </button>
+            <button
+              onclick="openSim('titulacion')"
+              class="nav-btn"
+              id="nb-titulacion"
+            >
+              <span class="ni">🧫</span
+              ><span data-i18n="sim.titulacion">Titulación</span>
+            </button>
+            <button onclick="openSim('tabla')" class="nav-btn" id="nb-tabla">
+              <span class="ni">📋</span
+              ><span data-i18n="sim.tabla">Tabla Periódica</span>
+            </button>
+          </div>
+        </nav>
+        <div class="sb-usercard" onclick="go('perfil')">
+          <div class="sb-avatar" id="sb-avatar">👤</div>
+          <div class="sb-userinfo">
+            <span id="sb-username">Invitado</span>
+            <small id="sb-useremail">—</small>
+          </div>
+          <button
+            class="sb-logout"
+            onclick="
+              event.stopPropagation();
+              doLogout();
+            "
+            title="Cerrar sesión"
+          >
+            ⏻
+          </button>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main id="main">
+        <header id="topbar">
+          <button id="menu-btn" onclick="toggleSidebar()">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path
+                d="M2 4h14M2 9h14M2 14h14"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+          <div class="tb-breadcrumb">
+            <span class="tb-brand">Yachay Lab</span>
+            <span class="tb-sep">/</span>
+            <span id="page-title">Inicio</span>
+          </div>
+          <div class="tb-right">
+            <button class="lang-toggle" onclick="toggleLang()">
+              <span id="lang-flag">🇺🇸</span><span id="lang-lbl">EN</span>
+            </button>
+            <button class="tb-user" onclick="go('perfil')">
+              <span id="tb-avatar">👤</span>
+              <span id="tb-name">Invitado</span>
+            </button>
+          </div>
+        </header>
+
+        <div id="content">
+          <!-- ══ HOME ══ -->
+          <div class="view active" id="view-home">
+            <!-- HERO PRINCIPAL -->
+            <section class="home-hero">
+              <canvas id="hero-canvas"></canvas>
+              <div class="hh-content">
+                <div class="hh-chip">
+                  🏆 DSH Hacks V1 &nbsp;·&nbsp; IA + Educación STEM
+                  &nbsp;·&nbsp; Amazonía Peruana
+                </div>
+                <h1 class="hh-title">
+                  El laboratorio que<br /><em>transforma</em> el aprendizaje
+                  STEM
+                </h1>
+                <p class="hh-desc">
+                  Millones de estudiantes latinoamericanos nunca acceden a un
+                  laboratorio real. Yachay Lab lo cambia — simuladores
+                  interactivos con IA, disponibles en cualquier dispositivo,
+                  completamente gratis.
+                </p>
+                <div class="hh-btns">
+                  <button class="hb-primary" onclick="openSim('tiro')">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M3 8a5 5 0 1 0 10 0A5 5 0 0 0 3 8zm5-1.5L11 8l-3 1.5V6.5z"
+                      />
+                    </svg>
+                    Explorar simuladores
+                  </button>
+                  <button class="hb-secondary" onclick="go('tutor')">
+                    🤖 Hablar con Yachay IA
+                  </button>
+                  <button
+                    class="hb-secondary"
+                    onclick="Ranking.openRanking()"
+                    style="
+                      background: rgba(245, 158, 11, 0.15);
+                      border-color: rgba(245, 158, 11, 0.3);
+                      color: #fbd38d;
+                    "
+                  >
+                    🏆 Ver Ranking
+                  </button>
+                </div>
+              </div>
+              <div class="hh-metrics">
+                <div class="hm-item">
+                  <div class="hm-num">15</div>
+                  <div class="hm-lbl">Simuladores</div>
+                </div>
+                <div class="hm-div"></div>
+                <div class="hm-item">
+                  <div class="hm-num">2</div>
+                  <div class="hm-lbl">Áreas STEM</div>
+                </div>
+                <div class="hm-div"></div>
+                <div class="hm-item">
+                  <div class="hm-num">IA</div>
+                  <div class="hm-lbl">Tutor socrático</div>
+                </div>
+                <div class="hm-div"></div>
+                <div class="hm-item">
+                  <div class="hm-num">100%</div>
+                  <div class="hm-lbl">Gratuito</div>
+                </div>
+              </div>
+            </section>
+
+            <!-- ══ BANNERS + MISIONES DIARIAS ══ -->
+            <div id="events-zone" class="events-zone">
+              <!-- BANNER 1 — Reto de temporada -->
+              <div class="ev-banner banner-season" id="banner-season">
+                <div class="evb-bg-shapes">
+                  <div class="evb-shape s1"></div>
+                  <div class="evb-shape s2"></div>
+                </div>
+                <div class="evb-left">
+                  <div class="evb-badge" id="season-badge">
+                    🏆 RETO DE JUNIO
+                  </div>
+                  <h3 class="evb-title" id="season-title">
+                    Domina la Física Clásica
+                  </h3>
+                  <p class="evb-desc" id="season-desc">
+                    Completa 5 simuladores de física y gana el badge exclusivo
+                    del mes
+                  </p>
+                  <div class="evb-progress-wrap">
+                    <div class="evb-progress-bar">
+                      <div class="evb-progress-fill" id="season-fill"></div>
+                    </div>
+                    <span class="evb-progress-txt" id="season-txt"
+                      >0 / 5 completados</span
+                    >
+                  </div>
+                  <div class="evb-actions">
+                    <button class="evb-btn-pri" onclick="Events.startSeason()">
+                      ▶ Empezar reto
+                    </button>
+                    <div class="evb-timer" id="season-timer">
+                      ⏳ Termina en —
+                    </div>
+                  </div>
+                </div>
+                <div class="evb-reward">
+                  <div class="evb-reward-ico" id="season-ico">🔬</div>
+                  <div class="evb-reward-label">Recompensa</div>
+                  <div class="evb-reward-xp">+500 XP</div>
+                  <div class="evb-reward-badge">🏅 Badge exclusivo</div>
+                </div>
+              </div>
+
+              <!-- BANNER 2 — Evento / Noticia -->
+              <div class="ev-banner banner-news" id="banner-news">
+                <div class="evb-news-ico" id="news-ico">🌟</div>
+                <div class="evb-news-body">
+                  <div class="evb-news-tag" id="news-tag">NUEVO</div>
+                  <div class="evb-news-title" id="news-title">
+                    Reconocimiento de voz disponible
+                  </div>
+                  <div class="evb-news-desc" id="news-desc">
+                    Habla con Yachay IA sin escribir — prueba el micrófono ahora
+                  </div>
+                </div>
+                <button
+                  class="evb-news-cta"
+                  id="news-cta"
+                  onclick="Events.newsCta()"
+                >
+                  Probar →
+                </button>
+                <button
+                  class="evb-news-close"
+                  onclick="Events.dismissNews()"
+                  title="Cerrar"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <!-- MISIONES DIARIAS -->
+              <div class="daily-missions" id="daily-missions">
+                <div class="dm-header">
+                  <div class="dm-header-left">
+                    <div class="dm-title">⚡ Misiones de hoy</div>
+                    <div class="dm-date" id="dm-date"></div>
+                  </div>
+                  <div class="dm-header-right">
+                    <div class="dm-xp-today">
+                      <span class="dm-xp-num" id="dm-xp-earned">0</span>
+                      <span class="dm-xp-lbl"
+                        >/ <span id="dm-xp-total">0</span> XP disponibles
+                        hoy</span
+                      >
+                    </div>
+                    <div class="dm-streak-mini">
+                      🔥 <span id="dm-streak">0</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="dm-grid" id="dm-grid">
+                  <!-- Se genera con JS -->
+                </div>
+                <div class="dm-footer">
+                  <div class="dm-refresh-info" id="dm-refresh-info">
+                    Se renuevan en <span id="dm-countdown">—</span>
+                  </div>
+                  <button class="dm-see-all" onclick="go('logros')">
+                    Ver todos los logros →
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- /events-zone -->
+
+            <!-- PROBLEMA QUE RESUELVE -->
+            <section class="home-problem">
+              <div class="prob-text">
+                <div class="section-chip">🎯 El problema</div>
+                <h2>¿Por qué Yachay Lab existe?</h2>
+                <p>
+                  En el Perú y América Latina, más del
+                  <strong>70% de escuelas rurales</strong> no tienen laboratorio
+                  de ciencias. Los estudiantes memorizan fórmulas sin entender
+                  el fenómeno real detrás.
+                </p>
+                <p>
+                  Yachay Lab convierte cualquier dispositivo con navegador en un
+                  laboratorio completo — con física animada en tiempo real,
+                  química interactiva y un tutor de IA que guía sin dar
+                  respuestas.
+                </p>
+              </div>
+              <div class="prob-cards">
+                <div class="pc-item">
+                  <div class="pci-ico">🏫</div>
+                  <strong>Sin laboratorio físico</strong
+                  ><span>Yachay Lab lo reemplaza digitalmente</span>
+                </div>
+                <div class="pc-item">
+                  <div class="pci-ico">💸</div>
+                  <strong>Sin presupuesto</strong
+                  ><span>100% gratis, sin anuncios, sin límites</span>
+                </div>
+                <div class="pc-item">
+                  <div class="pci-ico">📡</div>
+                  <strong>Conectividad limitada</strong
+                  ><span>Funciona offline con fallback local</span>
+                </div>
+                <div class="pc-item">
+                  <div class="pci-ico">🌐</div>
+                  <strong>Barrera del idioma</strong
+                  ><span>Interfaz en español e inglés</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- SIMULADORES DESTACADOS -->
+            <section class="home-sims">
+              <div class="section-header">
+                <div class="section-chip">⚡ Laboratorio</div>
+                <h2>Simuladores interactivos</h2>
+                <p>Ingresa tus datos y observa el fenómeno en tiempo real</p>
+              </div>
+              <div class="sim-grid">
+                <div class="sg-card featured" onclick="openSim('tiro')">
+                  <div
+                    class="sgc-top"
+                    style="
+                      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                    "
+                  >
+                    <span class="sgc-ico">🎯</span>
+                    <span class="sgc-badge">Física</span>
+                  </div>
+                  <div class="sgc-body">
+                    <h3>Tiro Parabólico</h3>
+                    <p>
+                      Lanza proyectiles, ajusta ángulo y velocidad. Visualiza la
+                      parábola en tiempo real.
+                    </p>
+                    <div class="sgc-formula">
+                      x = v₀cos(θ)·t &nbsp;|&nbsp; y = v₀sin(θ)·t − ½gt²
+                    </div>
+                  </div>
+                </div>
+                <div class="sg-card" onclick="openSim('pendulo')">
+                  <div
+                    class="sgc-top"
+                    style="
+                      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+                    "
+                  >
+                    <span class="sgc-ico">⏱️</span
+                    ><span class="sgc-badge">Física</span>
+                  </div>
+                  <div class="sgc-body">
+                    <h3>Péndulo Simple</h3>
+                    <p>
+                      Mide el período real y compara con T = 2π√(L/g). Cambia
+                      gravedad entre planetas.
+                    </p>
+                  </div>
+                </div>
+                <div class="sg-card" onclick="openSim('ph')">
+                  <div
+                    class="sgc-top"
+                    style="
+                      background: linear-gradient(135deg, #10b981, #0ea5e9);
+                    "
+                  >
+                    <span class="sgc-ico">🧪</span
+                    ><span class="sgc-badge">Química</span>
+                  </div>
+                  <div class="sgc-body">
+                    <h3>pH y Ácido-Base</h3>
+                    <p>
+                      Escala de pH visual con colores reales. Observa cómo
+                      cambian los iones H⁺ y OH⁻.
+                    </p>
+                  </div>
+                </div>
+                <div class="sg-card" onclick="openSim('gases')">
+                  <div
+                    class="sgc-top"
+                    style="
+                      background: linear-gradient(135deg, #f59e0b, #ef4444);
+                    "
+                  >
+                    <span class="sgc-ico">💨</span
+                    ><span class="sgc-badge">Química</span>
+                  </div>
+                  <div class="sgc-body">
+                    <h3>Gases Ideales</h3>
+                    <p>
+                      PV = nRT con partículas animadas. Ajusta presión, volumen
+                      y temperatura.
+                    </p>
+                  </div>
+                </div>
+                <div class="sg-card" onclick="openSim('caida')">
+                  <div
+                    class="sgc-top"
+                    style="
+                      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+                    "
+                  >
+                    <span class="sgc-ico">🍎</span
+                    ><span class="sgc-badge">Física</span>
+                  </div>
+                  <div class="sgc-body">
+                    <h3>Caída Libre</h3>
+                    <p>
+                      Simula caída en Tierra, Luna, Marte y Júpiter. Observa la
+                      diferencia de gravedad.
+                    </p>
+                  </div>
+                </div>
+                <div class="sg-card see-all" onclick="openSim('ohm')">
+                  <div
+                    class="sgc-top"
+                    style="
+                      background: linear-gradient(135deg, #14b8a6, #6366f1);
+                    "
+                  >
+                    <span class="sgc-ico">⚡</span
+                    ><span class="sgc-badge">Física</span>
+                  </div>
+                  <div class="sgc-body">
+                    <h3>Ley de Ohm</h3>
+                    <p>
+                      Circuito DC con electrones animados. Ajusta voltaje y
+                      resistencia en tiempo real.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="sim-grid-more">
+                <button class="btn-outline" onclick="openSim('hooke')">
+                  🔧 Hooke
+                </button>
+                <button class="btn-outline" onclick="openSim('ondas')">
+                  〰️ Ondas
+                </button>
+                <button class="btn-outline" onclick="openSim('optica')">
+                  🔭 Óptica
+                </button>
+                <button class="btn-outline" onclick="openSim('energia')">
+                  ⚡ Energía
+                </button>
+                <button class="btn-outline" onclick="openSim('reacciones')">
+                  ⚗️ Reacciones
+                </button>
+                <button class="btn-outline" onclick="openSim('titulacion')">
+                  🧫 Titulación
+                </button>
+                <button class="btn-outline" onclick="openSim('tabla')">
+                  📋 Tabla Periódica
+                </button>
+                <button class="btn-outline" onclick="openSim('mrua')">
+                  🚀 MRUA
+                </button>
+                <button class="btn-outline" onclick="openSim('mru')">
+                  ➡️ MRU
+                </button>
+              </div>
+            </section>
+
+            <!-- TUTOR IA + PRÁCTICA -->
+            <section class="home-features">
+              <div class="hf-card ai-card" onclick="go('tutor')">
+                <div class="hfc-icon">🤖</div>
+                <h3>Tutor Yachay IA</h3>
+                <p>
+                  Impulsado por Groq + LLaMA 3.3. Responde con el método
+                  socrático — nunca da la respuesta directa, guía al estudiante
+                  a descubrirla.
+                </p>
+                <div class="hfc-demo">
+                  <div class="demo-msg a">
+                    ¿Por qué la Luna tiene menos gravedad que la Tierra? 🌕
+                  </div>
+                  <div class="demo-msg b">
+                    Interesante pregunta. Antes de responder, ¿qué crees que
+                    determina la gravedad de un planeta? ¿Su tamaño, su masa, o
+                    algo más? 🌿
+                  </div>
+                </div>
+                <button class="hfc-btn">Conversar con Yachay →</button>
+              </div>
+              <div class="hf-card elo-card" onclick="go('practica')">
+                <div class="hfc-icon">📈</div>
+                <h3>Práctica adaptativa con Elo</h3>
+                <p>
+                  Sistema de rating inteligente que ajusta la dificultad
+                  automáticamente. Mientras más aciertas, más desafiantes son
+                  las preguntas.
+                </p>
+                <div class="elo-demo">
+                  <div class="ed-label">Tu rating actual</div>
+                  <div class="ed-elo" id="home-elo">1000</div>
+                  <div class="ed-bar">
+                    <div class="ed-fill" id="home-elo-fill"></div>
+                  </div>
+                  <div class="ed-range">
+                    <span>600</span><span>Principiante</span><span>1400+</span>
+                  </div>
+                </div>
+                <div
+                  class="elo-demo"
+                  style="margin-top: 10px; cursor: pointer"
+                  onclick="Streak.openPanel()"
+                >
+                  <div class="ed-label">Tu racha 🔥</div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: 10px;
+                      margin: 6px 0 4px;
+                    "
+                  >
+                    <div
+                      id="home-streak-num"
+                      style="
+                        font-size: 2rem;
+                        font-weight: 900;
+                        color: #f59e0b;
+                        font-family: &quot;JetBrains Mono&quot;, monospace;
+                        line-height: 1;
+                      "
+                    >
+                      0
+                    </div>
+                    <div
+                      style="font-size: 11px; color: rgba(255, 255, 255, 0.4)"
+                    >
+                      días seguidos
+                    </div>
+                  </div>
+                  <div
+                    style="font-size: 11.5px; color: #a5b4ff; font-weight: 600"
+                  >
+                    Ver mi racha completa →
+                  </div>
+                </div>
+                <button class="hfc-btn">Practicar ahora →</button>
+              </div>
+            </section>
+
+            <!-- TECH STACK / TRANSPARENCIA -->
+            <section class="home-tech">
+              <div class="section-chip">🛠️ Implementación técnica</div>
+              <h2>Construido con tecnología de punta</h2>
+              <div class="tech-pills">
+                <span>🎙️ Web Speech API</span>
+                <span>⚡ Groq API</span>
+                <span>🦙 LLaMA 3.3 70B</span>
+                <span>🎨 Canvas API</span>
+                <span>🔐 Web Crypto API</span>
+                <span>🌍 ipapi.co</span>
+                <span>💾 localStorage</span>
+                <span>🌐 Vanilla JS</span>
+                <span>📐 Sistema Elo</span>
+              </div>
+            </section>
+          </div>
+          <!-- /view-home -->
+
+          <!-- ══ TUTOR ══ -->
+          <div class="view" id="view-tutor">
+            <div class="tutor-wrap">
+              <div class="tutor-head">
+                <div class="tutor-avatar">🤖</div>
+                <div class="tutor-head-info">
+                  <h2 data-i18n="tutor.title">Tutor Yachay</h2>
+                  <p data-i18n="tutor.sub">
+                    Asistente socrático de STEM · Groq + LLaMA 3.3
+                  </p>
+                  <div class="tutor-status">
+                    <span class="ts-dot"></span>En línea
+                  </div>
+                </div>
+                <button
+                  class="tutor-clear"
+                  onclick="clearChat()"
+                  title="Nueva conversación"
+                >
+                  ↺
+                </button>
+              </div>
+              <div id="chat-msgs" class="chat-msgs"></div>
+              <div class="chat-sugs" id="chat-sugs">
+                <button
+                  onclick="
+                    ask('¿Qué es el MRU y en qué se diferencia del MRUA?')
+                  "
+                >
+                  MRU vs MRUA
+                </button>
+                <button onclick="ask('¿Por qué el pH del limón es 2?')">
+                  ¿Por qué pH 2?
+                </button>
+                <button onclick="ask('¿La masa afecta la caída libre?')">
+                  Caída libre
+                </button>
+                <button onclick="ask('¿Qué es la Ley de Ohm en la vida real?')">
+                  Ley de Ohm
+                </button>
+                <button onclick="ask('Explícame PV=nRT con un ejemplo')">
+                  Gases ideales
+                </button>
+              </div>
+              <div class="chat-input-wrap" id="chat-input-wrap">
+                <!-- Visualizador de ondas de voz -->
+                <div class="voice-wave-bar" id="voice-wave-bar">
+                  <div class="vw-dots">
+                    <span></span><span></span><span></span><span></span
+                    ><span></span> <span></span><span></span><span></span
+                    ><span></span><span></span>
+                  </div>
+                  <span class="vw-label" id="vw-label">Escuchando...</span>
+                  <button
+                    class="vw-cancel"
+                    onclick="Voice.stop()"
+                    title="Cancelar"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <!-- Input normal -->
+                <div class="chat-input-row" id="chat-input-row">
+                  <input
+                    id="chat-input"
+                    class="chat-input"
+                    data-i18n-ph="chat.placeholder"
+                    placeholder="Escribe o habla tu pregunta..."
+                    onkeydown="
+                      if (event.key === 'Enter' && !event.shiftKey) {
+                        event.preventDefault();
+                        sendChat();
+                      }
+                    "
+                  />
+                  <button
+                    class="chat-voice-btn"
+                    id="voice-btn"
+                    onclick="Voice.toggle()"
+                    title="Hablar con Yachay"
+                  >
+                    <svg
+                      class="mic-icon"
+                      id="mic-icon"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <rect
+                        x="9"
+                        y="2"
+                        width="6"
+                        height="13"
+                        rx="3"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M5 10a7 7 0 0 0 14 0"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <line
+                        x1="12"
+                        y1="19"
+                        x2="12"
+                        y2="23"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <line
+                        x1="8"
+                        y1="23"
+                        x2="16"
+                        y2="23"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </button>
+                  <button class="chat-send" onclick="sendChat()">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <path
+                        d="M2 9L16 2l-7 14-2-5-5-2z"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <!-- Transcripción en tiempo real -->
+              <div class="voice-transcript" id="voice-transcript"></div>
+            </div>
+          </div>
+
+          <!-- ══ PRÁCTICA ══ -->
+          <div class="view" id="view-practica">
+            <div class="prac-wrap">
+              <div class="prac-header">
+                <h2>🎯 Práctica Adaptativa</h2>
+                <p>El nivel se ajusta automáticamente según tu desempeño</p>
+              </div>
+              <div class="elo-cards">
+                <div class="elo-c">
+                  <div class="ec-num" id="elo-f">1000</div>
+                  <div class="ec-lbl">⚡ Física</div>
+                </div>
+                <div class="elo-c">
+                  <div class="ec-num" id="elo-q">1000</div>
+                  <div class="ec-lbl">🧪 Química</div>
+                </div>
+                <div class="elo-c">
+                  <div class="ec-num" id="elo-m">1000</div>
+                  <div class="ec-lbl">📐 Matemáticas</div>
+                </div>
+              </div>
+              <div class="topic-btns">
+                <button class="tbtn active" onclick="setTopic('f', this)">
+                  ⚡ Física
+                </button>
+                <button class="tbtn" onclick="setTopic('q', this)">
+                  🧪 Química
+                </button>
+                <button class="tbtn" onclick="setTopic('m', this)">
+                  📐 Matemáticas
+                </button>
+              </div>
+              <div id="qbox" class="qbox">
+                <div class="qbox-meta">
+                  <span id="qtopic" class="q-topic">Física</span
+                  ><span id="q-nivel" class="q-nivel">Nivel 1</span>
+                </div>
+                <div id="qtext" class="q-text">Cargando pregunta...</div>
+                <div id="qopts" class="q-opts"></div>
+                <div id="qfeed" class="q-feed"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ PERFIL ══ -->
+          <div class="view" id="view-perfil">
+            <div class="perfil-wrap">
+              <div class="perfil-banner" id="perfil-banner">
+                <div class="perfil-banner-edit" onclick="openBannerPicker()">
+                  🖼️ Cambiar fondo
+                </div>
+                <div class="perfil-avatar-wrap">
+                  <div class="perfil-avatar" id="perfil-avatar">👤</div>
+                  <button class="perfil-avatar-btn" onclick="openEmojiPicker()">
+                    ✏️
+                  </button>
+                </div>
+              </div>
+              <div class="perfil-header" id="perfil-header">
+                <div class="perfil-name-row">
+                  <h2 id="perfil-name">—</h2>
+                  <span class="perfil-badge" id="perfil-badge"
+                    >🌱 Principiante</span
+                  >
+                </div>
+                <p class="perfil-email" id="perfil-email">—</p>
+                <p class="perfil-joined" id="perfil-joined"></p>
+              </div>
+              <div class="perfil-stats">
+                <div class="pstat">
+                  <span id="ps-sims">0</span><label>Simulaciones</label>
+                </div>
+                <div class="pstat">
+                  <span id="ps-pregs">0</span><label>Preguntas</label>
+                </div>
+                <div class="pstat">
+                  <span id="ps-racha">0</span><label>Racha</label>
+                </div>
+                <div class="pstat">
+                  <span id="ps-elo">1000</span><label>Elo Máximo</label>
+                </div>
+              </div>
+              <div class="perfil-tabs">
+                <button class="ptab active" onclick="showPTab('edit', this)">
+                  ✏️ Editar perfil
+                </button>
+                <button class="ptab" onclick="showPTab('logros', this)">
+                  🏆 Logros
+                </button>
+                <button class="ptab" onclick="showPTab('config', this)">
+                  ⚙️ Configuración
+                </button>
+              </div>
+              <div class="ptab-content active" id="ptab-edit">
+                <div class="perfil-form">
+                  <div class="pf-row">
+                    <div class="pf-field">
+                      <label>Nombre</label
+                      ><input
+                        type="text"
+                        id="pf-name"
+                        placeholder="Tu nombre"
+                      />
+                    </div>
+                    <div class="pf-field">
+                      <label>Grado / Nivel</label>
+                      <select id="pf-grade">
+                        <option value="">Seleccionar...</option>
+                        <option>1° Secundaria</option>
+                        <option>2° Secundaria</option>
+                        <option>3° Secundaria</option>
+                        <option>4° Secundaria</option>
+                        <option>5° Secundaria</option>
+                        <option>Universitario</option>
+                        <option>Docente</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="pf-row">
+                    <div class="pf-field">
+                      <label>País</label
+                      ><input type="text" id="pf-country" placeholder="Perú" />
+                    </div>
+                    <div class="pf-field">
+                      <label>Ciudad</label
+                      ><input type="text" id="pf-city" placeholder="Huánuco" />
+                    </div>
+                  </div>
+                  <div class="pf-field">
+                    <label>Biografía</label
+                    ><textarea
+                      id="pf-bio"
+                      rows="3"
+                      placeholder="Cuéntanos algo sobre ti..."
+                      maxlength="160"
+                    ></textarea
+                    ><small id="bio-count">0/160</small>
+                  </div>
+                  <div class="pf-field">
+                    <label>Materia favorita</label>
+                    <div class="fav-opts">
+                      <button
+                        class="fav-btn"
+                        data-fav="physics"
+                        onclick="setFav('physics', this)"
+                      >
+                        ⚡ Física
+                      </button>
+                      <button
+                        class="fav-btn"
+                        data-fav="chemistry"
+                        onclick="setFav('chemistry', this)"
+                      >
+                        🧪 Química
+                      </button>
+                      <button
+                        class="fav-btn"
+                        data-fav="math"
+                        onclick="setFav('math', this)"
+                      >
+                        📐 Matemáticas
+                      </button>
+                      <button
+                        class="fav-btn"
+                        data-fav="biology"
+                        onclick="setFav('biology', this)"
+                      >
+                        🌿 Biología
+                      </button>
+                    </div>
+                  </div>
+                  <div class="pf-actions">
+                    <button class="btn-save" onclick="saveProfile()">
+                      💾 Guardar cambios
+                    </button>
+                    <button class="btn-chpass" onclick="showChangePass()">
+                      🔑 Cambiar contraseña
+                    </button>
+                  </div>
+                  <div id="chpass-box" style="display: none" class="chpass-box">
+                    <div class="pf-field">
+                      <label>Contraseña actual</label
+                      ><input
+                        type="password"
+                        id="cp-old"
+                        placeholder="••••••••"
+                      />
+                    </div>
+                    <div class="pf-field">
+                      <label>Nueva contraseña</label
+                      ><input
+                        type="password"
+                        id="cp-new"
+                        placeholder="Mínimo 6 caracteres"
+                      />
+                    </div>
+                    <div class="pf-field">
+                      <label>Confirmar nueva</label
+                      ><input
+                        type="password"
+                        id="cp-new2"
+                        placeholder="Repite la contraseña"
+                      />
+                    </div>
+                    <div class="auth-err" id="cp-err"></div>
+                    <button class="btn-save" onclick="changePassword()">
+                      Actualizar contraseña
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="ptab-content" id="ptab-logros">
+                <div class="logros-grid" id="logros-grid"></div>
+              </div>
+              <div class="ptab-content" id="ptab-config">
+                <div class="config-list">
+                  <div class="config-item">
+                    <div class="ci-info">
+                      <strong>Idioma</strong
+                      ><span>Cambia el idioma de la interfaz</span>
+                    </div>
+                    <div class="ci-control">
+                      <button
+                        class="lang-pill"
+                        onclick="setLang('es')"
+                        id="cfg-es"
+                      >
+                        🇵🇪 ES</button
+                      ><button
+                        class="lang-pill"
+                        onclick="setLang('en')"
+                        id="cfg-en"
+                      >
+                        🇺🇸 EN
+                      </button>
+                    </div>
+                  </div>
+                  <div class="config-item">
+                    <div class="ci-info">
+                      <strong>Notificaciones</strong
+                      ><span>Alertas de logros y progreso</span>
+                    </div>
+                    <label class="toggle-sw"
+                      ><input
+                        type="checkbox"
+                        id="cfg-notif"
+                        checked
+                        onchange="saveCfg()" /><span class="sw-track"
+                        ><span class="sw-thumb"></span></span
+                    ></label>
+                  </div>
+                  <div class="config-item">
+                    <div class="ci-info">
+                      <strong>Sonidos</strong
+                      ><span>Efectos de sonido en la app</span>
+                    </div>
+                    <label class="toggle-sw"
+                      ><input
+                        type="checkbox"
+                        id="cfg-sound"
+                        onchange="saveCfg()" /><span class="sw-track"
+                        ><span class="sw-thumb"></span></span
+                    ></label>
+                  </div>
+                  <div class="config-item danger-zone">
+                    <div class="ci-info">
+                      <strong style="color: #ef4444">Eliminar cuenta</strong
+                      ><span>Esta acción no se puede deshacer</span>
+                    </div>
+                    <button class="btn-danger" onclick="deleteAccount()">
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+                <div class="logout-section">
+                  <button class="btn-logout-full" onclick="doLogout()">
+                    ⏻ Cerrar sesión
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ SIMULADOR ══ -->
+          <div class="view" id="view-sim">
+            <div class="sim-wrap">
+              <div class="sim-panel">
+                <div class="sim-panel-header">
+                  <div class="sph-icon" id="sim-icon">⚗️</div>
+                  <div>
+                    <h2 id="sim-title">Simulador</h2>
+                    <p id="sim-desc"></p>
+                  </div>
+                </div>
+                <div id="sim-controls"></div>
+                <div id="sim-formula" class="formula-box"></div>
+                <div id="sim-results" class="results-box"></div>
+                <div class="sim-btns">
+                  <button class="btn-sim-play" onclick="simPlay()">
+                    ▶ Iniciar
+                  </button>
+                  <button class="btn-sim-reset" onclick="simReset()">
+                    ⟳ Reiniciar
+                  </button>
+                </div>
+                <button class="btn-ask-tutor" onclick="go('tutor')">
+                  🤖 Preguntar al Tutor IA
+                </button>
+              </div>
+              <div class="sim-canvas-wrap">
+                <canvas id="canvas" width="560" height="460"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ RANKING ══ -->
+          <div class="view" id="view-ranking">
+            <div class="ranking-wrap">
+              <!-- Header -->
+              <div class="rk-header">
+                <div class="rk-header-left">
+                  <h1 class="rk-title">🏆 Ranking Global</h1>
+                  <p class="rk-sub">
+                    Los mejores estudiantes STEM de Yachay Lab
+                  </p>
+                </div>
+                <div class="rk-header-right">
+                  <div class="rk-live-badge">
+                    <span class="rk-live-dot"></span>EN VIVO
+                  </div>
+                  <button
+                    class="rk-refresh-btn"
+                    onclick="Rankings.refresh()"
+                    id="rk-refresh-btn"
+                    title="Actualizar"
+                  >
+                    <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M4 10a6 6 0 1 0 1.5-3.9M4 6v4h4"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Filtros -->
+              <div class="rk-filters">
+                <button
+                  class="rk-filter active"
+                  data-filter="elo"
+                  onclick="Rankings.setFilter('elo', this)"
+                >
+                  📊 Elo
+                </button>
+                <button
+                  class="rk-filter"
+                  data-filter="racha"
+                  onclick="Rankings.setFilter('racha', this)"
+                >
+                  🔥 Racha
+                </button>
+                <button
+                  class="rk-filter"
+                  data-filter="xp"
+                  onclick="Rankings.setFilter('xp', this)"
+                >
+                  ⭐ XP
+                </button>
+                <button
+                  class="rk-filter"
+                  data-filter="sims"
+                  onclick="Rankings.setFilter('sims', this)"
+                >
+                  ⚗️ Simulaciones
+                </button>
+              </div>
+
+              <!-- Podio TOP 3 -->
+              <div class="rk-podium" id="rk-podium">
+                <div class="podium-slot p2" id="pod-2">
+                  <div class="pod-avatar">—</div>
+                  <div class="pod-crown">🥈</div>
+                  <div class="pod-name">—</div>
+                  <div class="pod-score">—</div>
+                  <div class="pod-base p2-base">2°</div>
+                </div>
+                <div class="podium-slot p1" id="pod-1">
+                  <div class="pod-avatar">—</div>
+                  <div class="pod-crown">👑</div>
+                  <div class="pod-name">—</div>
+                  <div class="pod-score">—</div>
+                  <div class="pod-base p1-base">1°</div>
+                </div>
+                <div class="podium-slot p3" id="pod-3">
+                  <div class="pod-avatar">—</div>
+                  <div class="pod-crown">🥉</div>
+                  <div class="pod-name">—</div>
+                  <div class="pod-score">—</div>
+                  <div class="pod-base p3-base">3°</div>
+                </div>
+              </div>
+
+              <!-- Mi posición -->
+              <div class="rk-my-pos" id="rk-my-pos" style="display: none">
+                <div class="rmp-label">Tu posición actual</div>
+                <div class="rmp-inner">
+                  <div class="rmp-rank" id="rmp-rank">#—</div>
+                  <div class="rmp-avatar" id="rmp-avatar">👤</div>
+                  <div class="rmp-info">
+                    <div class="rmp-name" id="rmp-name">—</div>
+                    <div class="rmp-score" id="rmp-score">—</div>
+                  </div>
+                  <div class="rmp-trend" id="rmp-trend"></div>
+                </div>
+              </div>
+
+              <!-- Lista completa -->
+              <div class="rk-list-header">
+                <span>#</span><span>Jugador</span><span>País</span
+                ><span id="rk-score-label">Elo</span><span>Racha</span>
+              </div>
+              <div class="rk-list" id="rk-list">
+                <div class="rk-loading">
+                  <div class="rk-spinner"></div>
+                  <span>Cargando ranking...</span>
+                </div>
+              </div>
+
+              <!-- Stats globales -->
+              <div class="rk-global-stats" id="rk-global-stats">
+                <div class="rgs-item">
+                  <div class="rgs-num" id="rgs-users">—</div>
+                  <div class="rgs-lbl">Estudiantes</div>
+                </div>
+                <div class="rgs-item">
+                  <div class="rgs-num" id="rgs-sims">—</div>
+                  <div class="rgs-lbl">Simulaciones</div>
+                </div>
+                <div class="rgs-item">
+                  <div class="rgs-num" id="rgs-pregs">—</div>
+                  <div class="rgs-lbl">Preguntas</div>
+                </div>
+                <div class="rgs-item">
+                  <div class="rgs-num" id="rgs-xp">—</div>
+                  <div class="rgs-lbl">XP total</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ══ LOGROS ══ -->
+          <div class="view" id="view-logros">
+            <div class="logros-wrap">
+              <div class="lg-header">
+                <h1 class="lg-title">🎖️ Mis Logros</h1>
+                <p class="lg-sub">
+                  Desbloquea logros completando actividades en Yachay Lab
+                </p>
+                <div class="lg-progress-summary">
+                  <div class="lps-bar-wrap">
+                    <div class="lps-bar">
+                      <div class="lps-fill" id="lps-fill"></div>
+                    </div>
+                  </div>
+                  <div class="lps-text">
+                    <span id="lps-count">0</span> /
+                    <span id="lps-total">0</span> logros desbloqueados
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tabs por categoría -->
+              <div class="lg-tabs">
+                <button
+                  class="lg-tab active"
+                  onclick="Achievements.showCat('all', this)"
+                >
+                  ✨ Todos
+                </button>
+                <button
+                  class="lg-tab"
+                  onclick="Achievements.showCat('earned', this)"
+                >
+                  🏆 Desbloqueados
+                </button>
+                <button
+                  class="lg-tab"
+                  onclick="Achievements.showCat('fisica', this)"
+                >
+                  ⚡ Física
+                </button>
+                <button
+                  class="lg-tab"
+                  onclick="Achievements.showCat('quimica', this)"
+                >
+                  🧪 Química
+                </button>
+                <button
+                  class="lg-tab"
+                  onclick="Achievements.showCat('practica', this)"
+                >
+                  🎯 Práctica
+                </button>
+                <button
+                  class="lg-tab"
+                  onclick="Achievements.showCat('social', this)"
+                >
+                  🌟 Social
+                </button>
+              </div>
+
+              <!-- Grid de logros -->
+              <div class="lg-grid" id="lg-grid"></div>
+
+              <!-- XP total del usuario -->
+              <div class="lg-xp-banner" id="lg-xp-banner">
+                <div class="lxb-left">
+                  <div class="lxb-icon">⭐</div>
+                  <div>
+                    <div class="lxb-title">XP Total ganada</div>
+                    <div class="lxb-sub">Suma de todas tus actividades</div>
+                  </div>
+                </div>
+                <div class="lxb-xp" id="lxb-xp">0 XP</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /content -->
+      </main>
+    </div>
+    <!-- /app -->
+
+    <!-- Modales -->
+    <div
+      id="emoji-modal"
+      class="modal-backdrop"
+      onclick="if (event.target === this) closeModals();"
+    >
+      <div class="modal-box">
+        <h3>Elige tu avatar</h3>
+        <div class="emoji-grid" id="emoji-grid"></div>
+      </div>
+    </div>
+    <div
+      id="banner-modal"
+      class="modal-backdrop"
+      onclick="if (event.target === this) closeModals();"
+    >
+      <div class="modal-box">
+        <h3>Elige un fondo de perfil</h3>
+        <div class="banner-grid" id="banner-grid"></div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast-notif" style="display: none"></div>
+    <script src="app.js"></script>
+    <script src="streak.js"></script>
+    <script src="voice.js"></script>
+    <script src="rankings.js"></script>
+    <script src="events.js"></script>
+  </body>
+</html>
