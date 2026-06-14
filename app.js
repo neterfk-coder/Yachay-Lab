@@ -1378,6 +1378,7 @@ function go(id) {
   if (id === "ranking") typeof Rankings !== "undefined" && Rankings.init();
   if (id === "logros")
     typeof Achievements !== "undefined" && Achievements.render();
+  if (id === "batalla") typeof Battle !== "undefined" && Battle.init();
   if (id === "tutor") {
     initTutorUI();
     if (!document.getElementById("chat-msgs").children.length) {

@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="voice.css" />
     <link rel="stylesheet" href="rankings.css" />
     <link rel="stylesheet" href="events.css" />
+    <link rel="stylesheet" href="battle.css" />
     <link rel="stylesheet" href="ranking.css" />
   </head>
   <body>
@@ -438,6 +439,10 @@
             <button onclick="go('practica')" class="nav-btn" id="nb-practica">
               <span class="ni">🎯</span
               ><span data-i18n="nav.practice">Práctica</span>
+            </button>
+            <button onclick="go('batalla')" class="nav-btn" id="nb-batalla">
+              <span class="ni">⚔️</span><span>Batalla</span
+              ><span class="nav-pill battle-pill">VS</span>
             </button>
             <button onclick="go('ranking')" class="nav-btn" id="nb-ranking">
               <span class="ni">🏆</span><span>Ranking</span
@@ -1723,6 +1728,326 @@
               </div>
             </div>
           </div>
+
+          <!-- ══ BATALLA MULTIJUGADOR ══ -->
+          <div class="view" id="view-batalla">
+            <div class="battle-wrap">
+              <!-- PANTALLA 1: LOBBY -->
+              <div id="bt-lobby" class="bt-screen active">
+                <div class="bt-lobby-hero">
+                  <div class="bt-lobby-icon">⚔️</div>
+                  <h1 class="bt-lobby-title">Batalla <em>STEM</em></h1>
+                  <p class="bt-lobby-desc">
+                    Reta a tus amigos en tiempo real — quien responda más rápido
+                    y correcto gana
+                  </p>
+                  <div class="bt-supabase-badge">
+                    <span class="bt-supa-dot"></span>
+                    <span id="bt-conn-status"
+                      >Modo local · Supabase pendiente de conexión</span
+                    >
+                  </div>
+                </div>
+
+                <div class="bt-lobby-cards">
+                  <!-- Crear sala -->
+                  <div class="bt-card bt-card-create">
+                    <div class="btc-icon">🏟️</div>
+                    <h3>Crear sala</h3>
+                    <p>Genera un código y compártelo con tus amigos</p>
+                    <div class="btc-options">
+                      <label>Materia</label>
+                      <div class="btc-select-row">
+                        <button
+                          class="btc-opt active"
+                          data-topic="mix"
+                          onclick="Battle.setTopic('mix', this)"
+                        >
+                          🎲 Mixto
+                        </button>
+                        <button
+                          class="btc-opt"
+                          data-topic="fis"
+                          onclick="Battle.setTopic('fis', this)"
+                        >
+                          ⚡ Física
+                        </button>
+                        <button
+                          class="btc-opt"
+                          data-topic="quim"
+                          onclick="Battle.setTopic('quim', this)"
+                        >
+                          🧪 Química
+                        </button>
+                        <button
+                          class="btc-opt"
+                          data-topic="mate"
+                          onclick="Battle.setTopic('mate', this)"
+                        >
+                          📐 Mates
+                        </button>
+                      </div>
+                      <label>Rondas</label>
+                      <div class="btc-select-row">
+                        <button
+                          class="btc-opt active"
+                          data-rounds="5"
+                          onclick="Battle.setRounds(5, this)"
+                        >
+                          5
+                        </button>
+                        <button
+                          class="btc-opt"
+                          data-rounds="10"
+                          onclick="Battle.setRounds(10, this)"
+                        >
+                          10
+                        </button>
+                      </div>
+                    </div>
+                    <button class="bt-btn-create" onclick="Battle.createRoom()">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
+                        <path
+                          d="M8 3v10M3 8h10"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                      Crear sala
+                    </button>
+                  </div>
+
+                  <!-- Unirse a sala -->
+                  <div class="bt-card bt-card-join">
+                    <div class="btc-icon">🔑</div>
+                    <h3>Unirse a sala</h3>
+                    <p>Ingresa el código que te compartió tu amigo</p>
+                    <div class="bt-code-input-wrap">
+                      <input
+                        id="bt-code-input"
+                        class="bt-code-input"
+                        maxlength="6"
+                        placeholder="STEM42"
+                        oninput="this.value = this.value.toUpperCase()"
+                        onkeydown="
+                          if (event.key === 'Enter') Battle.joinRoom();
+                        "
+                      />
+                    </div>
+                    <button class="bt-btn-join" onclick="Battle.joinRoom()">
+                      Unirse →
+                    </button>
+                  </div>
+
+                  <!-- Sala pública -->
+                  <div class="bt-card bt-card-quick">
+                    <div class="btc-icon">⚡</div>
+                    <h3>Partida rápida</h3>
+                    <p>
+                      Te emparejamos con alguien de tu nivel Elo automáticamente
+                    </p>
+                    <div class="bt-online-count">
+                      <span class="bt-online-dot"></span>
+                      <span id="bt-online">Buscando jugadores...</span>
+                    </div>
+                    <button class="bt-btn-quick" onclick="Battle.quickMatch()">
+                      Buscar rival →
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Historial de batallas -->
+                <div class="bt-history">
+                  <div class="bt-history-title">⚔️ Mis últimas batallas</div>
+                  <div id="bt-history-list" class="bt-history-list">
+                    <div class="bt-no-history">
+                      Aún no tienes batallas — ¡crea una sala!
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PANTALLA 2: SALA DE ESPERA -->
+              <div id="bt-waiting" class="bt-screen">
+                <div class="bt-waiting-inner">
+                  <div class="bt-room-code-display">
+                    <div class="bt-rcd-label">Código de sala</div>
+                    <div class="bt-rcd-code" id="bt-room-code">——————</div>
+                    <button
+                      class="bt-copy-btn"
+                      onclick="Battle.copyCode()"
+                      id="bt-copy-btn"
+                    >
+                      📋 Copiar código
+                    </button>
+                  </div>
+                  <div class="bt-waiting-players">
+                    <div class="bt-player-slot bt-slot-me">
+                      <div class="bt-player-avatar" id="bt-my-avatar">👤</div>
+                      <div class="bt-player-name" id="bt-my-name">Tú</div>
+                      <div class="bt-player-elo" id="bt-my-elo">Elo 1000</div>
+                      <div class="bt-player-ready bt-ready-yes">✓ Listo</div>
+                    </div>
+                    <div class="bt-vs-center">
+                      <div class="bt-vs-text">VS</div>
+                      <div class="bt-vs-line"></div>
+                    </div>
+                    <div class="bt-player-slot bt-slot-opp">
+                      <div
+                        class="bt-player-avatar bt-waiting-anim"
+                        id="bt-opp-avatar"
+                      >
+                        ⏳
+                      </div>
+                      <div class="bt-player-name" id="bt-opp-name">
+                        Esperando...
+                      </div>
+                      <div class="bt-player-elo" id="bt-opp-elo"></div>
+                      <div
+                        class="bt-player-ready bt-ready-wait"
+                        id="bt-opp-ready"
+                      >
+                        Esperando rival
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bt-waiting-hint">
+                    Comparte el código con tu amigo para comenzar
+                  </div>
+                  <div class="bt-waiting-actions">
+                    <button
+                      class="bt-btn-start"
+                      id="bt-start-btn"
+                      onclick="Battle.startBattle()"
+                      disabled
+                    >
+                      ⚔️ Iniciar batalla
+                    </button>
+                    <button class="bt-btn-cancel" onclick="Battle.cancelRoom()">
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PANTALLA 3: BATALLA EN CURSO -->
+              <div id="bt-game" class="bt-screen">
+                <!-- Header de batalla -->
+                <div class="bt-game-header">
+                  <div class="bt-score-me">
+                    <span class="bt-score-avatar" id="bt-gmy-avatar">👤</span>
+                    <span class="bt-score-name" id="bt-gmy-name">Tú</span>
+                    <span class="bt-score-num" id="bt-gmy-score">0</span>
+                  </div>
+                  <div class="bt-game-center">
+                    <div class="bt-round-badge">
+                      Ronda <span id="bt-round-num">1</span> /
+                      <span id="bt-round-total">5</span>
+                    </div>
+                    <div class="bt-timer-ring-wrap">
+                      <svg class="bt-timer-ring" viewBox="0 0 60 60">
+                        <circle
+                          cx="30"
+                          cy="30"
+                          r="26"
+                          fill="none"
+                          stroke="rgba(255,255,255,.1)"
+                          stroke-width="4"
+                        />
+                        <circle
+                          cx="30"
+                          cy="30"
+                          r="26"
+                          fill="none"
+                          stroke="#5A5FE0"
+                          stroke-width="4"
+                          stroke-dasharray="163"
+                          stroke-dashoffset="0"
+                          id="bt-timer-ring"
+                          stroke-linecap="round"
+                          transform="rotate(-90 30 30)"
+                        />
+                      </svg>
+                      <span class="bt-timer-num" id="bt-timer-num">15</span>
+                    </div>
+                    <div class="bt-topic-badge" id="bt-topic-badge">
+                      ⚡ Física
+                    </div>
+                  </div>
+                  <div class="bt-score-opp">
+                    <span class="bt-score-num" id="bt-gopp-score">0</span>
+                    <span class="bt-score-name" id="bt-gopp-name">Rival</span>
+                    <span class="bt-score-avatar" id="bt-gopp-avatar">👤</span>
+                  </div>
+                </div>
+
+                <!-- Pregunta -->
+                <div class="bt-question-area">
+                  <div class="bt-question-text" id="bt-question">
+                    Cargando pregunta...
+                  </div>
+                  <div class="bt-options-grid" id="bt-options"></div>
+                  <div class="bt-answer-feedback" id="bt-answer-feedback"></div>
+                </div>
+
+                <!-- Estado del rival -->
+                <div class="bt-rival-status" id="bt-rival-status">
+                  <span class="bt-rival-dot bt-rival-thinking"></span>
+                  <span id="bt-rival-txt">Rival pensando...</span>
+                </div>
+              </div>
+
+              <!-- PANTALLA 4: RESULTADOS -->
+              <div id="bt-results" class="bt-screen">
+                <div class="bt-results-inner">
+                  <div class="bt-result-banner" id="bt-result-banner">
+                    <div class="bt-result-icon" id="bt-result-icon">🏆</div>
+                    <div class="bt-result-title" id="bt-result-title">
+                      ¡Ganaste!
+                    </div>
+                    <div class="bt-result-sub" id="bt-result-sub">
+                      ¡Increíble rendimiento STEM!
+                    </div>
+                  </div>
+                  <div class="bt-final-scores">
+                    <div class="bt-fs-player">
+                      <div class="bt-fs-avatar" id="bt-res-my-avatar">👤</div>
+                      <div class="bt-fs-name" id="bt-res-my-name">Tú</div>
+                      <div class="bt-fs-score" id="bt-res-my-score">0</div>
+                      <div class="bt-fs-label">puntos</div>
+                    </div>
+                    <div class="bt-fs-vs">VS</div>
+                    <div class="bt-fs-player">
+                      <div class="bt-fs-avatar" id="bt-res-opp-avatar">👤</div>
+                      <div class="bt-fs-name" id="bt-res-opp-name">Rival</div>
+                      <div class="bt-fs-score" id="bt-res-opp-score">0</div>
+                      <div class="bt-fs-label">puntos</div>
+                    </div>
+                  </div>
+                  <div class="bt-xp-gained" id="bt-xp-gained">
+                    +50 XP ganadas
+                  </div>
+                  <div class="bt-result-rounds" id="bt-result-rounds"></div>
+                  <div class="bt-result-actions">
+                    <button class="bt-btn-rematch" onclick="Battle.rematch()">
+                      ⚔️ Revancha
+                    </button>
+                    <button class="bt-btn-lobby" onclick="Battle.goLobby()">
+                      ← Volver al lobby
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /battle-wrap -->
+          </div>
+          <!-- /view-batalla -->
         </div>
         <!-- /content -->
       </main>
@@ -1757,5 +2082,6 @@
     <script src="voice.js"></script>
     <script src="rankings.js"></script>
     <script src="events.js"></script>
+    <script src="battle.js"></script>
   </body>
 </html>
