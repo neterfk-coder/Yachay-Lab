@@ -900,7 +900,7 @@ textarea {
   color: var(--t2);
   padding: 6px;
   border-radius: 6px;
-  display: none;
+  display: flex;
   transition: 0.15s;
 }
 #menu-btn:hover {
@@ -4524,5 +4524,84 @@ textarea {
   }
   .fb-right {
     gap: 14px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   SIDEBAR TOGGLE — Desktop + Mobile
+══════════════════════════════════════════════════════ */
+
+/* Sidebar con transición suave */
+#sidebar {
+  transition:
+    transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.28s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Estado cerrado en desktop */
+#sidebar.sb-closed {
+  transform: translateX(-100%);
+}
+
+/* Main se expande cuando sidebar está cerrado */
+#main {
+  transition: margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#main.sb-expanded {
+  margin-left: 0 !important;
+}
+
+/* Botón menú mejorado */
+#menu-btn {
+  width: 36px;
+  height: 36px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  color: var(--t2);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+#menu-btn:hover {
+  background: var(--p-lt);
+  border-color: var(--p);
+  color: var(--p);
+}
+#menu-btn.active {
+  background: var(--p);
+  border-color: var(--p);
+  color: #fff;
+}
+
+/* Overlay oscuro detrás del sidebar en móvil */
+.sb-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 99;
+  animation: fadeIn 0.2s ease;
+}
+.sb-overlay.active {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  /* En móvil el sidebar siempre parte cerrado */
+  #sidebar {
+    transform: translateX(-100%);
+    z-index: 100;
+  }
+  #sidebar.open,
+  #sidebar:not(.sb-closed) {
+    transform: translateX(0);
+  }
+  #main {
+    margin-left: 0 !important;
   }
 }

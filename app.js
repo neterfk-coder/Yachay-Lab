@@ -713,6 +713,15 @@ function launchApp(user) {
   go("home");
   setTimeout(initHeroCanvas, 100);
   updateHomeElo();
+  // Restaurar estado del sidebar
+  if (window.innerWidth > 900) {
+    const savedOpen = localStorage.getItem("yl_sidebar_open");
+    if (savedOpen === "0") {
+      document.getElementById("sidebar")?.classList.add("sb-closed");
+      document.getElementById("main")?.classList.add("sb-expanded");
+      document.getElementById("menu-btn")?.classList.add("active");
+    }
+  }
   // Mostrar onboarding si es primera visita
   setTimeout(() => {
     if (typeof Onboarding !== "undefined") Onboarding.maybeShow();
@@ -1530,7 +1539,41 @@ function go(id) {
 }
 
 function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("open");
+  const sb = document.getElementById("sidebar");
+  const main = document.getElementById("main");
+  const btn = document.getElementById("menu-btn");
+  const isMobile = window.innerWidth <= 900;
+
+  if (isMobile) {
+    // Móvil: overlay + slide
+    const isOpen = sb.classList.contains("open");
+    sb.classList.toggle("open", !isOpen);
+    btn.classList.toggle("active", !isOpen);
+    // Overlay
+    let overlay = document.getElementById("sb-overlay");
+    if (!isOpen) {
+      if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "sb-overlay";
+        overlay.className = "sb-overlay active";
+        overlay.onclick = toggleSidebar;
+        document.body.appendChild(overlay);
+      } else {
+        overlay.classList.add("active");
+      }
+    } else {
+      overlay?.classList.remove("active");
+      setTimeout(() => overlay?.remove(), 200);
+    }
+  } else {
+    // Desktop: colapsar/expandir con margen
+    const isClosed = sb.classList.contains("sb-closed");
+    sb.classList.toggle("sb-closed", !isClosed);
+    main.classList.toggle("sb-expanded", !isClosed);
+    btn.classList.toggle("active", !isClosed);
+    // Guardar preferencia
+    localStorage.setItem("yl_sidebar_open", isClosed ? "1" : "0");
+  }
 }
 
 function updateHomeElo() {
