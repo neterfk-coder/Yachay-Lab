@@ -5,28 +5,28 @@
 // ── TRADUCCIONES ──
 const I18N = {
   es: {
-    "login.sub": "Laboratorio virtual STEM con Inteligencia Artificial",
-    "login.tab": "Iniciar sesión",
-    "register.tab": "Registrarse",
-    "login.email": "Correo electrónico",
-    "login.pass": "Contraseña",
-    "login.forgot": "¿Olvidaste tu contraseña?",
-    "login.btn": "Iniciar sesión",
-    "login.or": "o continúa sin cuenta",
-    "login.guest": "Entrar como invitado",
-    "reg.name": "Nombre completo",
-    "reg.email": "Correo electrónico",
-    "reg.pass": "Contraseña",
-    "reg.pass2": "Confirmar contraseña",
-    "reg.btn": "Crear cuenta gratis",
+    "login.sub": "Virtual STEM Laboratory with AI",
+    "login.tab": "Sign in",
+    "register.tab": "Register",
+    "login.email": "Email address",
+    "login.pass": "Password",
+    "login.forgot": "Forgot password?",
+    "login.btn": "Sign in",
+    "login.or": "or continue without account",
+    "login.guest": "Continue as guest",
+    "reg.name": "Full name",
+    "reg.email": "Email address",
+    "reg.pass": "Password",
+    "reg.pass2": "Confirm password",
+    "reg.btn": "Create free account",
     "nav.general": "General",
-    "nav.home": "Inicio",
-    "nav.tutor": "Tutor IA",
-    "nav.practice": "Práctica",
-    "nav.profile": "Mi Perfil",
-    "nav.physics": "⚡ Física",
-    "nav.chemistry": "🧪 Química",
-    "nav.logout": "Cerrar sesión",
+    "nav.home": "Home",
+    "nav.tutor": "AI Tutor",
+    "nav.practice": "Practice",
+    "nav.profile": "My Profile",
+    "nav.physics": "⚡ Physics",
+    "nav.chemistry": "🧪 Chemistry",
+    "nav.logout": "Sign out",
     "sim.caida": "Caída Libre",
     "sim.tiro": "Tiro Parabólico",
     "sim.tiro.full": "Tiro Parabólico",
@@ -35,27 +35,27 @@ const I18N = {
     "sim.ondas": "Ondas",
     "sim.ohm": "Ley de Ohm",
     "sim.optica": "Óptica",
-    "sim.energia": "Energía",
+    "sim.energia": "Energy",
     "sim.ph": "pH y Ácido-Base",
     "sim.gases": "Gases Ideales",
     "sim.reacciones": "Reacciones",
     "sim.titulacion": "Titulación",
     "sim.tabla": "Tabla Periódica",
-    "sim.play": "▶ Iniciar",
-    "sim.reset": "⟳ Reiniciar",
+    "sim.play": "▶ Start",
+    "sim.reset": "⟳ Reset",
     "home.desc":
-      "Laboratorio virtual STEM con IA. 15 simuladores interactivos de física y química.",
-    "home.cta1": "🚀 Abrir Laboratorio",
-    "home.cta2": "🤖 Tutor IA",
-    "home.sims": "Simuladores",
-    "home.areas": "Áreas STEM",
-    "home.ai": "Tutor Socrático",
+      "Virtual STEM Laboratory with AI. 15 simuladores interactivos de física y química.",
+    "home.cta1": "🚀 Abrir Laboratory",
+    "home.cta2": "🤖 AI Tutor",
+    "home.sims": "Simulatores",
+    "home.areas": "STEM Areas",
+    "home.ai": "Socratic Tutor",
     "card.tiro": "Lanza proyectiles y visualiza la trayectoria",
     "card.pendulo": "Mide el periodo y compara con la teoría",
     "card.ph": "Explora la escala de pH con visualización",
     "card.gases": "PV = nRT con partículas animadas",
-    "card.tutor": "Pregunta sobre física o química",
-    "card.prac.title": "Práctica Elo",
+    "card.tutor": "Question sobre física o química",
+    "card.prac.title": "Practice Elo",
     "card.prac": "Sistema adaptativo a tu nivel",
     "tutor.title": "Tutor Yachay",
     "tutor.sub": "Asistente socrático de STEM · Claude AI",
@@ -64,47 +64,47 @@ const I18N = {
     "sug.hooke": "Hooke",
     "sug.gas": "Gases",
     "chat.placeholder": "Escribe tu pregunta...",
-    "prac.title": "🎯 Práctica Adaptativa",
-    "prac.physics": "Física",
-    "prac.chem": "Química",
-    "prac.math": "Matemáticas",
-    "prac.phy-btn": "⚡ Física",
-    "prac.chem-btn": "🧪 Química",
-    "prac.math-btn": "📐 Matemáticas",
-    "prac.loading": "Cargando pregunta...",
-    "prof.edit": "✏️ Editar perfil",
-    "prof.badges": "🏆 Logros",
-    "prof.config": "⚙️ Configuración",
+    "prac.title": "🎯 Practice Adaptativa",
+    "prac.physics": "Physics",
+    "prac.chem": "Chemistry",
+    "prac.math": "Mathematics",
+    "prac.phy-btn": "⚡ Physics",
+    "prac.chem-btn": "🧪 Chemistry",
+    "prac.math-btn": "📐 Mathematics",
+    "prac.loading": "Loading question...",
+    "prof.edit": "✏️ Edit profile",
+    "prof.badges": "🏆 Achievements",
+    "prof.config": "⚙️ Settings",
     "prof.fname": "Name",
-    "prof.grade": "Grado / Nivel",
-    "prof.country": "País",
-    "prof.city": "Ciudad",
-    "prof.bio": "Biografía",
-    "prof.fav": "Materia favorita",
-    "prof.save": "💾 Guardar cambios",
-    "prof.chpass": "Cambiar contraseña",
+    "prof.grade": "Grade / Level",
+    "prof.country": "Country",
+    "prof.city": "City",
+    "prof.bio": "Biography",
+    "prof.fav": "Favorite subject",
+    "prof.save": "💾 Save changes",
+    "prof.chpass": "Change password",
     "cfg.lang": "Idioma",
     "cfg.lang.sub": "Cambia el idioma de la interfaz",
     "cfg.notif": "Notificaciones",
     "cfg.notif.sub": "Alertas de logros y progreso",
     "cfg.sounds": "Sonidos",
     "cfg.sounds.sub": "Efectos de sonido en la app",
-    "cfg.delete": "Eliminar cuenta",
+    "cfg.delete": "Delete cuenta",
     "cfg.delete.sub": "Esta acción no se puede deshacer",
-    "cfg.delete.btn": "Eliminar",
-    "err.empty": "Por favor completa todos los campos.",
+    "cfg.delete.btn": "Delete",
+    "err.empty": "Please fill in all fields.",
     "err.email": "Ingresa un correo válido.",
-    "err.pass6": "La contraseña debe tener al menos 6 caracteres.",
-    "err.match": "Las contraseñas no coinciden.",
+    "err.pass6": "Password must be at least 6 characters.",
+    "err.match": "Passwords do not match.",
     "err.exists": "Ese correo ya está registrado.",
     "err.notfound": "Correo o contraseña incorrectos.",
-    "toast.welcome": "¡Bienvenido a Yachay Lab!",
+    "toast.welcome": "¡Welcome a Yachay Lab!",
     "toast.logout": "Sesión cerrada.",
     "toast.saved": "Perfil guardado ✓",
-    "toast.passchg": "Contraseña actualizada ✓",
+    "toast.passchg": "Password actualizada ✓",
     "toast.guest": "Entrando como invitado...",
     "guest.banner": "Estás en modo invitado — tu progreso no se guardará",
-    "guest.exit": "Crear cuenta / Iniciar sesión",
+    "guest.exit": "Create account / Sign in",
   },
   en: {
     "login.sub": "Virtual STEM Laboratory with Artificial Intelligence",
@@ -427,7 +427,7 @@ async function doRegister() {
   }
 
   try {
-    // 1. Guardar en localStorage primero (siempre funciona)
+    // 1. Save en localStorage primero (siempre funciona)
     const users = getUsers();
     if (users[email]) {
       // Ya existe — hacer login directamente
@@ -593,7 +593,7 @@ async function enterGuest() {
       allGuests[guestId].lastLogin = now;
       allGuests[guestId].loginCount = (allGuests[guestId].loginCount || 1) + 1;
       allGuests[guestId].displayName = displayName; // actualizar en caso que cambió ciudad
-      // Actualizar geo si tenemos datos frescos
+      // Refresh geo si tenemos datos frescos
       if (geo.ip) allGuests[guestId].geo.ip = geo.ip;
     }
     localStorage.setItem(GUEST_DB, JSON.stringify(allGuests));
@@ -631,7 +631,7 @@ async function enterGuest() {
     // Toast personalizado
     const msg = isReturning
       ? LANG === "es"
-        ? `¡Bienvenido de vuelta! ${flag} ${city || country}`
+        ? `¡Welcome de vuelta! ${flag} ${city || country}`
         : `Welcome back! ${flag} ${city || country}`
       : LANG === "es"
         ? `¡Hola desde ${flag} ${locName}! 👋`
@@ -764,7 +764,7 @@ function launchApp(user) {
 
   const welcomeMsg = user.guest
     ? LANG === "es"
-      ? `¡Bienvenido! ${dname} 👋`
+      ? `¡Welcome! ${dname} 👋`
       : `Welcome! ${dname} 👋`
     : t("toast.welcome") + " " + user.name + " 👋";
   showToast(welcomeMsg);
@@ -929,7 +929,7 @@ const LOGROS = [
     desc: "Hiciste 50 preguntas al tutor",
   },
   { id: "elo_1100", ico: "📈", name: "En forma", desc: "Alcanzaste Elo 1100" },
-  { id: "elo_1300", ico: "🏅", name: "Experto", desc: "Alcanzaste Elo 1300" },
+  { id: "elo_1300", ico: "🏅", name: "Expert", desc: "Alcanzaste Elo 1300" },
   {
     id: "racha_5",
     ico: "🔥",
@@ -1018,7 +1018,7 @@ function renderPerfil() {
     if (users[ses.email]?.createdAt) {
       const d = new Date(users[ses.email].createdAt);
       document.getElementById("perfil-joined").textContent =
-        (LANG === "es" ? "Miembro desde " : "Member since ") +
+        (LANG === "es" ? "Member since " : "Member since ") +
         d.toLocaleDateString();
     }
   }
@@ -1027,12 +1027,12 @@ function renderPerfil() {
   const elo = ps.maxElo || 1000;
   const badge =
     elo >= 1300
-      ? "🥇 Experto"
+      ? "🥇 Expert"
       : elo >= 1100
-        ? "🥈 Avanzado"
+        ? "🥈 Advanced"
         : elo >= 900
-          ? "🥉 Intermedio"
-          : "🌱 Principiante";
+          ? "🥉 Intermediate"
+          : "🌱 Beginner";
   document.getElementById("perfil-badge").textContent = badge;
 
   // Stats
@@ -1064,11 +1064,11 @@ function renderPerfil() {
     if (el) el.classList.toggle("active", id.endsWith(LANG));
   });
 
-  // Logros
-  renderLogros(prof, ps);
+  // Achievements
+  renderAchievements(prof, ps);
 }
 
-function renderLogros(prof, ps) {
+function renderAchievements(prof, ps) {
   const earned = new Set(prof.logros || []);
   if (ps.sims >= 1) earned.add("sim_1");
   if (ps.sims >= 5) earned.add("sim_5");
@@ -1110,7 +1110,7 @@ function showPTab(tab, btn) {
     .forEach((c) => c.classList.remove("active"));
   btn.classList.add("active");
   document.getElementById("ptab-" + tab).classList.add("active");
-  if (tab === "logros") renderLogros(getProfile(), getPStats());
+  if (tab === "logros") renderAchievements(getProfile(), getPStats());
   if (tab === "progress" && typeof ProgressChart !== "undefined") {
     setTimeout(() => ProgressChart.render("f"), 100);
   }
@@ -1140,7 +1140,7 @@ function saveProfile() {
   if (prof.name && prof.grade && prof.country && prof.bio)
     prof.logros.push("profile_done");
   localStorage.setItem(PROF, JSON.stringify(prof));
-  // Actualizar nombre en sesión si cambió
+  // Refresh nombre en sesión si cambió
   if (!ses.guest && prof.name) {
     ses.name = prof.name;
     localStorage.setItem(SES, JSON.stringify(ses));
@@ -1168,7 +1168,7 @@ function changePassword() {
   err.textContent = "";
   const users = getUsers();
   if (!users[ses.email] || users[ses.email].pass !== btoa(old)) {
-    err.textContent = "Contraseña actual incorrecta.";
+    err.textContent = "Password actual incorrecta.";
     return;
   }
   if (nw.length < 6) {
@@ -1580,7 +1580,7 @@ function toggleSidebar() {
     sb.classList.toggle("sb-closed", !isClosed);
     main.classList.toggle("sb-expanded", !isClosed);
     btn.classList.toggle("active", !isClosed);
-    // Guardar preferencia
+    // Save preferencia
     localStorage.setItem("yl_sidebar_open", isClosed ? "1" : "0");
   }
 }
@@ -1696,7 +1696,7 @@ const SIMS = {
   },
   hooke: {
     title: "🔧 Ley de Hooke",
-    desc: "Fuerza de resorte y energía elástica",
+    desc: "Force de resorte y energía elástica",
     formula: "F = kx  |  Ep = ½kx²",
   },
   ondas: {
@@ -1818,7 +1818,7 @@ function openSim(id) {
       ondas: "Ondas",
       ohm: "Ley de Ohm",
       optica: "Óptica",
-      energia: "Energía Mecánica",
+      energia: "Energy Mecánica",
       ph: "pH y Ácido-Base",
       gases: "Gases Ideales",
       reacciones: "Reacciones",
@@ -1826,7 +1826,7 @@ function openSim(id) {
       tabla: "Tabla Periódica",
     };
     Streak.register("simulador", {
-      label: `⚗️ Simulador: ${simNames[id] || id}`,
+      label: `⚗️ Simulator: ${simNames[id] || id}`,
     });
   }
 }
@@ -2125,7 +2125,7 @@ function SIM_CAIDA(mode) {
     drawCaida(p);
     return;
   }
-  slider("cai-h", "Altura inicial h", 10, 200, 80, 10, " m", (v) => {
+  slider("cai-h", "Height inicial h", 10, 200, 80, 10, " m", (v) => {
     p.h = v;
     p.t = 0;
     drawCaida(p);
@@ -2196,10 +2196,10 @@ function drawCaida(p) {
   if (vl > 0) arrow(g, W / 2, py + 18, W / 2, py + 18 + vl, "#EF4444");
   const tT = Math.sqrt((2 * p.h) / p.g);
   results([
-    ["Altura y", y.toFixed(2) + " m"],
+    ["Height y", y.toFixed(2) + " m"],
     ["Velocity", vel.toFixed(2) + " m/s"],
     ["Time", p.t.toFixed(2) + " s"],
-    ["Tiempo total teórico", tT.toFixed(2) + " s"],
+    ["Time total teórico", tT.toFixed(2) + " s"],
   ]);
 }
 function animCaida(p) {
@@ -2234,7 +2234,7 @@ function SIM_TIRO(mode) {
     drawTiro(p);
     return;
   }
-  slider("tiro-v", "Velocidad inicial v₀", 5, 80, 30, 1, " m/s", (v) => {
+  slider("tiro-v", "Velocity inicial v₀", 5, 80, 30, 1, " m/s", (v) => {
     p.v0 = v;
     drawTiro(p);
   });
@@ -2341,7 +2341,7 @@ function drawTiro(p) {
   }
   results([
     ["Alcance máx.", R.toFixed(1) + " m"],
-    ["Altura máx.", hMax.toFixed(1) + " m"],
+    ["Height máx.", hMax.toFixed(1) + " m"],
     ["Flight time", tF.toFixed(2) + " s"],
     ["θ", p.ang + "°"],
   ]);
@@ -2611,16 +2611,16 @@ function SIM_ONDAS(mode) {
   if (mode === "play") {
     return;
   }
-  slider("on-a1", "Amplitud A₁", 0.1, 2, 1, 0.1, "", (v) => {
+  slider("on-a1", "Amplitude A₁", 0.1, 2, 1, 0.1, "", (v) => {
     p.A1 = v;
   });
-  slider("on-f1", "Frecuencia f₁", 0.2, 5, 1, 0.2, " Hz", (v) => {
+  slider("on-f1", "Frequency f₁", 0.2, 5, 1, 0.2, " Hz", (v) => {
     p.f1 = v;
   });
-  slider("on-a2", "Amplitud A₂", 0, 2, 0.5, 0.1, "", (v) => {
+  slider("on-a2", "Amplitude A₂", 0, 2, 0.5, 0.1, "", (v) => {
     p.A2 = v;
   });
-  slider("on-f2", "Frecuencia f₂", 0.2, 5, 2, 0.2, " Hz", (v) => {
+  slider("on-f2", "Frequency f₂", 0.2, 5, 2, 0.2, " Hz", (v) => {
     p.f2 = v;
   });
   slider("on-phi", "Desfase φ", 0, 360, 0, 15, "°", (v) => {
@@ -2764,7 +2764,7 @@ function drawOhm(p) {
   g.font = "bold 11px JetBrains Mono";
   g.textAlign = "center";
   g.fillText(p.V + "V", x1, H / 2 + 56);
-  // Resistencia
+  // Resistance
   g.fillStyle = "#FEF3C7";
   g.fillRect((x1 + x2) / 2 - 30, y1 - 14, 60, 28);
   g.strokeStyle = "#F59E0B";
@@ -2866,7 +2866,7 @@ function SIM_OPTICA(mode) {
     p.do = v;
     drawOptica(p);
   });
-  slider("op-ho", "Altura objeto (cm)", 1, 8, 3, 1, " cm", (v) => {
+  slider("op-ho", "Height objeto (cm)", 1, 8, 3, 1, " cm", (v) => {
     p.ho = v;
     drawOptica(p);
   });
@@ -2975,7 +2975,7 @@ function SIM_ENERGIA(mode) {
     drawEn(p);
     return;
   }
-  slider("en-h", "Altura inicial h", 2, 40, 10, 1, " m", (v) => {
+  slider("en-h", "Height inicial h", 2, 40, 10, 1, " m", (v) => {
     p.h = v;
     p.t = 0;
     drawEn(p);
@@ -3193,13 +3193,13 @@ function SIM_GASES(mode) {
       vy: (Math.random() - 0.5) * 0.006,
     });
   if (mode === "play" || mode === "reset") return;
-  slider("gs-p", "Presión P (atm)", 0.1, 10, 1, 0.1, " atm", (v) => {
+  slider("gs-p", "Pressure P (atm)", 0.1, 10, 1, 0.1, " atm", (v) => {
     p.P = v;
   });
-  slider("gs-v", "Volumen V (L)", 1, 100, 22.4, 0.5, " L", (v) => {
+  slider("gs-v", "Volume V (L)", 1, 100, 22.4, 0.5, " L", (v) => {
     p.V = v;
   });
-  slider("gs-t", "Temperatura T (K)", 50, 1000, 273, 10, " K", (v) => {
+  slider("gs-t", "Temperature T (K)", 50, 1000, 273, 10, " K", (v) => {
     p.T = v;
   });
   slider("gs-n", "Moles n", 0.1, 10, 1, 0.1, " mol", (v) => {
@@ -3274,19 +3274,19 @@ function SIM_REAC(mode) {
     drawReac(p);
     return;
   }
-  slider("rc-er", "Energía reactivos (kJ)", 10, 100, 50, 5, " kJ", (v) => {
+  slider("rc-er", "Energy reactivos (kJ)", 10, 100, 50, 5, " kJ", (v) => {
     p.er = v;
     drawReac(p);
   });
-  slider("rc-ea", "Energía activación Ea", 5, 80, 30, 5, " kJ", (v) => {
+  slider("rc-ea", "Energy activación Ea", 5, 80, 30, 5, " kJ", (v) => {
     p.ea = v;
     drawReac(p);
   });
-  slider("rc-ep", "Energía productos (kJ)", 5, 100, 20, 5, " kJ", (v) => {
+  slider("rc-ep", "Energy productos (kJ)", 5, 100, 20, 5, " kJ", (v) => {
     p.ep = v;
     drawReac(p);
   });
-  slider("rc-t", "Temperatura T", 200, 1000, 300, 50, " K", (v) => {
+  slider("rc-t", "Temperature T", 200, 1000, 300, 50, " K", (v) => {
     p.T = v;
     drawReac(p);
   });
@@ -3583,7 +3583,7 @@ function SIM_TABLA() {
         cell.onmouseout = () => (cell.style.transform = "scale(1)");
         cell.onclick = () => {
           document.getElementById("sim-results").innerHTML =
-            `<div class="res-row"><span>Símbolo</span><strong>${el.s}</strong></div><div class="res-row"><span>Nombre</span><strong>${el.nm}</strong></div><div class="res-row"><span>Nº atómico Z</span><strong>${el.n}</strong></div><div class="res-row"><span>Masa atómica</span><strong>${el.m} u</strong></div><div class="res-row"><span>Grupo / Período</span><strong>${el.g} / ${el.p}</strong></div><div class="res-row"><span>Categoría</span><strong>${el.cat}</strong></div>`;
+            `<div class="res-row"><span>Symbol</span><strong>${el.s}</strong></div><div class="res-row"><span>Nombre</span><strong>${el.nm}</strong></div><div class="res-row"><span>Nº atómico Z</span><strong>${el.n}</strong></div><div class="res-row"><span>Mass atómica</span><strong>${el.m} u</strong></div><div class="res-row"><span>Grupo / Period</span><strong>${el.g} / ${el.p}</strong></div><div class="res-row"><span>Category</span><strong>${el.cat}</strong></div>`;
         };
       } else {
         cell.style.cssText = "width:40px;height:42px;";
@@ -3867,7 +3867,7 @@ function answer(sel, correct, opts, topic) {
   document.dispatchEvent(
     new CustomEvent("eloChanged", { detail: { topic, elo: S.elo[topic] } }),
   );
-  // Guardar Elo en localStorage
+  // Save Elo en localStorage
   const eloStore = JSON.parse(localStorage.getItem("yl_elo") || "{}");
   eloStore[topic] = S.elo[topic];
   localStorage.setItem("yl_elo", JSON.stringify(eloStore));
@@ -4066,7 +4066,7 @@ const EXERCISE_FIELDS = {
   ondas: [
     {
       id: "ex-ond-a",
-      label: "Amplitude A (m)",
+      label: "Amplitudee A (m)",
       step: 0.1,
       min: 0.1,
       max: 3,
@@ -4327,7 +4327,7 @@ function simulateExercise() {
 const GROQ_KEY = window.GROQ_KEY_LOCAL || "";
 window.GROQ_KEY_APP = GROQ_KEY;
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const GROQ_SYS = `Eres Yachay, tutor socrático de física y química para estudiantes de secundaria en la Amazonía peruana.
+const GROQ_SYS = `Eres Yachay, tutor socrático de física y química para estudiantes de secundaria y preuniversitaria que ayuda en ejercicios de fisica,matematicas,quimica ,siempre hablas en ingles mientras que el usuario te pida que hables en otro idioma hablas ese idioma.
 Reglas estrictas:
 - Responde en máximo 4 oraciones claras y naturales.
 - Usa analogías con la naturaleza amazónica (ríos, árboles, animales de la selva).

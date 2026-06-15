@@ -100,7 +100,7 @@ const Events = (() => {
      DAILY MISSION POOL (4 drawn per day)
   ──────────────────────────────────────────────────────────── */
   const MISSION_POOL = [
-    // Simuladores
+    // Simulatores
     {
       id: "m_sim_any",
       icon: "⚗️",
@@ -197,7 +197,7 @@ const Events = (() => {
       action: () => openSim("gases"),
       actionLbl: "Ver gases",
     },
-    // Práctica
+    // Practice
     {
       id: "m_prac_3",
       icon: "🎯",

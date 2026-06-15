@@ -742,10 +742,10 @@ Rules:
     setText("exrs-time", `${mm}:${ss}`);
     setText("exrs-xp", `+${xp}`);
 
-    // Revisión de respuestas
+    // Answer review
     renderReview();
 
-    // Guardar en historial
+    // Save en historial
     saveHistory({
       date: new Date().toISOString(),
       subject: exam.subject,

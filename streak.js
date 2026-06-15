@@ -380,7 +380,7 @@ const Streak = (() => {
       animateFire(s.current);
     }, 100);
 
-    // Cerrar al click fuera
+    // Close al click fuera
     panel.addEventListener("click", (e) => {
       if (e.target === panel) closePanel();
     });
@@ -453,7 +453,7 @@ const Streak = (() => {
       p.classList.add("sp-out");
       setTimeout(() => p.remove(), 300);
     }
-    // Volver a mostrar widget compacto
+    // Back a mostrar widget compacto
     const w = document.getElementById("streak-widget");
     if (w) {
       w.classList.remove("sw-shrink", "sw-hidden");

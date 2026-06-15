@@ -2,7 +2,7 @@
    YACHAY LAB — RANKINGS & LOGROS (rankings.js)
    Ranking global simulado con localStorage compartido +
    sistema de 30 logros con animaciones y categorías.
-   Listo para conectar a Supabase (ver TODO markers).
+   Ready para conectar a Supabase (ver TODO markers).
 ═══════════════════════════════════════════════════════════════ */
 
 /* ════════════════════════════════════════════════════════════
@@ -206,7 +206,7 @@ const Rankings = (() => {
   // ── CARGAR todos los usuarios (Supabase primero, demo como fallback) ──────
   async function loadUsers() {
     const me = getCurrentUser();
-    // Guardar "yo" en Supabase
+    // Save "yo" en Supabase
     if (me) SupaSync.syncProfile();
 
     // Intentar cargar desde Supabase
@@ -295,7 +295,7 @@ const Rankings = (() => {
     const list = document.getElementById("rk-list");
     if (!list) return;
 
-    // Actualizar label de columna
+    // Refresh label de columna
     const lbl = document.getElementById("rk-score-label");
     if (lbl)
       lbl.textContent = { elo: "Elo", racha: "Racha", xp: "XP", sims: "Sims" }[
@@ -389,7 +389,7 @@ const Rankings = (() => {
     if (elo >= 1150) return { icon: "🥇", name: "Oro", color: "#F59E0B" };
     if (elo >= 1080) return { icon: "🥈", name: "Plata", color: "#94A3B8" };
     if (elo >= 1000) return { icon: "🥉", name: "Bronce", color: "#CD7C3D" };
-    return { icon: "🌱", name: "Principiante", color: "#10B981" };
+    return { icon: "🌱", name: "Beginner", color: "#10B981" };
   }
 
   function setText(id, val) {
@@ -437,7 +437,7 @@ const Achievements = (() => {
       id: "welcome",
       cat: "social",
       ico: "🌟",
-      name: "Bienvenido",
+      name: "Welcome",
       desc: "Iniciaste sesión por primera vez en Yachay Lab",
       xp: 10,
       cond: (s) => true,
@@ -662,7 +662,7 @@ const Achievements = (() => {
       cat: "social",
       ico: "🔥",
       name: "En racha",
-      desc: "3 días seguidos de actividad",
+      desc: "3 consecutive days de actividad",
       xp: 15,
       cond: (s) => s.bestRacha >= 3,
     },
@@ -671,7 +671,7 @@ const Achievements = (() => {
       cat: "social",
       ico: "⚡",
       name: "Una semana",
-      desc: "7 días seguidos — ¡toda la semana!",
+      desc: "7 consecutive days — ¡toda la semana!",
       xp: 40,
       cond: (s) => s.bestRacha >= 7,
     },
@@ -680,7 +680,7 @@ const Achievements = (() => {
       cat: "social",
       ico: "🌟",
       name: "Dos semanas",
-      desc: "14 días seguidos de dedicación",
+      desc: "14 consecutive days de dedicación",
       xp: 80,
       cond: (s) => s.bestRacha >= 14,
     },
@@ -689,7 +689,7 @@ const Achievements = (() => {
       cat: "social",
       ico: "👑",
       name: "Mes de ciencia",
-      desc: "30 días seguidos — ¡increíble!",
+      desc: "30 consecutive days — ¡increíble!",
       xp: 200,
       cond: (s) => s.bestRacha >= 30,
     },
@@ -743,7 +743,7 @@ const Achievements = (() => {
     }
   }
 
-  // ── CALCULAR logros desbloqueados ─────────────────────────────
+  // ── CALCULAR achievements unlocked ─────────────────────────────
   function getEarned() {
     const stats = getStats();
     return new Set(
@@ -793,7 +793,7 @@ const Achievements = (() => {
 
     if (!filtered.length) {
       grid.innerHTML =
-        '<div class="lg-empty">No hay logros en esta categoría aún. ¡Sigue practicando! 🚀</div>';
+        '<div class="lg-empty">No hay logros en esta categoría aún. Keep practicing! 🚀</div>';
       return;
     }
 
@@ -845,7 +845,7 @@ const Achievements = (() => {
               : '<div class="ach-status-locked">🔒 Aún no desbloqueado</div>'
           }
         </div>
-        <div class="ach-modal-cat">Categoría: ${{ fisica: "⚡ Física", quimica: "🧪 Química", practica: "🎯 Práctica", social: "🌟 Social" }[a.cat] || a.cat}</div>
+        <div class="ach-modal-cat">Category: ${{ fisica: "⚡ Physics", quimica: "🧪 Chemistry", practica: "🎯 Practice", social: "🌟 Social" }[a.cat] || a.cat}</div>
       </div>`;
     document.body.appendChild(m);
     m.addEventListener("click", (e) => {

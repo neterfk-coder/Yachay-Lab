@@ -13,7 +13,7 @@ const ProgressChart = (() => {
   let currentTopic = "f";
   let animRaf = null;
 
-  // Guardar punto de Elo en el historial
+  // Save punto de Elo en el historial
   function record(topic, elo) {
     const h = JSON.parse(localStorage.getItem(ELO_HISTORY_KEY) || "{}");
     if (!h[topic]) h[topic] = [];
@@ -48,7 +48,7 @@ const ProgressChart = (() => {
   function render(topic, btn) {
     currentTopic = topic || currentTopic;
 
-    // Actualizar filtro activo
+    // Refresh filtro activo
     if (btn) {
       document
         .querySelectorAll(".prog-filter")
@@ -465,7 +465,7 @@ const SupaAuth = (() => {
 })();
 
 /* ════════════════════════════════════════════════════════════
-   HOOKS — Conectar todo al sistema existente
+   HOOKS — Connect todo al sistema existente
 ════════════════════════════════════════════════════════════ */
 document.addEventListener("DOMContentLoaded", () => {
   // ── Interceptar doLogin para intentar Supabase Auth primero ──

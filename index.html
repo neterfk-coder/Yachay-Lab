@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yachay Lab — Laboratorio STEM con IA</title>
+    <title>Yachay Lab — Laboratory STEM con IA</title>
     <meta
       name="description"
       content="Virtual STEM Laboratory with AI. 15 simuladores interactivos de física y química para estudiantes latinoamericanos."
@@ -33,7 +33,7 @@
           <div class="al-logo-icon">⚗️</div>
           <div class="al-logo-text">
             <span class="al-logo-name">Yachay Lab</span>
-            <span class="al-logo-tag">STEM · AI · Peru</span>
+            <span class="al-logo-tag">STEM · AI </span>
           </div>
         </div>
 
@@ -64,7 +64,7 @@
           <div class="al-stat-div"></div>
           <div class="al-stat">
             <div class="al-stat-num al-stat-txt">IA</div>
-            <div class="al-stat-lbl">Tutor Socrático</div>
+            <div class="al-stat-lbl">Socratic Tutor</div>
           </div>
           <div class="al-stat-div"></div>
           <div class="al-stat">
@@ -566,7 +566,7 @@
               event.stopPropagation();
               doLogout();
             "
-            title="Cerrar sesión"
+            title="Sign out"
           >
             ⏻
           </button>
@@ -738,7 +738,7 @@
                 <button
                   class="evb-news-close"
                   onclick="Events.dismissNews()"
-                  title="Cerrar"
+                  title="Close"
                 >
                   ✕
                 </button>
@@ -785,7 +785,7 @@
                 <div class="section-chip">🎯 The problem</div>
                 <h2>Why does Yachay Lab exist?</h2>
                 <p>
-                  In Peru and Latin America, more than
+                  In Latin America, more than
                   <strong>70% of rural schools</strong> have no science lab.
                   Students memorize formulas without understanding the real
                   phenomenon behind them.
@@ -1306,7 +1306,7 @@
                 <div class="perfil-name-row">
                   <h2 id="perfil-name">—</h2>
                   <span class="perfil-badge" id="perfil-badge"
-                    >🌱 Principiante</span
+                    >🌱 Beginner</span
                   >
                 </div>
                 <p class="perfil-email" id="perfil-email">—</p>
@@ -1675,20 +1675,18 @@
               <!-- Header -->
               <div class="rk-header">
                 <div class="rk-header-left">
-                  <h1 class="rk-title">🏆 Ranking Global</h1>
-                  <p class="rk-sub">
-                    Los mejores estudiantes STEM de Yachay Lab
-                  </p>
+                  <h1 class="rk-title">🏆 Global Ranking</h1>
+                  <p class="rk-sub">Top STEM students on Yachay Lab</p>
                 </div>
                 <div class="rk-header-right">
                   <div class="rk-live-badge">
-                    <span class="rk-live-dot"></span>EN VIVO
+                    <span class="rk-live-dot"></span>LIVE
                   </div>
                   <button
                     class="rk-refresh-btn"
                     onclick="Rankings.refresh()"
                     id="rk-refresh-btn"
-                    title="Actualizar"
+                    title="Refresh"
                   >
                     <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
                       <path
@@ -1731,7 +1729,7 @@
                   data-filter="sims"
                   onclick="Rankings.setFilter('sims', this)"
                 >
-                  ⚗️ Simulaciones
+                  ⚗️ Simulations
                 </button>
               </div>
 
@@ -1762,7 +1760,7 @@
 
               <!-- Mi posición -->
               <div class="rk-my-pos" id="rk-my-pos" style="display: none">
-                <div class="rmp-label">Tu posición actual</div>
+                <div class="rmp-label">Your current position</div>
                 <div class="rmp-inner">
                   <div class="rmp-rank" id="rmp-rank">#—</div>
                   <div class="rmp-avatar" id="rmp-avatar">👤</div>
@@ -1776,7 +1774,7 @@
 
               <!-- Lista completa -->
               <div class="rk-list-header">
-                <span>#</span><span>Jugador</span><span>País</span
+                <span>#</span><span>Jugador</span><span>Country</span
                 ><span id="rk-score-label">Elo</span><span>Streak</span>
               </div>
               <div class="rk-list" id="rk-list">
@@ -1790,7 +1788,7 @@
               <div class="rk-global-stats" id="rk-global-stats">
                 <div class="rgs-item">
                   <div class="rgs-num" id="rgs-users">—</div>
-                  <div class="rgs-lbl">Estudiantes</div>
+                  <div class="rgs-lbl">Students</div>
                 </div>
                 <div class="rgs-item">
                   <div class="rgs-num" id="rgs-sims">—</div>
@@ -1812,9 +1810,9 @@
           <div class="view" id="view-logros">
             <div class="logros-wrap">
               <div class="lg-header">
-                <h1 class="lg-title">🎖️ Mis Logros</h1>
+                <h1 class="lg-title">🎖️ Mis Achievements</h1>
                 <p class="lg-sub">
-                  Desbloquea logros completando actividades en Yachay Lab
+                  Unlock achievements by completing activities en Yachay Lab
                 </p>
                 <div class="lg-progress-summary">
                   <div class="lps-bar-wrap">
@@ -1824,7 +1822,7 @@
                   </div>
                   <div class="lps-text">
                     <span id="lps-count">0</span> /
-                    <span id="lps-total">0</span> logros desbloqueados
+                    <span id="lps-total">0</span> achievements unlocked
                   </div>
                 </div>
               </div>
@@ -1835,13 +1833,13 @@
                   class="lg-tab active"
                   onclick="Achievements.showCat('all', this)"
                 >
-                  ✨ Todos
+                  ✨ All
                 </button>
                 <button
                   class="lg-tab"
                   onclick="Achievements.showCat('earned', this)"
                 >
-                  🏆 Desbloqueados
+                  🏆 Unlocked
                 </button>
                 <button
                   class="lg-tab"
@@ -1859,7 +1857,7 @@
                   class="lg-tab"
                   onclick="Achievements.showCat('practica', this)"
                 >
-                  🎯 Práctica
+                  🎯 Practice
                 </button>
                 <button
                   class="lg-tab"
@@ -1877,8 +1875,8 @@
                 <div class="lxb-left">
                   <div class="lxb-icon">⭐</div>
                   <div>
-                    <div class="lxb-title">XP Total ganada</div>
-                    <div class="lxb-sub">Suma de todas tus actividades</div>
+                    <div class="lxb-title">Total XP earned</div>
+                    <div class="lxb-sub">Sum of all your activities</div>
                   </div>
                 </div>
                 <div class="lxb-xp" id="lxb-xp">0 XP</div>
@@ -1893,7 +1891,7 @@
               <div id="bt-lobby" class="bt-screen active">
                 <div class="bt-lobby-hero">
                   <div class="bt-lobby-icon">⚔️</div>
-                  <h1 class="bt-lobby-title">Batalla <em>STEM</em></h1>
+                  <h1 class="bt-lobby-title">Battle <em>STEM</em></h1>
                   <p class="bt-lobby-desc">
                     Reta a tus amigos en tiempo real — quien responda más rápido
                     y correcto gana
@@ -1907,10 +1905,10 @@
                 </div>
 
                 <div class="bt-lobby-cards">
-                  <!-- Crear sala -->
+                  <!-- Create room -->
                   <div class="bt-card bt-card-create">
                     <div class="btc-icon">🏟️</div>
-                    <h3>Crear sala</h3>
+                    <h3>Create room</h3>
                     <p>Genera un código y compártelo con tus amigos</p>
                     <div class="btc-options">
                       <label>Materia</label>
@@ -1944,7 +1942,7 @@
                           📐 Mates
                         </button>
                       </div>
-                      <label>Rondas</label>
+                      <label>Rounds</label>
                       <div class="btc-select-row">
                         <button
                           class="btc-opt active"
@@ -1976,14 +1974,14 @@
                           stroke-linecap="round"
                         />
                       </svg>
-                      Crear sala
+                      Create room
                     </button>
                   </div>
 
-                  <!-- Unirse a sala -->
+                  <!-- Join room -->
                   <div class="bt-card bt-card-join">
                     <div class="btc-icon">🔑</div>
-                    <h3>Unirse a sala</h3>
+                    <h3>Join room</h3>
                     <p>Ingresa el código que te compartió tu amigo</p>
                     <div class="bt-code-input-wrap">
                       <input
@@ -2005,13 +2003,13 @@
                   <!-- Sala pública -->
                   <div class="bt-card bt-card-quick">
                     <div class="btc-icon">⚡</div>
-                    <h3>Partida rápida</h3>
+                    <h3>Quick match</h3>
                     <p>
                       Te emparejamos con alguien de tu nivel Elo automáticamente
                     </p>
                     <div class="bt-online-count">
                       <span class="bt-online-dot"></span>
-                      <span id="bt-online">Buscando jugadores...</span>
+                      <span id="bt-online">Searching for players...</span>
                     </div>
                     <button class="bt-btn-quick" onclick="Battle.quickMatch()">
                       Buscar rival →
@@ -2021,7 +2019,7 @@
 
                 <!-- Historial de batallas -->
                 <div class="bt-history">
-                  <div class="bt-history-title">⚔️ Mis últimas batallas</div>
+                  <div class="bt-history-title">⚔️ My latest battles</div>
                   <div id="bt-history-list" class="bt-history-list">
                     <div class="bt-no-history">
                       Aún no tienes batallas — ¡crea una sala!
@@ -2034,14 +2032,14 @@
               <div id="bt-waiting" class="bt-screen">
                 <div class="bt-waiting-inner">
                   <div class="bt-room-code-display">
-                    <div class="bt-rcd-label">Código de sala</div>
+                    <div class="bt-rcd-label">Room code</div>
                     <div class="bt-rcd-code" id="bt-room-code">——————</div>
                     <button
                       class="bt-copy-btn"
                       onclick="Battle.copyCode()"
                       id="bt-copy-btn"
                     >
-                      📋 Copiar código
+                      📋 Copy code
                     </button>
                   </div>
                   <div class="bt-waiting-players">
@@ -2049,7 +2047,7 @@
                       <div class="bt-player-avatar" id="bt-my-avatar">👤</div>
                       <div class="bt-player-name" id="bt-my-name">Tú</div>
                       <div class="bt-player-elo" id="bt-my-elo">Elo 1000</div>
-                      <div class="bt-player-ready bt-ready-yes">✓ Listo</div>
+                      <div class="bt-player-ready bt-ready-yes">✓ Ready</div>
                     </div>
                     <div class="bt-vs-center">
                       <div class="bt-vs-text">VS</div>
@@ -2063,19 +2061,19 @@
                         ⏳
                       </div>
                       <div class="bt-player-name" id="bt-opp-name">
-                        Esperando...
+                        Waiting...
                       </div>
                       <div class="bt-player-elo" id="bt-opp-elo"></div>
                       <div
                         class="bt-player-ready bt-ready-wait"
                         id="bt-opp-ready"
                       >
-                        Esperando rival
+                        Waiting rival
                       </div>
                     </div>
                   </div>
                   <div class="bt-waiting-hint">
-                    Comparte el código con tu amigo para comenzar
+                    Share the code with your friend para comenzar
                   </div>
                   <div class="bt-waiting-actions">
                     <button
@@ -2084,10 +2082,10 @@
                       onclick="Battle.startBattle()"
                       disabled
                     >
-                      ⚔️ Iniciar batalla
+                      ⚔️ Start batalla
                     </button>
                     <button class="bt-btn-cancel" onclick="Battle.cancelRoom()">
-                      Cancelar
+                      Cancel
                     </button>
                   </div>
                 </div>
@@ -2104,7 +2102,7 @@
                   </div>
                   <div class="bt-game-center">
                     <div class="bt-round-badge">
-                      Ronda <span id="bt-round-num">1</span> /
+                      Round <span id="bt-round-num">1</span> /
                       <span id="bt-round-total">5</span>
                     </div>
                     <div class="bt-timer-ring-wrap">
@@ -2144,7 +2142,7 @@
                   </div>
                 </div>
 
-                <!-- Pregunta -->
+                <!-- Question -->
                 <div class="bt-question-area">
                   <div class="bt-question-text" id="bt-question">
                     Loading question...
@@ -2166,10 +2164,10 @@
                   <div class="bt-result-banner" id="bt-result-banner">
                     <div class="bt-result-icon" id="bt-result-icon">🏆</div>
                     <div class="bt-result-title" id="bt-result-title">
-                      ¡Ganaste!
+                      You won!
                     </div>
                     <div class="bt-result-sub" id="bt-result-sub">
-                      ¡Increíble rendimiento STEM!
+                      Amazing STEM performance!
                     </div>
                   </div>
                   <div class="bt-final-scores">
@@ -2193,10 +2191,10 @@
                   <div class="bt-result-rounds" id="bt-result-rounds"></div>
                   <div class="bt-result-actions">
                     <button class="bt-btn-rematch" onclick="Battle.rematch()">
-                      ⚔️ Revancha
+                      ⚔️ Rematch
                     </button>
                     <button class="bt-btn-lobby" onclick="Battle.goLobby()">
-                      ← Volver al lobby
+                      ← Back to lobby
                     </button>
                   </div>
                 </div>
@@ -2259,7 +2257,7 @@
                     </div>
                   </div>
 
-                  <!-- Dificultad -->
+                  <!-- Difficulty -->
                   <div class="exam-field">
                     <label class="exam-label">🎯 Difficulty</label>
                     <div class="exam-opts" id="exam-diff-opts">
@@ -2500,7 +2498,7 @@
                   </div>
                 </div>
 
-                <!-- Revisión de respuestas -->
+                <!-- Answer review -->
                 <div class="exr-review">
                   <div class="exr-review-title">📋 Answer review</div>
                   <div id="exr-review-list"></div>
@@ -2560,12 +2558,12 @@
             </p>
             <div class="ft-badges">
               <span class="ft-badge">🏆 DSH Hacks V1</span>
-              <span class="ft-badge">🇵🇪 Made in Peru</span>
+              <span class="ft-badge">🇵</span>
               <span class="ft-badge">100% Free</span>
             </div>
           </div>
 
-          <!-- Simuladores -->
+          <!-- Simulatores -->
           <div class="ft-col">
             <div class="ft-col-title">⚡ Physics</div>
             <a
@@ -2626,7 +2624,7 @@
             >
           </div>
 
-          <!-- Química -->
+          <!-- Chemistry -->
           <div class="ft-col">
             <div class="ft-col-title">🧪 Chemistry</div>
             <a
@@ -2806,7 +2804,8 @@
         <!-- Bottom bar -->
         <div class="footer-bottom">
           <div class="fb-left">
-            © 2026 Yachay Lab · Built for <strong>DSH Hacks V1</strong>
+            © 2026 Yachay Lab · Built for <strong>DSH Hacks V1</strong> · Made
+            with ❤️ from Huánuco, Perú 🇵🇪
           </div>
           <div class="fb-right">
             <a onclick="go('perfil')" class="fb-link">Privacy</a>
@@ -2840,7 +2839,7 @@
       onclick="if (event.target === this) closeModals();"
     >
       <div class="modal-box">
-        <h3>Elige un fondo de perfil</h3>
+        <h3>Choose a profile background</h3>
         <div class="banner-grid" id="banner-grid"></div>
       </div>
     </div>

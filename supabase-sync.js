@@ -3,9 +3,9 @@
    Sincroniza en tiempo real:
    · Perfil de usuario (stats, Elo, racha, XP)
    · Ranking global desde Supabase
-   · Batallas multijugador en tiempo real
+   · Battles multijugador en tiempo real
    · Sesiones de invitado con geo
-   · Logros desbloqueados
+   · Achievements desbloqueados
 ═══════════════════════════════════════════════════════════════ */
 
 const SupaSync = (() => {
