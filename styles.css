@@ -4580,3 +4580,16 @@ textarea {
     margin-left: 0 !important;
   }
 }
+
+/* ── Explicación de pregunta ─────────────────────────────── */
+.q-exp {
+  font-size: 13px;
+  color: var(--t2, #3d4566);
+  background: var(--p-lt, #eeeffe);
+  border-left: 3px solid var(--p, #5a5fe0);
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+  margin-top: 10px;
+  line-height: 1.6;
+  animation: fadeIn 0.3s ease;
+}

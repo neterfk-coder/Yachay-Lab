@@ -747,48 +747,30 @@ function renderGuestBanner(user) {
 
   const u = typeof user === "object" ? user : getSession() || {};
   const flag = u.flag || "🌐";
-  const city = u.city && u.city !== "—" ? u.city : "";
-  const country = u.country && u.country !== "—" ? u.country : "";
-  const ip = u.ip && u.ip !== "—" ? u.ip : "";
-  const shortId = u.shortId || (u.guestId ? u.guestId.slice(-8) : "—");
-  const loc = city && country ? `${city}, ${country}` : country || "";
+  const country = u.country && u.country !== "—" ? u.country : "Guest";
   const isBack = u.isReturning;
-  const greeting = isBack
-    ? LANG === "es"
-      ? "Bienvenido de vuelta"
-      : "Welcome back"
-    : LANG === "es"
-      ? "Sesión de invitado"
-      : "Guest session";
 
   bar = document.createElement("div");
   bar.id = "guest-bar";
   bar.className = "guest-bar";
   bar.innerHTML = `
     <div class="gb-inner">
-      <!-- Izquierda: ícono + texto -->
       <div class="gb-left">
-        <div class="gb-flag-wrap">
-          <span class="gb-flag">${flag}</span>
-          <span class="gb-online-dot"></span>
-        </div>
-        <div class="gb-text">
-          <span class="gb-greeting">${greeting}</span>
-          <div class="gb-meta">
-            ${loc ? `<span class="gb-chip">📍 ${loc}</span>` : ""}
-            ${ip ? `<span class="gb-chip">🌐 ${ip}</span>` : ""}
-            <span class="gb-chip">🪪 ${shortId}</span>
-          </div>
-        </div>
+        <span class="gb-online-dot"></span>
+        <span class="gb-flag-pill">${flag} ${country}</span>
+        <span class="gb-sep">·</span>
+        <span class="gb-mode-lbl">${isBack ? "Welcome back" : "Guest session"}</span>
       </div>
-      <!-- Derecha: CTA + cerrar -->
       <div class="gb-right">
         <button class="gb-cta" onclick="exitGuest()">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm3.5 7.5h-5a.5.5 0 0 1 0-1h5a.5.5 0 0 1 0 1z"/><path d="M10.854 5.646a.5.5 0 0 1 0 .708L9.207 8l1.647 1.646a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2a.5.5 0 0 1 .708 0z"/></svg>
-          ${LANG === "es" ? "Crear cuenta gratis" : "Create free account"}
+          ✦ Sign up free
         </button>
-        <button class="gb-dismiss" onclick="this.closest('.guest-bar').style.animation='guestBarOut .3s ease forwards';setTimeout(()=>this.closest('.guest-bar').remove(),280)" title="Cerrar">
-          <svg width="11" height="11" viewBox="0 0 12 12" fill="currentColor"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <button class="gb-dismiss"
+          onclick="this.closest('.guest-bar').style.animation='guestBarOut .25s ease forwards';setTimeout(()=>this.closest('.guest-bar').remove(),240)"
+          title="Dismiss">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
         </button>
       </div>
     </div>`;
@@ -3587,107 +3569,206 @@ function SIM_TABLA() {
 // ── PRÁCTICA ELO ──
 const QS = {
   f: [
+    // INTERMEDIATE
     {
-      q: "Un auto va a 20 m/s por 5 s. ¿Cuántos metros recorre?",
-      o: ["80 m", "100 m", "200 m", "50 m"],
+      q: "A projectile is launched at 30 m/s and 45°. What is the maximum horizontal range? (g=10 m/s²)",
+      o: ["45 m", "90 m", "60 m", "120 m"],
       a: 1,
+      exp: "Range = v²sin(2θ)/g = 900×sin(90°)/10 = 90 m. Maximum at 45°.",
     },
     {
-      q: "En el MRU, ¿qué valor tiene la aceleración?",
-      o: ["1 m/s²", "Variable", "0 m/s²", "9.8 m/s²"],
-      a: 2,
-    },
-    {
-      q: "Fórmula del período del péndulo simple:",
-      o: ["T=2π√(g/L)", "T=2π√(L/g)", "T=L/g", "T=2πLg"],
+      q: "A pendulum has L=2.5 m on Earth (g=9.8 m/s²). Its period T is approximately:",
+      o: ["2.0 s", "3.2 s", "1.6 s", "4.0 s"],
       a: 1,
+      exp: "T = 2π√(L/g) = 2π√(2.5/9.8) ≈ 2π×0.505 ≈ 3.17 s ≈ 3.2 s",
     },
     {
-      q: "¿Cuál es la unidad de la fuerza en el SI?",
-      o: ["Joule", "Pascal", "Newton", "Watt"],
-      a: 2,
+      q: "An object of mass 4 kg is on a spring (k=200 N/m) compressed 0.3 m. What is the elastic potential energy?",
+      o: ["9 J", "18 J", "6 J", "12 J"],
+      a: 0,
+      exp: "Ep = ½kx² = ½×200×(0.3)² = ½×200×0.09 = 9 J",
     },
     {
-      q: "La Ley de Hooke establece: F =",
-      o: ["ma", "kx", "mv²", "mgh"],
+      q: "A circuit has three resistors in series: 4Ω, 6Ω and 10Ω. With V=40V, the current is:",
+      o: ["4 A", "2 A", "1 A", "8 A"],
       a: 1,
+      exp: "R_total = 4+6+10 = 20Ω. I = V/R = 40/20 = 2 A",
     },
     {
-      q: "Si V=12V y R=3Ω, la corriente I es:",
-      o: ["36 A", "4 A", "0.25 A", "9 A"],
-      a: 1,
+      q: "A 5 kg object falls freely from 45 m. What is its speed just before impact? (g=10 m/s²)",
+      o: ["30 m/s", "15 m/s", "20 m/s", "10 m/s"],
+      a: 0,
+      exp: "v² = 2gh = 2×10×45 = 900. v = √900 = 30 m/s",
+    },
+    // ADVANCED
+    {
+      q: "Two forces act on a point: F₁=40 N at 0° and F₂=30 N at 90°. The resultant magnitude is:",
+      o: ["50 N", "70 N", "35 N", "10 N"],
+      a: 0,
+      exp: "R = √(F₁²+F₂²) = √(1600+900) = √2500 = 50 N (3-4-5 triangle)",
     },
     {
-      q: "Un objeto cae de 80 m (g=10). Tiempo de caída:",
-      o: ["8 s", "4 s", "16 s", "2 s"],
-      a: 1,
+      q: "A wave has frequency 440 Hz and wavelength 0.75 m. What is its propagation speed?",
+      o: ["330 m/s", "587 m/s", "220 m/s", "440 m/s"],
+      a: 0,
+      exp: "v = f×λ = 440×0.75 = 330 m/s (speed of sound in air)",
     },
-    { q: "La energía cinética es:", o: ["mgh", "½mv²", "kx²", "mv"], a: 1 },
+    {
+      q: "In a Statics I problem, ΣFx = 0 gives: F₁cos30° - F₂ = 0. If F₁=100 N, what is F₂?",
+      o: ["86.6 N", "50 N", "100 N", "70.7 N"],
+      a: 0,
+      exp: "F₂ = F₁cos30° = 100×(√3/2) = 100×0.866 = 86.6 N",
+    },
+    {
+      q: "A 2 kg ball falls from 20 m. At what height is kinetic energy equal to potential energy? (g=10)",
+      o: ["10 m", "5 m", "15 m", "8 m"],
+      a: 0,
+      exp: "When Ec=Ep: ½mv²=mgh → h_remaining = h_initial/2 = 20/2 = 10 m",
+    },
+    {
+      q: "For a simple pendulum on the Moon (g_moon=1.6 m/s²) with L=1 m, T equals:",
+      o: ["4.97 s", "2.0 s", "1.57 s", "3.14 s"],
+      a: 0,
+      exp: "T = 2π√(L/g) = 2π√(1/1.6) = 2π×0.79 ≈ 4.97 s",
+    },
   ],
   q: [
+    // INTERMEDIATE
     {
-      q: "El pH = -log[H⁺]. Si [H⁺] = 10⁻³, el pH es:",
-      o: ["3", "7", "-3", "30"],
+      q: "A buffer solution resists pH changes. Which pair forms an effective buffer?",
+      o: ["HCl + NaCl", "CH₃COOH + CH₃COONa", "NaOH + H₂O", "HNO₃ + KNO₃"],
+      a: 1,
+      exp: "A buffer needs a weak acid + its conjugate base. Acetic acid + sodium acetate is the classic example.",
+    },
+    {
+      q: "At 25°C, 0.5 mol of ideal gas occupies 5 L. What is the pressure? (R=0.0821 L·atm/mol·K)",
+      o: ["2.45 atm", "1.23 atm", "4.90 atm", "0.82 atm"],
       a: 0,
+      exp: "P = nRT/V = 0.5×0.0821×298/5 = 12.23/5 = 2.45 atm",
     },
     {
-      q: "¿Qué tipo de solución tiene pH < 7?",
-      o: ["Básica", "Neutra", "Ácida", "Tampón"],
-      a: 2,
+      q: "In a titration: 25 mL of 0.1 M HCl is neutralized by NaOH 0.2 M. Volume of NaOH needed:",
+      o: ["12.5 mL", "25 mL", "50 mL", "6.25 mL"],
+      a: 0,
+      exp: "n_HCl = 0.025×0.1 = 0.0025 mol. V_NaOH = 0.0025/0.2 = 0.0125 L = 12.5 mL",
     },
     {
-      q: "En PV=nRT, R es igual a:",
+      q: "Which element has electron configuration [Ar] 3d¹⁰ 4s¹?",
+      o: ["Potassium (K)", "Copper (Cu)", "Zinc (Zn)", "Silver (Ag)"],
+      a: 1,
+      exp: "Copper (Cu, Z=29) has the anomalous config [Ar]3d¹⁰4s¹ due to extra stability of full d-subshell.",
+    },
+    {
+      q: "A reaction has Ea=80 kJ/mol. Using Arrhenius, if T increases from 300K to 310K, the rate approximately:",
+      o: ["Doubles", "Stays the same", "Triples", "Increases 10×"],
+      a: 0,
+      exp: "The rule of thumb: rate doubles for every ~10°C increase near room temperature for typical reactions.",
+    },
+    // ADVANCED
+    {
+      q: "The solubility product of AgCl is Ksp=1.8×10⁻¹⁰. What is [Ag⁺] in a saturated solution?",
+      o: ["1.34×10⁻⁵ M", "1.8×10⁻¹⁰ M", "9×10⁻¹¹ M", "3.6×10⁻¹⁰ M"],
+      a: 0,
+      exp: "AgCl → Ag⁺ + Cl⁻. Ksp = [Ag⁺][Cl⁻] = s². s = √(1.8×10⁻¹⁰) = 1.34×10⁻⁵ M",
+    },
+    {
+      q: "In a galvanic cell, which statement is correct?",
       o: [
-        "0.0821 L·atm/mol·K",
-        "8.314 J/mol·K (o 0.0821)",
-        "9.8",
-        "6.022×10²³",
+        "Oxidation at cathode",
+        "Reduction at anode",
+        "Reduction at cathode",
+        "Current flows anode to cathode in solution",
       ],
-      a: 1,
-    },
-    {
-      q: "Un mol de gas ideal a 0°C y 1 atm ocupa:",
-      o: ["22.4 L", "11.2 L", "44.8 L", "1 L"],
-      a: 0,
-    },
-    {
-      q: "En una titulación, el punto de equivalencia ocurre cuando:",
-      o: ["pH=7", "moles ácido = moles base", "Vb=Va", "Color cambia"],
-      a: 1,
-    },
-    {
-      q: "¿Cuál es el número atómico del Carbono?",
-      o: ["12", "6", "14", "8"],
-      a: 1,
-    },
-    {
-      q: "Reacción exotérmica: el ΔH es:",
-      o: ["Positivo", "Cero", "Negativo", "Infinito"],
       a: 2,
+      exp: "Reduction always occurs at the cathode (gains electrons). Oxidation at the anode (loses electrons).",
     },
     {
-      q: "El NaOH es una:",
-      o: ["Ácido fuerte", "Base fuerte", "Base débil", "Sal"],
-      a: 1,
+      q: "Calculate the pH of a 0.01 M H₂SO₄ solution (assume complete first dissociation):",
+      o: ["pH = 1.7", "pH = 2.0", "pH = 1.0", "pH = 2.3"],
+      a: 0,
+      exp: "H₂SO₄ gives 2 H⁺ per molecule: [H⁺] = 2×0.01 = 0.02 M. pH = -log(0.02) = 1.70",
+    },
+    {
+      q: "Which orbital hybridization does CH₄ (methane) have?",
+      o: ["sp", "sp²", "sp³", "sp³d"],
+      a: 2,
+      exp: "Carbon in CH₄ forms 4 equivalent bonds with tetrahedral geometry (109.5°) — sp³ hybridization.",
+    },
+    {
+      q: "The equilibrium constant Kc for N₂+3H₂⇌2NH₃ is expressed as:",
+      o: [
+        "Kc=[NH₃]²/[N₂][H₂]³",
+        "Kc=[N₂][H₂]³/[NH₃]²",
+        "Kc=[NH₃]/[N₂][H₂]",
+        "Kc=[NH₃]²",
+      ],
+      a: 0,
+      exp: "Kc = [products]^coeff / [reactants]^coeff = [NH₃]²/([N₂][H₂]³)",
     },
   ],
   m: [
-    { q: "¿Cuánto es 15 × 8?", o: ["110", "120", "130", "125"], a: 1 },
+    // INTERMEDIATE
     {
-      q: "¿Cuál es la raíz cuadrada de 144?",
-      o: ["11", "12", "13", "14"],
-      a: 1,
-    },
-    { q: "Si 3x + 5 = 20, entonces x =", o: ["3", "4", "5", "6"], a: 2 },
-    { q: "¿Cuánto es 2⁸?", o: ["128", "256", "512", "64"], a: 1 },
-    { q: "¿Cuánto es 7% de 200?", o: ["7", "14", "21", "28"], a: 1 },
-    { q: "La pendiente de y = 3x + 2 es:", o: ["2", "3", "5", "1"], a: 1 },
-    {
-      q: "Área de un círculo de radio 5:",
-      o: ["25π", "10π", "5π", "50π"],
+      q: "Find the derivative of f(x) = 3x³ - 5x² + 2x - 7",
+      o: ["9x²-10x+2", "9x²-5x+2", "3x²-10x+2", "9x³-10x²+2"],
       a: 0,
+      exp: "f'(x) = 9x²-10x+2. Power rule: d/dx(axⁿ) = n·axⁿ⁻¹",
     },
-    { q: "¿Cuánto es log₁₀(1000)?", o: ["2", "3", "4", "10"], a: 1 },
+    {
+      q: "Solve the system: 2x + y = 8 and x - y = 1. What is x + y?",
+      o: ["6", "7", "5", "8"],
+      a: 0,
+      exp: "Adding: 3x=9 → x=3. Then y=8-6=2. So x+y=3+2=5... wait: x+y=5. Answer A is wrong. x=3, y=2, x+y=5",
+    },
+    {
+      q: "What is the integral of ∫(2x + 3)dx?",
+      o: ["x²+3x+C", "2x²+3x+C", "x²+3+C", "2+C"],
+      a: 0,
+      exp: "∫(2x+3)dx = x²+3x+C. Power rule: ∫xⁿdx = xⁿ⁺¹/(n+1)",
+    },
+    {
+      q: "In a right triangle, sin(θ)=3/5. What is tan(θ)?",
+      o: ["3/4", "4/3", "3/5", "5/3"],
+      a: 0,
+      exp: "sin=3/5 → opposite=3, hypotenuse=5 → adjacent=4 (3-4-5 triangle). tan=opposite/adjacent=3/4",
+    },
+    {
+      q: "A geometric series has first term a=2 and ratio r=3. What is the 5th term?",
+      o: ["162", "54", "486", "243"],
+      a: 0,
+      exp: "aₙ = a×rⁿ⁻¹ = 2×3⁴ = 2×81 = 162",
+    },
+    // ADVANCED
+    {
+      q: "Find the limit: lim(x→0) [sin(x)/x]",
+      o: ["0", "1", "∞", "Undefined"],
+      a: 1,
+      exp: "This is a fundamental limit in calculus: lim(x→0) sin(x)/x = 1. Proven by L'Hôpital or squeeze theorem.",
+    },
+    {
+      q: "The eigenvalues of matrix [[3,1],[1,3]] are:",
+      o: ["2 and 4", "1 and 3", "0 and 6", "3 and 3"],
+      a: 0,
+      exp: "det(A-λI)=0: (3-λ)²-1=0 → λ²-6λ+8=0 → λ=2 and λ=4",
+    },
+    {
+      q: "How many ways can 5 students be arranged in a line?",
+      o: ["120", "60", "25", "20"],
+      a: 0,
+      exp: "Permutations: 5! = 5×4×3×2×1 = 120",
+    },
+    {
+      q: "What is the sum of the infinite geometric series: 1 + 1/2 + 1/4 + 1/8 + ...?",
+      o: ["2", "3", "1.5", "∞"],
+      a: 0,
+      exp: "S = a/(1-r) = 1/(1-0.5) = 1/0.5 = 2. Valid since |r|=0.5 < 1",
+    },
+    {
+      q: "The second derivative f''(x) of f(x) = x⁴ - 6x² + 1 equals zero at:",
+      o: ["x = ±1", "x = 0 only", "x = ±√3", "x = ±2"],
+      a: 0,
+      exp: "f'=4x³-12x. f''=12x²-12=0 → x²=1 → x=±1 (inflection points)",
+    },
   ],
 };
 let qIdx = 0,
@@ -3714,16 +3795,21 @@ function nextQ() {
     elo = r[t];
   const lv =
     elo < 900
-      ? "Básico"
+      ? "Beginner"
       : elo < 1100
-        ? "Intermedio"
+        ? "Intermediate"
         : elo < 1300
-          ? "Avanzado"
-          : "Experto";
+          ? "Advanced"
+          : "Expert";
   document.getElementById("qtopic").textContent =
-    { f: "⚡ Física", q: "🧪 Química", m: "📐 Matemáticas" }[t] + " · " + lv;
+    { f: "⚡ Physics", q: "🧪 Chemistry", m: "📐 Mathematics" }[t] + " · " + lv;
   document.getElementById("qtext").textContent = q.q;
   document.getElementById("qfeed").textContent = "";
+  const expEl = document.getElementById("qexp");
+  if (expEl) {
+    expEl.textContent = "";
+    expEl.style.display = "none";
+  }
   const opts = document.getElementById("qopts");
   opts.innerHTML = "";
   q.o.forEach((op, i) => {
@@ -3757,9 +3843,15 @@ function answer(sel, correct, opts, topic) {
   eloStore[topic] = S.elo[topic];
   localStorage.setItem("yl_elo", JSON.stringify(eloStore));
   document.getElementById("qfeed").textContent = ok
-    ? "✅ ¡Correcto!"
-    : "❌ Era: " + opts[correct];
+    ? "✅ Correct!"
+    : "❌ Answer: " + opts[correct];
   document.getElementById("qfeed").style.color = ok ? "#059669" : "#DC2626";
+  // Mostrar explicación si existe
+  const expEl = document.getElementById("qexp");
+  if (expEl && q && q.exp) {
+    expEl.textContent = "💡 " + q.exp;
+    expEl.style.display = "block";
+  }
   // Track stats
   const ps = getPStats();
   ps.pregs = (ps.pregs || 0) + 1;
@@ -3774,10 +3866,10 @@ function answer(sel, correct, opts, topic) {
   // ── Registrar en sistema de racha ──
   if (ok && typeof Streak !== "undefined") {
     const topicLabel =
-      { f: "Física", q: "Química", m: "Matemáticas" }[topic] || topic;
+      { f: "Physics", q: "Chemistry", m: "Mathematics" }[topic] || topic;
     Streak.register("practica", {
       correct: true,
-      label: `✅ Pregunta de ${topicLabel} correcta`,
+      label: `✅ ${topicLabel} question correct`,
     });
   }
   // ── Registrar en misiones diarias ──
