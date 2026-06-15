@@ -516,12 +516,9 @@ async function enterGuest() {
 
     const city = geo.city || storedGeo.city || "";
     const country = geo.country || storedGeo.country || "";
-    const locName = city
-      ? `${city}, ${country}`
-      : country || "Ubicación desconocida";
+    const locName = city ? `${city}, ${country}` : country || "Unknown";
 
-    const displayName =
-      flag + " " + (LANG === "es" ? "Invitado" : "Guest") + " · " + locName;
+    const displayName = flag + " Guest · " + (country || "Unknown");
 
     // ── PASO 5: Crear / recuperar perfil de invitado ───────────
     const now = new Date().toISOString();
@@ -697,9 +694,7 @@ function launchApp(user) {
   // Sidebar
   document.getElementById("sb-username").textContent = dname;
   document.getElementById("sb-useremail").textContent = user.guest
-    ? user.city && user.city !== "—"
-      ? `📍 ${user.city}, ${user.country}`
-      : "👤 Modo invitado"
+    ? `${user.flag || "🌐"} ${user.country || "Guest"}`
     : user.email;
   document.getElementById("sb-avatar").textContent = avatar;
 
@@ -936,27 +931,25 @@ function renderPerfil() {
 
   if (ses.guest) {
     const flag = ses.flag || "🌐";
-    const city = ses.city && ses.city !== "—" ? ses.city : "";
-    const region = ses.region && ses.region !== "—" ? ses.region : "";
     const country = ses.country && ses.country !== "—" ? ses.country : "";
-    const tz = ses.timezone || "—";
-    const ip = ses.ip && ses.ip !== "—" ? ses.ip : "—";
-    const isp = ses.isp && ses.isp !== "—" ? ses.isp : "";
-    const shortId = ses.shortId || "—";
+    const city = ses.city && ses.city !== "—" ? ses.city : "";
+    const shortId = ses.shortId || (ses.guestId ? ses.guestId.slice(-8) : "—");
     const logins = ses.loginCount || 1;
     const joined = ses.createdAt
-      ? new Date(ses.createdAt).toLocaleDateString()
+      ? new Date(ses.createdAt).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
       : "—";
-    const lat = ses.latitude || 0;
-    const lng = ses.longitude || 0;
 
-    const locFull = [city, region, country].filter(Boolean).join(", ") || "—";
+    const loc = city && country ? `${city}, ${country}` : country || "Unknown";
 
-    document.getElementById("perfil-email").textContent = `${flag} ${locFull}`;
+    document.getElementById("perfil-email").textContent = `${flag} ${loc}`;
     document.getElementById("perfil-joined").textContent =
-      `🪪 ID: ${shortId} · 📅 Desde: ${joined} · 🔑 Accesos: ${logins}`;
+      `Member since ${joined} · ${logins} session${logins > 1 ? "s" : ""}`;
 
-    // Inyectar tarjeta de info geo si no existe
+    // Tarjeta de invitado — limpia, solo lo esencial
     let geoCard = document.getElementById("guest-geo-card");
     if (!geoCard) {
       geoCard = document.createElement("div");
@@ -965,19 +958,13 @@ function renderPerfil() {
       document.getElementById("perfil-header").after(geoCard);
     }
     geoCard.innerHTML = `
-      <div class="ggc-title">📡 Información de sesión</div>
+      <div class="ggc-title">🌍 Guest Session</div>
       <div class="ggc-grid">
-        <div class="ggc-item"><span>🌐 IP pública</span><strong>${ip}</strong></div>
-        <div class="ggc-item"><span>📍 Ciudad</span><strong>${city || "—"}</strong></div>
-        <div class="ggc-item"><span>🗺️ Región</span><strong>${region || "—"}</strong></div>
-        <div class="ggc-item"><span>${flag} País</span><strong>${country || "—"}</strong></div>
-        <div class="ggc-item"><span>🕐 Zona horaria</span><strong>${tz}</strong></div>
-        <div class="ggc-item"><span>📶 ISP</span><strong>${isp || "—"}</strong></div>
-        ${lat ? `<div class="ggc-item"><span>🗾 Coordenadas</span><strong>${lat.toFixed(3)}, ${lng.toFixed(3)}</strong></div>` : ""}
-        <div class="ggc-item"><span>🪪 ID único</span><strong>${shortId}</strong></div>
+        <div class="ggc-item"><span>📍 Location</span><strong>${flag} ${loc}</strong></div>
+        <div class="ggc-item"><span>🪪 Session ID</span><strong>${shortId}</strong></div>
       </div>
-      <div class="ggc-note">⚠️ Crea una cuenta para guardar tu progreso permanentemente.</div>
-      <button class="ggc-cta" onclick="exitGuest()">Crear cuenta gratis →</button>`;
+      <div class="ggc-note">Create a free account to save your progress permanently and appear on the global ranking.</div>
+      <button class="ggc-cta" onclick="exitGuest()">✦ Create free account →</button>`;
 
     // Pre-rellenar form con datos geo
     if (!prof.country && country)
