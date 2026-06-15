@@ -6,7 +6,7 @@
     <title>Yachay Lab — Laboratorio STEM con IA</title>
     <meta
       name="description"
-      content="Laboratorio virtual STEM con Inteligencia Artificial. 15 simuladores interactivos de física y química para estudiantes latinoamericanos."
+      content="Virtual STEM Laboratory with AI. 15 simuladores interactivos de física y química para estudiantes latinoamericanos."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -33,7 +33,7 @@
           <div class="al-logo-icon">⚗️</div>
           <div class="al-logo-text">
             <span class="al-logo-name">Yachay Lab</span>
-            <span class="al-logo-tag">STEM · AI · Peru</span>
+            <span class="al-logo-tag">STEM · AI </span>
           </div>
         </div>
 
@@ -118,7 +118,7 @@
               onclick="switchTab('login')"
               data-i18n="login.tab"
             >
-              Iniciar sesión
+              Sign in
             </button>
             <button
               class="ac-tab"
@@ -126,14 +126,14 @@
               onclick="switchTab('register')"
               data-i18n="register.tab"
             >
-              Registrarse
+              Register
             </button>
           </div>
 
           <!-- LOGIN -->
           <div id="form-login">
             <div class="field">
-              <label data-i18n="login.email">Correo electrónico</label>
+              <label data-i18n="login.email">Email address</label>
               <div class="field-wrap">
                 <svg
                   class="field-ico"
@@ -159,12 +159,12 @@
             </div>
             <div class="field">
               <div class="field-top">
-                <label data-i18n="login.pass">Contraseña</label>
+                <label data-i18n="login.pass">Password</label>
                 <a
                   href="auth/forgot-password.html"
                   class="forgot-link"
                   data-i18n="login.forgot"
-                  >¿Olvidaste?</a
+                  >Forgot?</a
                 >
               </div>
               <div class="field-wrap">
@@ -202,7 +202,7 @@
             </div>
             <div class="auth-err" id="login-err"></div>
             <button class="btn-auth" onclick="doLogin()" data-i18n="login.btn">
-              <span>Iniciar sesión</span>
+              <span>Sign in</span>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path
                   d="M3 8h10M9 4l4 4-4 4"
@@ -218,7 +218,7 @@
           <!-- REGISTRO -->
           <div id="form-register" style="display: none">
             <div class="field">
-              <label data-i18n="reg.name">Nombre completo</label>
+              <label data-i18n="reg.name">Full name</label>
               <div class="field-wrap">
                 <svg
                   class="field-ico"
@@ -244,13 +244,13 @@
                 <input
                   type="text"
                   id="r-name"
-                  placeholder="Tu nombre completo"
+                  placeholder="Your full name"
                   autocomplete="name"
                 />
               </div>
             </div>
             <div class="field">
-              <label data-i18n="reg.email">Correo electrónico</label>
+              <label data-i18n="reg.email">Email address</label>
               <div class="field-wrap">
                 <svg
                   class="field-ico"
@@ -275,7 +275,7 @@
               </div>
             </div>
             <div class="field">
-              <label data-i18n="reg.pass">Contraseña</label>
+              <label data-i18n="reg.pass">Password</label>
               <div class="field-wrap">
                 <svg
                   class="field-ico"
@@ -303,7 +303,7 @@
                 <input
                   type="password"
                   id="r-pass"
-                  placeholder="Mínimo 6 caracteres"
+                  placeholder="Min. 6 characters"
                   oninput="strengthMeter(this.value)"
                 />
               </div>
@@ -318,7 +318,7 @@
               </div>
             </div>
             <div class="field">
-              <label data-i18n="reg.pass2">Confirmar contraseña</label>
+              <label data-i18n="reg.pass2">Confirm password</label>
               <div class="field-wrap">
                 <svg
                   class="field-ico"
@@ -346,14 +346,14 @@
                 <input
                   type="password"
                   id="r-pass2"
-                  placeholder="Repite tu contraseña"
+                  placeholder="Repeat your password"
                   onkeydown="if (event.key === 'Enter') doRegister();"
                 />
               </div>
             </div>
             <div class="auth-err" id="reg-err"></div>
             <button class="btn-auth" onclick="doRegister()" data-i18n="reg.btn">
-              <span>Crear cuenta gratis</span>
+              <span>Create free account</span>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path
                   d="M3 8h10M9 4l4 4-4 4"
@@ -368,7 +368,7 @@
 
           <!-- Divider -->
           <div class="auth-divider">
-            <span data-i18n="login.or">o continúa sin cuenta</span>
+            <span data-i18n="login.or">or continue without account</span>
           </div>
 
           <!-- Botón invitado -->
@@ -376,10 +376,10 @@
             <div class="bg-globe">🌍</div>
             <div class="bg-body">
               <span class="bg-title" data-i18n="login.guest"
-                >Continuar como invitado</span
+                >Continue as guest</span
               >
               <span class="bg-sub"
-                >Tu sesión se identifica por tu ubicación</span
+                >Your session is identified by your location</span
               >
             </div>
             <svg
@@ -1510,7 +1510,7 @@
                       ><input
                         type="password"
                         id="cp-new"
-                        placeholder="Mínimo 6 caracteres"
+                        placeholder="Min. 6 characters"
                       />
                     </div>
                     <div class="pf-field">
@@ -2772,8 +2772,7 @@
         <!-- Bottom bar -->
         <div class="footer-bottom">
           <div class="fb-left">
-            © 2026 Yachay Lab · Built for <strong>DSH Hacks V1</strong> · Made
-            with ❤️ from Huánuco, Perú 🇵🇪
+            © 2026 Yachay Lab · Built for <strong>DSH Hacks V1</strong>
           </div>
           <div class="fb-right">
             <a onclick="go('perfil')" class="fb-link">Privacy</a>

@@ -327,55 +327,70 @@ async function doLogin() {
   const email = document.getElementById("l-email").value.trim().toLowerCase();
   const pass = document.getElementById("l-pass").value;
   const err = document.getElementById("login-err");
+  const btn = document.querySelector("#form-login .btn-auth");
   err.textContent = "";
+
+  // Validaciones
   if (!email || !pass) {
-    err.textContent = t("err.empty");
+    err.textContent = "Please fill in all fields.";
     return;
   }
   if (!email.includes("@")) {
-    err.textContent = t("err.email");
+    err.textContent = "Enter a valid email address.";
     return;
   }
 
-  // ── Intentar Supabase Auth primero ──
-  if (window._supa && typeof SupaAuth !== "undefined") {
-    const btn = document.querySelector("#form-login .btn-auth");
-    if (btn) {
-      btn.textContent = "Signing in...";
-      btn.disabled = true;
-    }
-    const { data, profile, error } = await SupaAuth.signIn(email, pass);
-    if (btn) {
-      btn.textContent = "Sign in";
-      btn.disabled = false;
-    }
-    if (error) {
-      // Fallback a localStorage si Supabase falla
-      const users = getUsers();
-      if (!users[email] || users[email].pass !== btoa(pass)) {
-        err.textContent = t("err.notfound");
-        return;
-      }
-    }
-  } else {
-    // Fallback localStorage
-    const users = getUsers();
-    if (!users[email] || users[email].pass !== btoa(pass)) {
-      err.textContent = t("err.notfound");
-      return;
-    }
+  // Estado de carga
+  if (btn) {
+    btn.querySelector("span").textContent = "Signing in...";
+    btn.disabled = true;
   }
 
-  const name = (() => {
-    try {
-      const u = getUsers();
-      return u[email]?.name || email.split("@")[0];
-    } catch {
-      return email.split("@")[0];
+  try {
+    // 1. Intentar Supabase Auth
+    let loginOk = false;
+    if (window._supa && typeof SupaAuth !== "undefined") {
+      const { data, error } = await SupaAuth.signIn(email, pass);
+      if (!error && data) loginOk = true;
     }
-  })();
-  localStorage.setItem(SES, JSON.stringify({ email, name, guest: false }));
-  launchApp({ email, name, guest: false });
+
+    // 2. Fallback localStorage
+    if (!loginOk) {
+      const users = getUsers();
+      if (!users[email]) {
+        err.textContent = "Account not found. Check your email or register.";
+        return;
+      }
+      if (users[email].pass !== btoa(pass)) {
+        err.textContent = "Incorrect password. Please try again.";
+        return;
+      }
+      loginOk = true;
+    }
+
+    // 3. Entrar a la app
+    if (loginOk) {
+      const users = getUsers();
+      const name = users[email]?.name || email.split("@")[0];
+      localStorage.setItem(SES, JSON.stringify({ email, name, guest: false }));
+      launchApp({ email, name, guest: false });
+    }
+  } catch (e) {
+    // Fallback total — intentar con localStorage
+    const users = getUsers();
+    if (users[email] && users[email].pass === btoa(pass)) {
+      const name = users[email].name || email.split("@")[0];
+      localStorage.setItem(SES, JSON.stringify({ email, name, guest: false }));
+      launchApp({ email, name, guest: false });
+    } else {
+      err.textContent = "Connection error. Please try again.";
+    }
+  } finally {
+    if (btn) {
+      btn.querySelector("span").textContent = "Sign in";
+      btn.disabled = false;
+    }
+  }
 }
 
 async function doRegister() {
@@ -384,54 +399,79 @@ async function doRegister() {
   const pass = document.getElementById("r-pass").value;
   const pass2 = document.getElementById("r-pass2").value;
   const err = document.getElementById("reg-err");
+  const btn = document.querySelector("#form-register .btn-auth");
   err.textContent = "";
+
+  // Validaciones en inglés
   if (!name || !email || !pass || !pass2) {
-    err.textContent = t("err.empty");
+    err.textContent = "Please fill in all fields.";
     return;
   }
   if (!email.includes("@")) {
-    err.textContent = t("err.email");
+    err.textContent = "Enter a valid email address.";
     return;
   }
   if (pass.length < 6) {
-    err.textContent = t("err.pass6");
+    err.textContent = "Password must be at least 6 characters.";
     return;
   }
   if (pass !== pass2) {
-    err.textContent = t("err.match");
+    err.textContent = "Passwords do not match.";
     return;
   }
 
-  // ── Registrar en Supabase Auth ──
-  if (window._supa && typeof SupaAuth !== "undefined") {
-    const btn = document.querySelector("#form-register .btn-auth");
-    if (btn) {
-      btn.textContent = "Creating account...";
-      btn.disabled = true;
-    }
-    const { data, error } = await SupaAuth.signUp(email, pass, name);
-    if (btn) {
-      btn.textContent = "Create free account";
-      btn.disabled = false;
-    }
-    if (error && !error.includes("already registered")) {
-      err.textContent = error;
-      return;
-    }
+  // Estado de carga
+  if (btn) {
+    btn.querySelector("span").textContent = "Creating account...";
+    btn.disabled = true;
   }
 
-  // Guardar también en localStorage (fallback)
-  const users = getUsers();
-  if (!users[email]) {
+  try {
+    // 1. Guardar en localStorage primero (siempre funciona)
+    const users = getUsers();
+    if (users[email]) {
+      // Ya existe — hacer login directamente
+      err.textContent = "";
+      localStorage.setItem(SES, JSON.stringify({ email, name, guest: false }));
+      launchApp({ email, name, guest: false });
+      return;
+    }
     users[email] = {
       name,
       pass: btoa(pass),
       createdAt: new Date().toISOString(),
     };
     localStorage.setItem(DB, JSON.stringify(users));
+
+    // 2. Intentar Supabase Auth en paralelo (no bloquea)
+    if (window._supa && typeof SupaAuth !== "undefined") {
+      SupaAuth.signUp(email, pass, name).catch(() => {});
+    }
+
+    // 3. Entrar inmediatamente
+    localStorage.setItem(SES, JSON.stringify({ email, name, guest: false }));
+    launchApp({ email, name, guest: false });
+  } catch (e) {
+    // Fallback total
+    try {
+      const users = getUsers();
+      users[email] = {
+        name,
+        pass: btoa(pass),
+        createdAt: new Date().toISOString(),
+      };
+      localStorage.setItem(DB, JSON.stringify(users));
+      localStorage.setItem(SES, JSON.stringify({ email, name, guest: false }));
+      launchApp({ email, name, guest: false });
+    } catch (e2) {
+      err.textContent = "Error creating account. Please try again.";
+    }
+  } finally {
+    if (btn) {
+      btn.querySelector("span").textContent = "Create free account";
+      btn.disabled = false;
+    }
   }
-  localStorage.setItem(SES, JSON.stringify({ email, name, guest: false }));
-  launchApp({ email, name, guest: false });
 }
 
 /* ══════════════════════════════════════════════════════
@@ -449,7 +489,7 @@ async function enterGuest() {
   const btnOrig = btnGuest ? btnGuest.innerHTML : "";
   if (btnGuest) {
     btnGuest.disabled = true;
-    btnGuest.innerHTML = "⏳ Detectando ubicación...";
+    btnGuest.innerHTML = "⏳ Detecting location...";
   }
 
   try {
@@ -651,7 +691,7 @@ function countryFlag(code) {
 
 function strengthMeter(p) {
   const cols = ["#EF4444", "#F59E0B", "#3B82F6", "#10B981"];
-  const lbls = ["Muy débil", "Débil", "Buena", "Fuerte"];
+  const lbls = ["Too weak", "Weak", "Good", "Strong"];
   let s = 0;
   if (p.length >= 6) s++;
   if (p.length >= 10) s++;
