@@ -33,7 +33,7 @@
           <div class="al-logo-icon">⚗️</div>
           <div class="al-logo-text">
             <span class="al-logo-name">Yachay Lab</span>
-            <span class="al-logo-tag">STEM · AI </span>
+            <span class="al-logo-tag">STEM · AI · Peru</span>
           </div>
         </div>
 
@@ -1610,23 +1610,57 @@
                 <div class="sim-panel-header">
                   <div class="sph-icon" id="sim-icon">⚗️</div>
                   <div>
-                    <h2 id="sim-title">Simulador</h2>
+                    <h2 id="sim-title">Simulator</h2>
                     <p id="sim-desc"></p>
                   </div>
                 </div>
+
+                <!-- PANEL DE EJERCICIO PERSONALIZADO -->
+                <div class="exercise-panel" id="exercise-panel">
+                  <div class="ep-header">
+                    <span class="ep-icon">📝</span>
+                    <div>
+                      <div class="ep-title">Enter your exercise values</div>
+                      <div class="ep-sub">
+                        Type your data below and click Simulate
+                      </div>
+                    </div>
+                  </div>
+                  <div class="ep-inputs" id="ep-inputs">
+                    <!-- Se genera dinámicamente por JS según el simulador -->
+                  </div>
+                  <button class="ep-simulate-btn" onclick="simulateExercise()">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                      <path
+                        d="M3 8h10M9 4l4 4-4 4"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    Load values into simulator
+                  </button>
+                  <div class="ep-note" id="ep-note"></div>
+                </div>
+
+                <div class="ep-divider">
+                  <span>— or adjust sliders manually —</span>
+                </div>
+
                 <div id="sim-controls"></div>
                 <div id="sim-formula" class="formula-box"></div>
                 <div id="sim-results" class="results-box"></div>
                 <div class="sim-btns">
                   <button class="btn-sim-play" onclick="simPlay()">
-                    ▶ Iniciar
+                    ▶ Start
                   </button>
                   <button class="btn-sim-reset" onclick="simReset()">
-                    ⟳ Reiniciar
+                    ⟳ Reset
                   </button>
                 </div>
                 <button class="btn-ask-tutor" onclick="go('tutor')">
-                  🤖 Preguntar al Tutor IA
+                  🤖 Ask Yachay AI Tutor
                 </button>
               </div>
               <div class="sim-canvas-wrap">

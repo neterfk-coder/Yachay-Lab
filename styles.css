@@ -4593,3 +4593,125 @@ textarea {
   line-height: 1.6;
   animation: fadeIn 0.3s ease;
 }
+
+/* ══════════════════════════════════════════════════════
+   EXERCISE PANEL — Panel de ejercicio personalizado
+══════════════════════════════════════════════════════ */
+.exercise-panel {
+  background: linear-gradient(135deg, var(--p-lt, #eeeffe), #f3e8ff44);
+  border: 1.5px solid rgba(90, 95, 224, 0.2);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.ep-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.ep-icon {
+  font-size: 22px;
+}
+.ep-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--t1);
+}
+.ep-sub {
+  font-size: 11px;
+  color: var(--t3);
+  margin-top: 1px;
+}
+.ep-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.ep-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.ep-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--t2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.ep-input {
+  padding: 9px 12px;
+  background: var(--surface, #fff);
+  border: 1.5px solid var(--border, #e4e8f5);
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--t1);
+  font-family: "JetBrains Mono", monospace;
+  outline: none;
+  transition: 0.2s;
+  width: 100%;
+}
+.ep-input:focus {
+  border-color: var(--p, #5a5fe0);
+  box-shadow: 0 0 0 3px rgba(90, 95, 224, 0.12);
+}
+.ep-simulate-btn {
+  width: 100%;
+  padding: 11px;
+  background: linear-gradient(135deg, var(--p, #5a5fe0), var(--p2, #8056d6));
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 3px 12px rgba(90, 95, 224, 0.3);
+  margin-bottom: 8px;
+}
+.ep-simulate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 18px rgba(90, 95, 224, 0.45);
+}
+.ep-note {
+  font-size: 12px;
+  font-weight: 600;
+  min-height: 16px;
+  text-align: center;
+}
+.ep-divider {
+  text-align: center;
+  font-size: 11px;
+  color: var(--t3);
+  margin: 10px 0 12px;
+  position: relative;
+}
+.ep-divider::before,
+.ep-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 1px;
+  background: var(--border);
+}
+.ep-divider::before {
+  left: 0;
+}
+.ep-divider::after {
+  right: 0;
+}
+
+@media (max-width: 600px) {
+  .ep-inputs {
+    grid-template-columns: 1fr;
+  }
+}

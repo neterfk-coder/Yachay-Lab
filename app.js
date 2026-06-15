@@ -75,7 +75,7 @@ const I18N = {
     "prof.edit": "✏️ Editar perfil",
     "prof.badges": "🏆 Logros",
     "prof.config": "⚙️ Configuración",
-    "prof.fname": "Nombre",
+    "prof.fname": "Name",
     "prof.grade": "Grado / Nivel",
     "prof.country": "País",
     "prof.city": "Ciudad",
@@ -1777,6 +1777,8 @@ function openSim(id) {
     : "";
   document.getElementById("sim-controls").innerHTML = "";
   document.getElementById("sim-results").innerHTML = "";
+  S.currentSim = id;
+  renderExercisePanel(id);
   document.getElementById("sidebar").classList.remove("open");
   const fn = {
     mru: SIM_MRU,
@@ -1932,11 +1934,11 @@ function SIM_MRU(mode) {
     animMRU(p);
     return;
   }
-  slider("mru-v", "Velocidad v", -20, 20, 5, 0.5, " m/s", (v) => {
+  slider("mru-v", "Velocity v", -20, 20, 5, 0.5, " m/s", (v) => {
     p.v = v;
     drawMRU(p);
   });
-  slider("mru-x0", "Posición inicial x₀", -50, 50, 0, 5, " m", (v) => {
+  slider("mru-x0", "Initial position x₀", -50, 50, 0, 5, " m", (v) => {
     p.x0 = v;
     p.t = 0;
     drawMRU(p);
@@ -1995,9 +1997,9 @@ function drawMRU(p) {
       "v=" + p.v + " m/s",
     );
   results([
-    ["Posición x", (p.x0 + p.v * p.t).toFixed(2) + " m"],
-    ["Velocidad", p.v + " m/s"],
-    ["Tiempo", p.t.toFixed(1) + " s"],
+    ["Position x", (p.x0 + p.v * p.t).toFixed(2) + " m"],
+    ["Velocity", p.v + " m/s"],
+    ["Time", p.t.toFixed(1) + " s"],
   ]);
 }
 function animMRU(p) {
@@ -2029,12 +2031,12 @@ function SIM_MRUA(mode) {
     drawMRUA(p);
     return;
   }
-  slider("mrua-v0", "Velocidad inicial v₀", -15, 15, 0, 1, " m/s", (v) => {
+  slider("mrua-v0", "Initial velocity v₀", -15, 15, 0, 1, " m/s", (v) => {
     p.v0 = v;
     p.t = 0;
     drawMRUA(p);
   });
-  slider("mrua-a", "Aceleración a", -10, 10, 3, 0.5, " m/s²", (v) => {
+  slider("mrua-a", "Acceleration a", -10, 10, 3, 0.5, " m/s²", (v) => {
     p.a = v;
     p.t = 0;
     drawMRUA(p);
@@ -2195,8 +2197,8 @@ function drawCaida(p) {
   const tT = Math.sqrt((2 * p.h) / p.g);
   results([
     ["Altura y", y.toFixed(2) + " m"],
-    ["Velocidad", vel.toFixed(2) + " m/s"],
-    ["Tiempo", p.t.toFixed(2) + " s"],
+    ["Velocity", vel.toFixed(2) + " m/s"],
+    ["Time", p.t.toFixed(2) + " s"],
     ["Tiempo total teórico", tT.toFixed(2) + " s"],
   ]);
 }
@@ -2242,7 +2244,7 @@ function SIM_TIRO(mode) {
   });
   selec(
     "tiro-g",
-    "Gravedad",
+    "Gravity",
     [
       { v: 9.8, l: "🌍 Tierra" },
       { v: 1.6, l: "🌕 Luna" },
@@ -2340,7 +2342,7 @@ function drawTiro(p) {
   results([
     ["Alcance máx.", R.toFixed(1) + " m"],
     ["Altura máx.", hMax.toFixed(1) + " m"],
-    ["Tiempo vuelo", tF.toFixed(2) + " s"],
+    ["Flight time", tF.toFixed(2) + " s"],
     ["θ", p.ang + "°"],
   ]);
 }
@@ -2394,7 +2396,7 @@ function SIM_PENDULO(mode) {
     drawPend(p);
     return;
   }
-  slider("pend-l", "Longitud L", 0.3, 3, 1, 0.1, " m", (v) => {
+  slider("pend-l", "Length L", 0.3, 3, 1, 0.1, " m", (v) => {
     p.L = v;
     drawPend(p);
   });
@@ -2408,7 +2410,7 @@ function SIM_PENDULO(mode) {
   });
   selec(
     "pend-g",
-    "Gravedad",
+    "Gravity",
     [
       { v: 9.8, l: "🌍 Tierra" },
       { v: 1.6, l: "🌕 Luna" },
@@ -2504,15 +2506,15 @@ function SIM_HOOKE(mode) {
     drawHooke(p);
     return;
   }
-  slider("hk-k", "Constante k", 10, 200, 50, 10, " N/m", (v) => {
+  slider("hk-k", "Spring constant k", 10, 200, 50, 10, " N/m", (v) => {
     p.k = v;
     drawHooke(p);
   });
-  slider("hk-m", "Masa m", 0.5, 10, 1, 0.5, " kg", (v) => {
+  slider("hk-m", "Mass m", 0.5, 10, 1, 0.5, " kg", (v) => {
     p.m = v;
     drawHooke(p);
   });
-  slider("hk-x", "Deformación x", -20, 20, 10, 1, " cm", (v) => {
+  slider("hk-x", "Deformation x", -20, 20, 10, 1, " cm", (v) => {
     p.x = v / 100;
     p.v = 0;
     drawHooke(p);
@@ -2579,7 +2581,7 @@ function drawHooke(p) {
   const F = (p.k * p.x).toFixed(2),
     Ep = (0.5 * p.k * p.x * p.x).toFixed(4);
   results([
-    ["Fuerza F", F + " N"],
+    ["Force F", F + " N"],
     ["Ep = ½kx²", Ep + " J"],
     ["ω = √(k/m)", Math.sqrt(p.k / p.m).toFixed(2) + " rad/s"],
   ]);
@@ -2704,11 +2706,11 @@ function SIM_OHM(mode) {
     drawOhm(p);
     return;
   }
-  slider("ohm-v", "Voltaje V", 1, 50, 12, 1, " V", (v) => {
+  slider("ohm-v", "Voltage V", 1, 50, 12, 1, " V", (v) => {
     p.V = v;
     drawOhm(p);
   });
-  slider("ohm-r", "Resistencia R", 0.5, 50, 4, 0.5, " Ω", (v) => {
+  slider("ohm-r", "Resistance R", 0.5, 50, 4, 0.5, " Ω", (v) => {
     p.R = v;
     drawOhm(p);
   });
@@ -2825,8 +2827,8 @@ function drawOhm(p) {
   }
   g.textAlign = "left";
   results([
-    ["Corriente I", I.toFixed(3) + " A"],
-    ["Potencia P", Pw.toFixed(2) + " W"],
+    ["Current I", I.toFixed(3) + " A"],
+    ["Power P", Pw.toFixed(2) + " W"],
     ["V", p.V + " V"],
     ["R", p.R + " Ω"],
   ]);
@@ -2978,7 +2980,7 @@ function SIM_ENERGIA(mode) {
     p.t = 0;
     drawEn(p);
   });
-  slider("en-m", "Masa m", 0.5, 20, 2, 0.5, " kg", (v) => {
+  slider("en-m", "Mass m", 0.5, 20, 2, 0.5, " kg", (v) => {
     p.m = v;
     drawEn(p);
   });
@@ -3053,7 +3055,7 @@ function drawEn(p) {
   results([
     ["Ep = mgh", Ep.toFixed(2) + " J"],
     ["Ec = ½mv²", Math.max(Ec, 0).toFixed(2) + " J"],
-    ["E total", E0.toFixed(2) + " J"],
+    ["Total energy", E0.toFixed(2) + " J"],
   ]);
 }
 function animEn(p) {
@@ -3907,6 +3909,411 @@ function answer(sel, correct, opts, topic) {
     setTimeout(() => Ranking.init(), 500);
   }
   setTimeout(nextQ, 2000);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   EXERCISE PANEL — Custom exercise input panel
+   User enters exercise values → loaded into simulator sliders
+══════════════════════════════════════════════════════════════ */
+const EXERCISE_FIELDS = {
+  mru: [
+    {
+      id: "ex-mru-v",
+      label: "Velocity v (m/s)",
+      step: 0.5,
+      min: -20,
+      max: 20,
+      placeholder: "e.g. 5",
+      sliderId: "mru-v",
+    },
+    {
+      id: "ex-mru-x0",
+      label: "Initial position x₀ (m)",
+      step: 1,
+      min: -50,
+      max: 50,
+      placeholder: "e.g. 0",
+      sliderId: "mru-x0",
+    },
+  ],
+  mrua: [
+    {
+      id: "ex-mrua-v0",
+      label: "Initial velocity v₀ (m/s)",
+      step: 0.5,
+      min: -15,
+      max: 15,
+      placeholder: "e.g. 0",
+      sliderId: "mrua-v0",
+    },
+    {
+      id: "ex-mrua-a",
+      label: "Acceleration a (m/s²)",
+      step: 0.5,
+      min: -10,
+      max: 10,
+      placeholder: "e.g. 3",
+      sliderId: "mrua-a",
+    },
+  ],
+  caida: [
+    {
+      id: "ex-cf-h",
+      label: "Initial height h (m)",
+      step: 1,
+      min: 1,
+      max: 200,
+      placeholder: "e.g. 80",
+      sliderId: "cf-h",
+    },
+    {
+      id: "ex-cf-g",
+      label: "Gravity g (m/s²)",
+      step: 0.1,
+      min: 1,
+      max: 25,
+      placeholder: "e.g. 9.8",
+      sliderId: "cf-g",
+    },
+  ],
+  tiro: [
+    {
+      id: "ex-tr-v",
+      label: "Initial velocity v₀ (m/s)",
+      step: 1,
+      min: 1,
+      max: 60,
+      placeholder: "e.g. 20",
+      sliderId: "tr-v",
+    },
+    {
+      id: "ex-tr-a",
+      label: "Launch angle θ (°)",
+      step: 1,
+      min: 1,
+      max: 89,
+      placeholder: "e.g. 45",
+      sliderId: "tr-a",
+    },
+    {
+      id: "ex-tr-g",
+      label: "Gravity g (m/s²)",
+      step: 0.1,
+      min: 1,
+      max: 25,
+      placeholder: "e.g. 9.8",
+      sliderId: "tr-g",
+    },
+  ],
+  pendulo: [
+    {
+      id: "ex-pend-l",
+      label: "Pendulum length L (m)",
+      step: 0.1,
+      min: 0.1,
+      max: 5,
+      placeholder: "e.g. 1",
+      sliderId: "pend-l",
+    },
+    {
+      id: "ex-pend-a",
+      label: "Initial angle θ₀ (°)",
+      step: 1,
+      min: 5,
+      max: 80,
+      placeholder: "e.g. 30",
+      sliderId: "pend-a",
+    },
+    {
+      id: "ex-pend-g",
+      label: "Gravity g (m/s²)",
+      step: 0.1,
+      min: 1,
+      max: 25,
+      placeholder: "e.g. 9.8",
+      sliderId: "pend-g",
+    },
+  ],
+  hooke: [
+    {
+      id: "ex-hk-k",
+      label: "Spring constant k (N/m)",
+      step: 10,
+      min: 10,
+      max: 500,
+      placeholder: "e.g. 100",
+      sliderId: "hk-k",
+    },
+    {
+      id: "ex-hk-x",
+      label: "Deformation x (cm)",
+      step: 1,
+      min: 1,
+      max: 50,
+      placeholder: "e.g. 20",
+      sliderId: "hk-x",
+    },
+    {
+      id: "ex-hk-m",
+      label: "Mass m (kg)",
+      step: 0.1,
+      min: 0.1,
+      max: 10,
+      placeholder: "e.g. 1",
+      sliderId: "hk-m",
+    },
+  ],
+  ondas: [
+    {
+      id: "ex-ond-a",
+      label: "Amplitude A (m)",
+      step: 0.1,
+      min: 0.1,
+      max: 3,
+      placeholder: "e.g. 1",
+      sliderId: "ond-a",
+    },
+    {
+      id: "ex-ond-f",
+      label: "Frequency f (Hz)",
+      step: 0.5,
+      min: 0.5,
+      max: 5,
+      placeholder: "e.g. 2",
+      sliderId: "ond-f",
+    },
+  ],
+  ohm: [
+    {
+      id: "ex-ohm-v",
+      label: "Voltage V (V)",
+      step: 1,
+      min: 1,
+      max: 24,
+      placeholder: "e.g. 12",
+      sliderId: "ohm-v",
+    },
+    {
+      id: "ex-ohm-r",
+      label: "Resistance R (Ω)",
+      step: 1,
+      min: 1,
+      max: 100,
+      placeholder: "e.g. 6",
+      sliderId: "ohm-r",
+    },
+  ],
+  energia: [
+    {
+      id: "ex-en-m",
+      label: "Mass m (kg)",
+      step: 0.5,
+      min: 0.5,
+      max: 20,
+      placeholder: "e.g. 5",
+      sliderId: "en-m",
+    },
+    {
+      id: "ex-en-h",
+      label: "Height h (m)",
+      step: 1,
+      min: 0,
+      max: 50,
+      placeholder: "e.g. 10",
+      sliderId: "en-h",
+    },
+    {
+      id: "ex-en-v",
+      label: "Velocity v (m/s)",
+      step: 0.5,
+      min: 0,
+      max: 20,
+      placeholder: "e.g. 0",
+      sliderId: "en-v",
+    },
+  ],
+  ph: [
+    {
+      id: "ex-ph-v",
+      label: "[H⁺] concentration (mol/L)",
+      step: 0.001,
+      min: 0.001,
+      max: 1,
+      placeholder: "e.g. 0.01",
+      sliderId: "ph-val",
+    },
+  ],
+  gases: [
+    {
+      id: "ex-gas-n",
+      label: "Moles n (mol)",
+      step: 0.1,
+      min: 0.1,
+      max: 5,
+      placeholder: "e.g. 1",
+      sliderId: "gas-n",
+    },
+    {
+      id: "ex-gas-t",
+      label: "Temperature T (K)",
+      step: 10,
+      min: 100,
+      max: 600,
+      placeholder: "e.g. 300",
+      sliderId: "gas-t",
+    },
+    {
+      id: "ex-gas-v",
+      label: "Volume V (L)",
+      step: 0.5,
+      min: 0.5,
+      max: 20,
+      placeholder: "e.g. 5",
+      sliderId: "gas-v",
+    },
+  ],
+  estatica1: [
+    {
+      id: "ex-f1",
+      label: "Force F₁ (N)",
+      step: 5,
+      min: 0,
+      max: 200,
+      placeholder: "e.g. 80",
+      sliderId: "f1",
+    },
+    {
+      id: "ex-a1",
+      label: "Angle F₁ (°)",
+      step: 5,
+      min: 0,
+      max: 360,
+      placeholder: "e.g. 30",
+      sliderId: "a1",
+    },
+    {
+      id: "ex-f2",
+      label: "Force F₂ (N)",
+      step: 5,
+      min: 0,
+      max: 200,
+      placeholder: "e.g. 60",
+      sliderId: "f2",
+    },
+    {
+      id: "ex-a2",
+      label: "Angle F₂ (°)",
+      step: 5,
+      min: 0,
+      max: 360,
+      placeholder: "e.g. 150",
+      sliderId: "a2",
+    },
+  ],
+  estatica2: [
+    {
+      id: "ex-m1",
+      label: "Mass m₁ (kg)",
+      step: 1,
+      min: 1,
+      max: 100,
+      placeholder: "e.g. 30",
+      sliderId: "m1",
+    },
+    {
+      id: "ex-x1",
+      label: "Position x₁ (m)",
+      step: 1,
+      min: 0,
+      max: 100,
+      placeholder: "e.g. 20",
+      sliderId: "x1",
+    },
+    {
+      id: "ex-m2",
+      label: "Mass m₂ (kg)",
+      step: 1,
+      min: 1,
+      max: 100,
+      placeholder: "e.g. 50",
+      sliderId: "m2",
+    },
+    {
+      id: "ex-x2",
+      label: "Position x₂ (m)",
+      step: 1,
+      min: 0,
+      max: 100,
+      placeholder: "e.g. 80",
+      sliderId: "x2",
+    },
+  ],
+};
+
+function renderExercisePanel(simId) {
+  const fields = EXERCISE_FIELDS[simId];
+  const panel = document.getElementById("ep-inputs");
+  const epDiv = document.getElementById("exercise-panel");
+  if (!panel) return;
+  if (!fields || !fields.length) {
+    if (epDiv) epDiv.style.display = "none";
+    return;
+  }
+  if (epDiv) epDiv.style.display = "block";
+  panel.innerHTML = fields
+    .map(
+      (f) => `
+    <div class="ep-field">
+      <label class="ep-label">${f.label}</label>
+      <input type="number" id="${f.id}" class="ep-input"
+        step="${f.step}" min="${f.min}" max="${f.max}"
+        placeholder="${f.placeholder}">
+    </div>`,
+    )
+    .join("");
+  const note = document.getElementById("ep-note");
+  if (note) note.textContent = "";
+}
+
+function simulateExercise() {
+  const simId = S.currentSim;
+  const fields = EXERCISE_FIELDS[simId];
+  if (!fields) return;
+  let loaded = 0,
+    errors = [];
+  fields.forEach((f) => {
+    const inp = document.getElementById(f.id);
+    const sld = document.getElementById(f.sliderId);
+    if (!inp || !sld) return;
+    const val = parseFloat(inp.value);
+    if (isNaN(val)) {
+      errors.push(f.label.split(" (")[0]);
+      return;
+    }
+    const clamped = Math.max(f.min, Math.min(f.max, val));
+    sld.value = clamped;
+    sld.dispatchEvent(new Event("input", { bubbles: true }));
+    loaded++;
+  });
+  const note = document.getElementById("ep-note");
+  if (errors.length) {
+    if (note) {
+      note.textContent = `⚠️ Please fill in: ${errors.join(", ")}`;
+      note.style.color = "#DC2626";
+    }
+  } else {
+    if (note) {
+      note.textContent = `✅ ${loaded} value${loaded > 1 ? "s" : ""} loaded — press ▶ Start!`;
+      note.style.color = "#059669";
+    }
+    setTimeout(
+      () =>
+        document
+          .querySelector(".btn-sim-play")
+          ?.scrollIntoView({ behavior: "smooth", block: "nearest" }),
+      300,
+    );
+  }
 }
 
 /* ══════════════════════════════════════════════════════

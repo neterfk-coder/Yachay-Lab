@@ -1,30 +1,30 @@
 /* ═══════════════════════════════════════════════════════════════
    YACHAY LAB — SISTEMA DE RACHA (streak.js)
-   Motor completo de racha en tiempo real.
+   Complete real-time streak engine.
    Se activa con: Streak.register('tipo', datos)
-   Fuentes: simuladores completados, preguntas correctas, tutor
+   Sources: completed simulators, correct answers, AI tutor
 ═══════════════════════════════════════════════════════════════ */
 
 const Streak = (() => {
   // ── CLAVES localStorage ──────────────────────────────────────
   const KEY = "yl_streak_v2";
 
-  // ── HITOS de racha con recompensas ──────────────────────────
+  // ── Streak milestones with rewards ──────────────────────────
   const MILESTONES = [
-    { at: 3, icon: "🔥", label: "¡En racha!", color: "#F59E0B" },
-    { at: 5, icon: "⚡", label: "¡Imparable!", color: "#EF4444" },
-    { at: 10, icon: "🌟", label: "¡Increíble!", color: "#8B5CF6" },
-    { at: 15, icon: "💎", label: "¡Diamante!", color: "#06B6D4" },
-    { at: 25, icon: "👑", label: "¡Leyenda STEM!", color: "#F59E0B" },
-    { at: 50, icon: "🏆", label: "¡Maestro Yachay!", color: "#10B981" },
+    { at: 3, icon: "🔥", label: "On a roll!", color: "#F59E0B" },
+    { at: 5, icon: "⚡", label: "Unstoppable!", color: "#EF4444" },
+    { at: 10, icon: "🌟", label: "Incredible!", color: "#8B5CF6" },
+    { at: 15, icon: "💎", label: "Diamond!", color: "#06B6D4" },
+    { at: 25, icon: "👑", label: "STEM Legend!", color: "#F59E0B" },
+    { at: 50, icon: "🏆", label: "Yachay Master!", color: "#10B981" },
   ];
 
-  // ── TIPOS de actividad ───────────────────────────────────────
+  // ── Activity types ───────────────────────────────────────
   const TYPES = {
-    practica: { icon: "🎯", label: "Pregunta correcta", xp: 10 },
-    simulador: { icon: "⚗️", label: "Simulador completado", xp: 15 },
+    practica: { icon: "🎯", label: "Correct answer", xp: 10 },
+    simulador: { icon: "⚗️", label: "Simulator completed", xp: 15 },
     tutor: { icon: "🤖", label: "Sesión con Yachay", xp: 5 },
-    login: { icon: "📅", label: "Inicio del día", xp: 2 },
+    login: { icon: "📅", label: "Daily login", xp: 2 },
   };
 
   // ── ESTADO en memoria ────────────────────────────────────────
@@ -40,7 +40,7 @@ const Streak = (() => {
     } catch {
       state = fresh();
     }
-    // Verificar si se rompió la racha (más de 24h sin actividad)
+    // Check if streak was broken (more than 24h without activity)
     checkBreak();
     save();
     return state;
@@ -48,16 +48,16 @@ const Streak = (() => {
 
   function fresh() {
     return {
-      current: 0, // racha actual
-      best: 0, // mejor racha histórica
-      total: 0, // actividades totales de por vida
+      current: 0, // current streak
+      best: 0, // best streak ever
+      total: 0, // lifetime activities
       xp: 0, // XP total acumulada
-      xpToday: 0, // XP ganada hoy
-      lastActivity: null, // ISO timestamp última actividad
-      lastDate: null, // 'YYYY-MM-DD' del último día activo
-      history: [], // últimas 30 actividades
-      todayCount: 0, // actividades completadas hoy
-      milestonesHit: [], // hitos ya notificados
+      xpToday: 0, // XP earned today
+      lastActivity: null, // ISO timestamp last activity
+      lastDate: null, // 'YYYY-MM-DD' del último day activo
+      history: [], // last 30 activities
+      todayCount: 0, // activities completed today
+      milestonesHit: [], // milestones already notified
     };
   }
 
@@ -69,35 +69,35 @@ const Streak = (() => {
     return new Date().toISOString().slice(0, 10);
   }
 
-  // Verifica si se perdió la racha (sin actividad > 1 día)
+  // Check if streak was broken (no activity > 1 day)
   function checkBreak() {
     if (!state.lastDate) return;
     const last = new Date(state.lastDate);
     const now = new Date();
     const diffDays = Math.floor((now - last) / 86400000);
     if (diffDays > 1) {
-      state.current = 0; // racha rota
+      state.current = 0; // streak broken
       state.xpToday = 0;
       state.todayCount = 0;
     }
     if (diffDays >= 1) {
-      state.xpToday = 0; // resetear XP del día
+      state.xpToday = 0; // resetear XP del day
       state.todayCount = 0;
     }
   }
 
-  // ── REGISTRAR una actividad ──────────────────────────────────
+  // ── REGISTER an activity ──────────────────────────────────
   function register(type = "practica", meta = {}) {
     if (!state) load();
 
     const t = today();
     const xp = (TYPES[type]?.xp || 5) * (meta.correct === false ? 0 : 1);
-    if (xp === 0) return; // no contar incorrectas en racha
+    if (xp === 0) return; // don't count wrong answers
 
-    // Actualizar racha diaria
+    // Update daily streak
     const isNewDay = state.lastDate !== t;
     if (isNewDay) {
-      state.current++; // nuevo día activo = +1 racha
+      state.current++; // new active day = +1 streak
       state.todayCount = 0;
       state.xpToday = 0;
     }
@@ -113,7 +113,7 @@ const Streak = (() => {
     state.xpToday += xp;
     state.best = Math.max(state.best, state.current);
 
-    // Agregar al historial
+    // Add to history
     state.history.unshift({
       type,
       icon: TYPES[type]?.icon || "⭐",
@@ -128,7 +128,7 @@ const Streak = (() => {
 
     save();
 
-    // Verificar hito
+    // Check milestone
     const milestone = MILESTONES.find(
       (m) => m.at === state.current && !state.milestonesHit.includes(m.at),
     );
@@ -138,7 +138,7 @@ const Streak = (() => {
       showMilestone(milestone);
     }
 
-    // Mostrar/actualizar widget
+    // Show/update widget
     showWidget(type, xp, meta);
     syncAllUI();
 
@@ -156,13 +156,13 @@ const Streak = (() => {
         <div class="sw-flame" id="sw-flame">🔥</div>
         <div class="sw-info">
           <div class="sw-num" id="sw-num">0</div>
-          <div class="sw-lbl">racha</div>
+          <div class="sw-lbl">streak</div>
         </div>
         <div class="sw-xp" id="sw-xp">+0 XP</div>
       </div>
       <div class="sw-bar-wrap">
         <div class="sw-bar"><div class="sw-fill" id="sw-fill"></div></div>
-        <div class="sw-next" id="sw-next">Siguiente hito: 3</div>
+        <div class="sw-next" id="sw-next">Next milestone: 3</div>
       </div>`;
     document.body.appendChild(widgetEl);
 
@@ -174,18 +174,18 @@ const Streak = (() => {
     const w = ensureWidget();
     const icon = TYPES[type]?.icon || "⭐";
 
-    // Actualizar números
+    // Update numbers
     document.getElementById("sw-num").textContent = state.current;
     document.getElementById("sw-xp").textContent = `+${xp} XP`;
 
-    // Siguiente hito
+    // Next milestone
     const next = MILESTONES.find((m) => m.at > state.current);
     const remaining = next ? next.at - state.current : "∞";
     document.getElementById("sw-next").textContent = next
-      ? `${next.icon} Hito en ${remaining} más`
-      : "👑 ¡Leyenda!";
+      ? `${next.icon} Milestone in ${remaining} more`
+      : "👑 Legend!";
 
-    // Barra de progreso hacia siguiente hito
+    // Progress bar to next milestone
     const prev = [...MILESTONES]
       .reverse()
       .find((m) => m.at <= state.current) || { at: 0 };
@@ -198,7 +198,7 @@ const Streak = (() => {
       setTimeout(() => (fill.style.width = pct + "%"), 50);
     }
 
-    // Color de la llama según racha
+    // Flame color by streak
     const flame = document.getElementById("sw-flame");
     if (flame) {
       if (state.current >= 25) flame.textContent = "👑";
@@ -230,7 +230,7 @@ const Streak = (() => {
       <div class="sm-icon">${m.icon}</div>
       <div class="sm-body">
         <div class="sm-title">${m.label}</div>
-        <div class="sm-sub">¡${m.at} días de racha! +50 XP bonus 🎉</div>
+        <div class="sm-sub">¡${m.at} day streak! +50 XP bonus 🎉</div>
       </div>`;
     el.style.setProperty("--mc", m.color);
     document.body.appendChild(el);
@@ -290,62 +290,62 @@ const Streak = (() => {
           <div class="sp-header-left">
             <div class="sp-fire" id="sp-fire">🔥</div>
             <div>
-              <div class="sp-title">Tu Racha STEM</div>
-              <div class="sp-sub">Actividad en tiempo real</div>
+              <div class="sp-title">Your STEM Streak</div>
+              <div class="sp-sub">Real-time activity</div>
             </div>
           </div>
           <button class="sp-close" onclick="Streak.closePanel()">✕</button>
         </div>
 
-        <!-- Racha actual grande -->
+        <!-- Current streak (big) -->
         <div class="sp-hero">
           <canvas id="streak-ring-canvas" width="140" height="140"></canvas>
           <div class="sp-hero-info">
             <div class="sp-current-num" id="sp-cur">${s.current}</div>
-            <div class="sp-current-lbl">días de racha</div>
-            <div class="sp-best">🏆 Mejor: ${s.best} días</div>
+            <div class="sp-current-lbl">day streak</div>
+            <div class="sp-best">🏆 Best: ${s.best} days</div>
           </div>
         </div>
 
         <!-- Stats rápidas -->
         <div class="sp-stats">
           <div class="sp-stat"><div class="sps-num" id="sps-xp">${s.xp}</div><div class="sps-lbl">XP Total</div></div>
-          <div class="sp-stat"><div class="sps-num">${s.xpToday}</div><div class="sps-lbl">XP hoy</div></div>
-          <div class="sp-stat"><div class="sps-num">${s.todayCount}</div><div class="sps-lbl">Hoy</div></div>
+          <div class="sp-stat"><div class="sps-num">${s.xpToday}</div><div class="sps-lbl">XP today</div></div>
+          <div class="sp-stat"><div class="sps-num">${s.todayCount}</div><div class="sps-lbl">Today</div></div>
           <div class="sp-stat"><div class="sps-num">${s.total}</div><div class="sps-lbl">Total</div></div>
         </div>
 
-        <!-- Próximo hito -->
+        <!-- Next milestone -->
         ${
           nextM
             ? `
         <div class="sp-milestone-progress">
           <div class="smp-header">
-            <span>${nextM.icon} Próximo hito: ${nextM.label}</span>
-            <span class="smp-count">${s.current} / ${nextM.at} días</span>
+            <span>${nextM.icon} Next milestone: ${nextM.label}</span>
+            <span class="smp-count">${s.current} / ${nextM.at} days</span>
           </div>
           <div class="smp-bar"><div class="smp-fill" style="width:${xpBar}%"></div></div>
-          <div class="smp-hint">Faltan ${nextM.at - s.current} días de actividad</div>
+          <div class="smp-hint">${nextM.at - s.current} days to go</div>
         </div>`
             : `
         <div class="sp-milestone-progress sp-max">
-          <span>👑 ¡Has alcanzado el máximo hito! Eres una leyenda STEM.</span>
+          <span>👑 You've reached the top milestone! You're a STEM legend.</span>
         </div>`
         }
 
-        <!-- Hitos desbloqueados -->
+        <!-- Unlocked milestones -->
         <div class="sp-milestones-row">
           ${MILESTONES.map(
             (m) => `
-            <div class="spm-item ${s.best >= m.at ? "earned" : ""}" title="${m.label} (${m.at} días)">
+            <div class="spm-item ${s.best >= m.at ? "earned" : ""}" title="${m.label} (${m.at} days)">
               <div class="spm-icon">${m.icon}</div>
               <div class="spm-at">${m.at}d</div>
             </div>`,
           ).join("")}
         </div>
 
-        <!-- Historial reciente -->
-        <div class="sp-history-label">Actividad reciente</div>
+        <!-- Recent history -->
+        <div class="sp-history-label">Recent activity</div>
         <div class="sp-history" id="sp-history">
           ${
             todayActs.length
@@ -362,7 +362,7 @@ const Streak = (() => {
             </div>`,
                   )
                   .join("")
-              : '<div class="sp-empty">Sin actividad hoy. ¡Empieza un simulador! 🚀</div>'
+              : '<div class="sp-empty">No activity today. Start a simulator! 🚀</div>'
           }
         </div>
 
@@ -404,7 +404,7 @@ const Streak = (() => {
     ctx.lineWidth = lw;
     ctx.stroke();
 
-    // Racha actual
+    // Current streak
     const pct = best > 0 ? Math.min(current / best, 1) : current > 0 ? 1 : 0;
     const grad = ctx.createLinearGradient(0, 0, 140, 140);
     grad.addColorStop(0, "#5A5FE0");
@@ -424,7 +424,7 @@ const Streak = (() => {
     ctx.fillText(current, cx, cy - 4);
     ctx.font = "11px Plus Jakarta Sans";
     ctx.fillStyle = "#8892B0";
-    ctx.fillText("días", cx, cy + 14);
+    ctx.fillText("days", cx, cy + 14);
   }
 
   // ── LLAMA animada ────────────────────────────────────────────
@@ -524,8 +524,8 @@ const Streak = (() => {
       const fill = document.getElementById("sw-fill");
       if (fill) fill.style.width = pct + "%";
       document.getElementById("sw-next").textContent = next
-        ? `${next.icon} Hito en ${next.at - state.current} más`
-        : "👑 ¡Leyenda!";
+        ? `${next.icon} Milestone in ${next.at - state.current} more`
+        : "👑 Legend!";
     } else if (w) {
       w.classList.add("sw-shrink");
     }
