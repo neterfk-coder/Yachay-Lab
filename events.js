@@ -1,8 +1,8 @@
 /* ═══════════════════════════════════════════════════════════════
    YACHAY LAB — EVENTS.JS
-   · Banner 1: Reto de Temporada (mensual)
+   · Banner 1: Monthly Season Challenge
    · Banner 2: Evento/Noticia rotativa
-   · Misiones diarias dinámicas (se renuevan a medianoche)
+   · Dynamic daily missions (renew at midnight)
 ═══════════════════════════════════════════════════════════════ */
 
 const Events = (() => {
@@ -13,8 +13,8 @@ const Events = (() => {
     6: {
       id: "jun25",
       icon: "🔬",
-      title: "Domina la Física Clásica",
-      desc: "Completa 5 simuladores de física y gana el badge del mes",
+      title: "Master Classical Physics",
+      desc: "Complete 5 physics simulators and earn the month's exclusive badge",
       color: ["#6366F1", "#8B5CF6"],
       goal: 5,
       type: "sims",
@@ -25,8 +25,8 @@ const Events = (() => {
     7: {
       id: "jul25",
       icon: "🧪",
-      title: "Maestro de la Química",
-      desc: "Usa los 5 simuladores de química y demuestra tu dominio",
+      title: "Chemistry Master",
+      desc: "Use all 5 chemistry simulators and prove your mastery",
       color: ["#10B981", "#0EA5E9"],
       goal: 5,
       type: "sims",
@@ -37,8 +37,8 @@ const Events = (() => {
     8: {
       id: "ago25",
       icon: "🎯",
-      title: "Semana de Práctica Intensiva",
-      desc: "Responde 30 preguntas correctas en práctica adaptativa",
+      title: "Intensive Practice Week",
+      desc: "Answer 30 correct questions in adaptive practice",
       color: ["#F59E0B", "#EF4444"],
       goal: 30,
       type: "pregs",
@@ -49,8 +49,8 @@ const Events = (() => {
     9: {
       id: "sep25",
       icon: "🤖",
-      title: "Conversa con Yachay",
-      desc: "Haz 20 preguntas al Tutor IA y aprende a tu ritmo",
+      title: "Talk to Yachay",
+      desc: "Ask 20 questions to the AI Tutor and learn at your own pace",
       color: ["#8B5CF6", "#EC4899"],
       goal: 20,
       type: "tutor",
@@ -61,8 +61,8 @@ const Events = (() => {
     10: {
       id: "oct25",
       icon: "🌌",
-      title: "Explorador Total",
-      desc: "Abre todos los 15 simuladores disponibles",
+      title: "Total Explorer",
+      desc: "Open all 17 available simulators",
       color: ["#0EA5E9", "#6366F1"],
       goal: 15,
       type: "all_sims",
@@ -73,8 +73,8 @@ const Events = (() => {
     11: {
       id: "nov25",
       icon: "🔥",
-      title: "Racha Imparable",
-      desc: "Mantén una racha de 7 días seguidos de actividad",
+      title: "Unstoppable Streak",
+      desc: "Maintain a 7-day activity streak",
       color: ["#EF4444", "#F59E0B"],
       goal: 7,
       type: "racha",
@@ -85,8 +85,8 @@ const Events = (() => {
     12: {
       id: "dic25",
       icon: "⭐",
-      title: "Cierre del Año STEM",
-      desc: "Acumula 1000 XP antes del fin de año",
+      title: "STEM Year Finale",
+      desc: "Accumulate 1000 XP before the end of the year",
       color: ["#F59E0B", "#EF4444"],
       goal: 1000,
       type: "xp",
@@ -97,74 +97,74 @@ const Events = (() => {
   };
 
   /* ────────────────────────────────────────────────────────────
-     BANCO DE MISIONES DIARIAS (se sortean 4 cada día)
+     DAILY MISSION POOL (4 drawn per day)
   ──────────────────────────────────────────────────────────── */
   const MISSION_POOL = [
     // Simuladores
     {
       id: "m_sim_any",
       icon: "⚗️",
-      cat: "laboratorio",
-      title: "Experimenta",
-      desc: "Abre cualquier simulador hoy",
+      cat: "lab",
+      title: "Experiment",
+      desc: "Open any simulator today",
       xp: 20,
       type: "sims",
       goal: 1,
       action: () => openSim("tiro"),
-      actionLbl: "Abrir lab",
+      actionLbl: "Open lab",
     },
     {
       id: "m_sim_2",
       icon: "🔬",
-      cat: "laboratorio",
-      title: "Doble experimento",
-      desc: "Usa 2 simuladores distintos",
+      cat: "lab",
+      title: "Double experiment",
+      desc: "Use 2 different simulators",
       xp: 40,
       type: "sims",
       goal: 2,
       action: () => openSim("pendulo"),
-      actionLbl: "Ir al lab",
+      actionLbl: "Go to lab",
     },
     {
       id: "m_sim_fisica",
       icon: "⚡",
-      cat: "física",
-      title: "Física en acción",
-      desc: "Completa un simulador de física",
+      cat: "physics",
+      title: "Physics in action",
+      desc: "Complete a physics simulator",
       xp: 25,
       type: "sims",
       goal: 1,
       action: () => openSim("caida"),
-      actionLbl: "Abrir física",
+      actionLbl: "Open physics",
     },
     {
       id: "m_sim_quimica",
       icon: "🧪",
-      cat: "química",
-      title: "Laboratorio químico",
-      desc: "Usa un simulador de química",
+      cat: "chemistry",
+      title: "Chemistry lab",
+      desc: "Use a chemistry simulator",
       xp: 25,
       type: "sims",
       goal: 1,
       action: () => openSim("ph"),
-      actionLbl: "Abrir química",
+      actionLbl: "Open chemistry",
     },
     {
       id: "m_pendulo",
       icon: "⏱️",
-      cat: "física",
-      title: "El péndulo de Newton",
-      desc: "Experimenta con el péndulo simple",
+      cat: "physics",
+      title: "Newton's Pendulum",
+      desc: "Experiment with the simple pendulum",
       xp: 15,
       type: "sim_id",
       goal: 1,
       action: () => openSim("pendulo"),
-      actionLbl: "Abrir péndulo",
+      actionLbl: "Open pendulum",
     },
     {
       id: "m_tiro",
       icon: "🎯",
-      cat: "física",
+      cat: "physics",
       title: "¡Fuego!",
       desc: "Lanza un proyectil parabólico",
       xp: 15,
@@ -176,7 +176,7 @@ const Events = (() => {
     {
       id: "m_ph",
       icon: "💧",
-      cat: "química",
+      cat: "chemistry",
       title: "Mundo ácido-base",
       desc: "Explora la escala de pH completa",
       xp: 15,
@@ -188,7 +188,7 @@ const Events = (() => {
     {
       id: "m_gases",
       icon: "💨",
-      cat: "química",
+      cat: "chemistry",
       title: "Ley de los gases",
       desc: "Simula el comportamiento de gases ideales",
       xp: 15,
@@ -201,45 +201,45 @@ const Events = (() => {
     {
       id: "m_prac_3",
       icon: "🎯",
-      cat: "práctica",
-      title: "Calentamiento",
-      desc: "Responde 3 preguntas correctas",
+      cat: "practice",
+      title: "Warm up",
+      desc: "Answer 3 questions correctly",
       xp: 30,
       type: "pregs",
       goal: 3,
       action: () => go("practica"),
-      actionLbl: "Practicar",
+      actionLbl: "Practice",
     },
     {
       id: "m_prac_5",
       icon: "💪",
-      cat: "práctica",
-      title: "En forma",
-      desc: "Responde 5 preguntas correctas",
+      cat: "practice",
+      title: "In shape",
+      desc: "Answer 5 questions correctly",
       xp: 50,
       type: "pregs",
       goal: 5,
       action: () => go("practica"),
-      actionLbl: "Practicar",
+      actionLbl: "Practice",
     },
     {
       id: "m_prac_10",
       icon: "🏆",
-      cat: "práctica",
-      title: "Desafío del día",
-      desc: "Responde 10 preguntas sin rendirse",
+      cat: "practice",
+      title: "Daily challenge",
+      desc: "Answer 10 questions without giving up",
       xp: 100,
       type: "pregs",
       goal: 10,
       action: () => go("practica"),
-      actionLbl: "Aceptar reto",
+      actionLbl: "Accept challenge",
     },
     {
       id: "m_prac_fisica",
       icon: "⚡",
-      cat: "práctica",
-      title: "Físico del día",
-      desc: "Responde 3 preguntas de Física",
+      cat: "practice",
+      title: "Physics of the day",
+      desc: "Answer 3 Physics questions",
       xp: 35,
       type: "topic",
       goal: 3,
@@ -247,14 +247,14 @@ const Events = (() => {
         go("practica");
         setTopic && setTopic("f", null);
       },
-      actionLbl: "Física",
+      actionLbl: "Physics",
     },
     {
       id: "m_prac_quim",
       icon: "🧪",
-      cat: "práctica",
-      title: "Químico del día",
-      desc: "Responde 3 preguntas de Química",
+      cat: "practice",
+      title: "Chemistry of the day",
+      desc: "Answer 3 Chemistry questions",
       xp: 35,
       type: "topic",
       goal: 3,
@@ -262,14 +262,14 @@ const Events = (() => {
         go("practica");
         setTopic && setTopic("q", null);
       },
-      actionLbl: "Química",
+      actionLbl: "Chemistry",
     },
     {
       id: "m_prac_mate",
       icon: "📐",
-      cat: "práctica",
-      title: "Matemático del día",
-      desc: "Responde 3 preguntas de Matemáticas",
+      cat: "practice",
+      title: "Math of the day",
+      desc: "Answer 3 Mathematics questions",
       xp: 35,
       type: "topic",
       goal: 3,
@@ -277,52 +277,52 @@ const Events = (() => {
         go("practica");
         setTopic && setTopic("m", null);
       },
-      actionLbl: "Mates",
+      actionLbl: "Math",
     },
     // Tutor
     {
       id: "m_tutor_1",
       icon: "🤖",
       cat: "tutor",
-      title: "Pregunta a Yachay",
-      desc: "Haz una pregunta al Tutor IA",
+      title: "Ask Yachay",
+      desc: "Ask the AI Tutor one question",
       xp: 15,
       type: "tutor",
       goal: 1,
       action: () => go("tutor"),
-      actionLbl: "Preguntar",
+      actionLbl: "Ask",
     },
     {
       id: "m_tutor_3",
       icon: "💬",
       cat: "tutor",
-      title: "Conversación profunda",
-      desc: "Haz 3 preguntas al Tutor IA",
+      title: "Deep conversation",
+      desc: "Ask the AI Tutor 3 questions",
       xp: 30,
       type: "tutor",
       goal: 3,
       action: () => go("tutor"),
-      actionLbl: "Abrir tutor",
+      actionLbl: "Open tutor",
     },
     {
       id: "m_voz",
       icon: "🎤",
       cat: "tutor",
-      title: "Habla con Yachay",
-      desc: "Usa el reconocimiento de voz una vez",
+      title: "Speak with Yachay",
+      desc: "Use voice recognition once",
       xp: 25,
       type: "voice",
       goal: 1,
       action: () => go("tutor"),
-      actionLbl: "Usar voz",
+      actionLbl: "Use voice",
     },
     // Racha y constancia
     {
       id: "m_login",
       icon: "📅",
-      cat: "constancia",
-      title: "¡Presente!",
-      desc: "Entra a Yachay Lab hoy",
+      cat: "consistency",
+      title: "Present!",
+      desc: "Open Yachay Lab today",
       xp: 10,
       type: "login",
       goal: 1,
@@ -332,39 +332,243 @@ const Events = (() => {
     {
       id: "m_racha",
       icon: "🔥",
-      cat: "constancia",
-      title: "Mantén la racha",
-      desc: "Haz cualquier actividad para mantener tu racha",
+      cat: "consistency",
+      title: "Keep the streak",
+      desc: "Do any activity to keep your streak alive",
       xp: 20,
       type: "any",
       goal: 1,
       action: () => go("practica"),
-      actionLbl: "Actividad",
+      actionLbl: "Activity",
     },
     {
       id: "m_tabla",
       icon: "📋",
-      cat: "laboratorio",
-      title: "Explora los elementos",
-      desc: "Abre la tabla periódica interactiva",
+      cat: "lab",
+      title: "Explore the elements",
+      desc: "Open the interactive periodic table",
       xp: 10,
       type: "sim_id",
       goal: 1,
       action: () => openSim("tabla"),
-      actionLbl: "Ver tabla",
+      actionLbl: "View table",
+    },
+    {
+      id: "m_ohm",
+      icon: "⚡",
+      cat: "physics",
+      title: "Ohm's Law circuit",
+      desc: "Run the Ohm's Law simulator",
+      xp: 15,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("ohm"),
+      actionLbl: "Open circuit",
+    },
+    {
+      id: "m_energia",
+      icon: "🌊",
+      cat: "physics",
+      title: "Energy conservation",
+      desc: "Explore the Mechanical Energy simulator",
+      xp: 15,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("energia"),
+      actionLbl: "Open energy",
+    },
+    {
+      id: "m_ondas",
+      icon: "〰️",
+      cat: "physics",
+      title: "Wave explorer",
+      desc: "Adjust frequency and amplitude in Waves",
+      xp: 15,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("ondas"),
+      actionLbl: "Open waves",
+    },
+    {
+      id: "m_optica",
+      icon: "🔭",
+      cat: "physics",
+      title: "Light and optics",
+      desc: "Run the Optics simulator",
+      xp: 15,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("optica"),
+      actionLbl: "Open optics",
+    },
+    {
+      id: "m_estatica",
+      icon: "🏗️",
+      cat: "physics",
+      title: "Forces in balance",
+      desc: "Explore Statics I — equilibrium of forces",
+      xp: 20,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("estatica1"),
+      actionLbl: "Open statics",
+    },
+    {
+      id: "m_gases2",
+      icon: "💨",
+      cat: "chemistry",
+      title: "Ideal gas law",
+      desc: "Manipulate P, V and T in the gases sim",
+      xp: 15,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("gases"),
+      actionLbl: "Open gases",
+    },
+    {
+      id: "m_titulacion",
+      icon: "🧫",
+      cat: "chemistry",
+      title: "Titration point",
+      desc: "Find the equivalence point in Titration",
+      xp: 20,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("titulacion"),
+      actionLbl: "Open titration",
+    },
+    {
+      id: "m_reacciones",
+      icon: "⚗️",
+      cat: "chemistry",
+      title: "Chemical reactions",
+      desc: "Explore activation energy in Reactions",
+      xp: 15,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("reacciones"),
+      actionLbl: "Open reactions",
+    },
+    {
+      id: "m_prac_7",
+      icon: "🧠",
+      cat: "practice",
+      title: "Brain workout",
+      desc: "Answer 7 questions without giving up",
+      xp: 70,
+      type: "pregs",
+      goal: 7,
+      action: () => go("practica"),
+      actionLbl: "Practice",
+    },
+    {
+      id: "m_prac_15",
+      icon: "🏅",
+      cat: "practice",
+      title: "Champion round",
+      desc: "Answer 15 questions in adaptive practice",
+      xp: 150,
+      type: "pregs",
+      goal: 15,
+      action: () => go("practica"),
+      actionLbl: "Accept challenge",
+    },
+    {
+      id: "m_exam",
+      icon: "📝",
+      cat: "practice",
+      title: "Take an AI exam",
+      desc: "Complete an AI-generated exam",
+      xp: 80,
+      type: "exam",
+      goal: 1,
+      action: () => go("examen"),
+      actionLbl: "Open exam",
+    },
+    {
+      id: "m_battle",
+      icon: "⚔️",
+      cat: "practice",
+      title: "Enter a battle",
+      desc: "Play a STEM battle against a friend",
+      xp: 60,
+      type: "battle",
+      goal: 1,
+      action: () => go("batalla"),
+      actionLbl: "Battle!",
+    },
+    {
+      id: "m_tutor_5",
+      icon: "💬",
+      cat: "tutor",
+      title: "STEM conversation",
+      desc: "Ask the AI Tutor 5 questions",
+      xp: 50,
+      type: "tutor",
+      goal: 5,
+      action: () => go("tutor"),
+      actionLbl: "Open tutor",
+    },
+    {
+      id: "m_mrua",
+      icon: "🚀",
+      cat: "physics",
+      title: "MRUA in motion",
+      desc: "Simulate uniformly accelerated motion",
+      xp: 15,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("mrua"),
+      actionLbl: "Open MRUA",
+    },
+    {
+      id: "m_mru",
+      icon: "➡️",
+      cat: "physics",
+      title: "Constant velocity",
+      desc: "Explore URM — uniform rectilinear motion",
+      xp: 10,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("mru"),
+      actionLbl: "Open URM",
+    },
+    {
+      id: "m_hooke",
+      icon: "🔧",
+      cat: "physics",
+      title: "Spring force",
+      desc: "Experiment with Hooke's Law",
+      xp: 15,
+      type: "sim_id",
+      goal: 1,
+      action: () => openSim("hooke"),
+      actionLbl: "Open Hooke",
+    },
+    {
+      id: "m_sim_3",
+      icon: "🌟",
+      cat: "lab",
+      title: "Triple experiment",
+      desc: "Use 3 different simulators today",
+      xp: 60,
+      type: "sims",
+      goal: 3,
+      action: () => openSim("tiro"),
+      actionLbl: "Go to lab",
     },
   ];
 
   /* ────────────────────────────────────────────────────────────
-     BANCO DE NOTICIAS (rotan)
+     NEWS POOL (rotates daily)
   ──────────────────────────────────────────────────────────── */
   const NEWS_POOL = [
     {
       icon: "🎤",
-      tag: "NUEVO",
-      title: "Reconocimiento de voz activo",
-      desc: "Habla con Yachay IA sin escribir — prueba el micrófono",
-      cta: "Probar",
+      tag: "NEW",
+      title: "Voice recognition available",
+      desc: "Talk to Yachay AI without typing — try the microphone",
+      cta: "Try it",
       ctaFn: () => go("tutor"),
     },
     {
@@ -377,34 +581,34 @@ const Events = (() => {
     },
     {
       icon: "🎖️",
-      tag: "LOGROS",
-      title: "30 logros por desbloquear",
-      desc: "Completa misiones y actividades para ganar XP y badges",
-      cta: "Ver logros",
+      tag: "ACHIEVEMENTS",
+      title: "30 achievements to unlock",
+      desc: "Complete missions and activities to earn XP and badges",
+      cta: "View achievements",
       ctaFn: () => go("logros"),
     },
     {
       icon: "⚗️",
-      tag: "LABORATORIO",
-      title: "15 simuladores disponibles",
-      desc: "Física y química en tiempo real — explora el laboratorio",
-      cta: "Explorar",
+      tag: "LABORATORY",
+      title: "17 simulators available",
+      desc: "Physics and chemistry in real time — explore the lab",
+      cta: "Explore",
       ctaFn: () => openSim("tiro"),
     },
     {
       icon: "🌿",
-      tag: "TIP DEL DÍA",
-      title: "Yachay usa el método socrático",
-      desc: "Nunca da respuestas directas — te guía a descubrirlas",
-      cta: "Preguntar",
+      tag: "TIP OF THE DAY",
+      title: "Yachay uses the Socratic method",
+      desc: "Never gives direct answers — it guides you to discover them",
+      cta: "Ask",
       ctaFn: () => go("tutor"),
     },
     {
       icon: "🔥",
-      tag: "RACHA",
-      title: "Cuida tu racha diaria",
-      desc: "Entra todos los días para mantener tus días consecutivos",
-      cta: "Ver racha",
+      tag: "STREAK",
+      title: "Take care of your daily streak",
+      desc: "Log in every day to maintain your consecutive days",
+      cta: "View streak",
       ctaFn: () => typeof Streak !== "undefined" && Streak.openPanel(),
     },
     {
@@ -417,10 +621,10 @@ const Events = (() => {
     },
     {
       icon: "💡",
-      tag: "CONSEJO",
-      title: "Practica 10 min al día",
-      desc: "La constancia supera al esfuerzo intenso esporádico",
-      cta: "Practicar",
+      tag: "TIP",
+      title: "Practice 10 min a day",
+      desc: "Consistency beats intense sporadic effort every time",
+      cta: "Practice",
       ctaFn: () => go("practica"),
     },
   ];
@@ -444,7 +648,7 @@ const Events = (() => {
   }
 
   /* ════════════════════════════════════════════════════════════
-     RETO DE TEMPORADA
+     SEASON CHALLENGE
   ════════════════════════════════════════════════════════════ */
   function renderSeason() {
     const month = new Date().getMonth() + 1;
@@ -457,11 +661,11 @@ const Events = (() => {
     if (!el) return;
     el.style.background = `linear-gradient(135deg, ${season.color[0]}, ${season.color[1]})`;
 
-    setText("season-badge", `🏆 RETO DE ${monthName().toUpperCase()}`);
+    setText("season-badge", `🏆 ${monthName().toUpperCase()} CHALLENGE`);
     setText("season-title", season.title);
     setText("season-desc", season.desc);
     setText("season-ico", season.icon);
-    setText("season-txt", `${prog} / ${season.goal} completados`);
+    setText("season-txt", `${prog} / ${season.goal} completed`);
 
     const fill = document.getElementById("season-fill");
     if (fill) {
@@ -478,11 +682,11 @@ const Events = (() => {
     const btn = el.querySelector(".evb-btn-pri");
     if (btn) {
       if (pct >= 100) {
-        btn.textContent = "✅ ¡Reto completado!";
+        btn.textContent = "✅ Challenge completed!";
         btn.style.background = "rgba(255,255,255,.25)";
         btn.disabled = true;
       } else {
-        btn.textContent = "▶ Continuar reto";
+        btn.textContent = "▶ Continue challenge";
         btn.disabled = false;
       }
     }
@@ -526,7 +730,7 @@ const Events = (() => {
     const diff = end - now;
     const d = Math.floor(diff / 86400000);
     const h = Math.floor((diff % 86400000) / 3600000);
-    const txt = d > 0 ? `⏳ Termina en ${d}d ${h}h` : `⏳ Termina en ${h}h`;
+    const txt = d > 0 ? `⏳ Ends in ${d}d ${h}h` : `⏳ Ends in ${h}h`;
     setText("season-timer", txt);
   }
 
@@ -539,7 +743,7 @@ const Events = (() => {
   }
 
   /* ════════════════════════════════════════════════════════════
-     BANNER DE NOTICIAS
+     NEWS BANNER
   ════════════════════════════════════════════════════════════ */
   function renderNews() {
     const el = document.getElementById("banner-news");
@@ -590,7 +794,7 @@ const Events = (() => {
   }
 
   /* ════════════════════════════════════════════════════════════
-     MISIONES DIARIAS
+     DAILY MISSIONS
   ════════════════════════════════════════════════════════════ */
   function getTodayMissions() {
     const stored = JSON.parse(localStorage.getItem(KEY_MISSIONS) || "{}");
@@ -664,7 +868,7 @@ const Events = (() => {
             <div class="dmc-prog-bar">
               <div class="dmc-prog-fill ${m.done ? "dmc-fill-done" : ""}" style="width:${pct}%"></div>
             </div>
-            <div class="dmc-prog-txt">${m.done ? "¡Completado!" : m.progress + " / " + m.goal}</div>
+            <div class="dmc-prog-txt">${m.done ? "Completed!" : m.progress + " / " + m.goal}</div>
           </div>
           ${!m.done && m.actionLbl ? `<button class="dmc-btn" onclick="Events.doMission(${i})">${m.actionLbl} →</button>` : ""}
         </div>`;
@@ -743,7 +947,7 @@ const Events = (() => {
   }
 
   /* ════════════════════════════════════════════════════════════
-     COUNTDOWN HASTA MEDIANOCHE
+     COUNTDOWN TO MIDNIGHT
   ════════════════════════════════════════════════════════════ */
   function startCountdown() {
     clearInterval(countdownInterval);
@@ -774,16 +978,16 @@ const Events = (() => {
     if (e) e.textContent = v;
   }
   function monthName() {
-    return new Date().toLocaleDateString("es-PE", { month: "long" });
+    return new Date().toLocaleDateString("en-US", { month: "long" });
   }
   function formatDate(d) {
-    return d.toLocaleDateString("es-PE", {
+    return d.toLocaleDateString("en-US", {
       weekday: "long",
       day: "numeric",
       month: "long",
     });
   }
-  // Hash simple para seed diaria
+  // Simple hash for daily seed
   function hashDay(str) {
     let h = 0;
     for (let c of str) {
@@ -803,7 +1007,7 @@ const Events = (() => {
     // Login diario
     setTimeout(() => recordProgress("login", 1), 1000);
 
-    // Hook simuladores
+    // Hook simulators
     const origOpenSim = window.openSim;
     if (origOpenSim) {
       window.openSim = function (id) {
@@ -812,7 +1016,7 @@ const Events = (() => {
       };
     }
 
-    // Hook preguntas correctas (escuchar evento custom)
+    // Hook correct answers (listen to custom event)
     document.addEventListener("missionProgress", (e) => {
       if (e.detail) recordProgress(e.detail.type, e.detail.amount || 1);
     });
