@@ -23,7 +23,7 @@ const Streak = (() => {
   const TYPES = {
     practica: { icon: "🎯", label: "Correct answer", xp: 10 },
     simulador: { icon: "⚗️", label: "Simulator completed", xp: 15 },
-    tutor: { icon: "🤖", label: "Sesión con Yachay", xp: 5 },
+    tutor: { icon: "🤖", label: "AI Tutor session", xp: 5 },
     login: { icon: "📅", label: "Daily login", xp: 2 },
   };
 
@@ -119,10 +119,11 @@ const Streak = (() => {
       icon: TYPES[type]?.icon || "⭐",
       label: meta.label || TYPES[type]?.label || type,
       xp,
-      time: new Date().toLocaleTimeString("es-PE", {
+      time: new Date().toLocaleTimeString("en-US", {
         hour: "2-digit",
         minute: "2-digit",
       }),
+      date: new Date().toISOString(),
     });
     if (state.history.length > 30) state.history.pop();
 
@@ -266,18 +267,18 @@ const Streak = (() => {
     }
   }
 
-  // ── PANEL COMPLETO ───────────────────────────────────────────
+  // ── PANEL COMPLETO REDISEÑADO ────────────────────────────────
   function openPanel() {
     if (document.getElementById("streak-panel")) return;
     if (!state) load();
     clearTimeout(hideTimer);
 
     const s = state;
-    const todayActs = s.history.filter((h) => true).slice(0, 8);
     const nextM = MILESTONES.find((m) => m.at > s.current);
     const xpBar = nextM
       ? Math.min(100, (s.current / nextM.at) * 100).toFixed(0)
       : 100;
+    const weekData = getWeekData();
 
     const panel = document.createElement("div");
     panel.id = "streak-panel";
@@ -288,77 +289,124 @@ const Streak = (() => {
         <!-- Header -->
         <div class="sp-header">
           <div class="sp-header-left">
-            <div class="sp-fire" id="sp-fire">🔥</div>
+            <div class="sp-fire-ico">🔥</div>
             <div>
               <div class="sp-title">Your STEM Streak</div>
-              <div class="sp-sub">Real-time activity</div>
+              <div class="sp-sub">Real-time activity tracker</div>
             </div>
           </div>
-          <button class="sp-close" onclick="Streak.closePanel()">✕</button>
+          <button class="sp-close" onclick="Streak.closePanel()">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
         </div>
 
-        <!-- Current streak (big) -->
+        <!-- Hero: Ring + Stats -->
         <div class="sp-hero">
-          <canvas id="streak-ring-canvas" width="140" height="140"></canvas>
-          <div class="sp-hero-info">
-            <div class="sp-current-num" id="sp-cur">${s.current}</div>
-            <div class="sp-current-lbl">day streak</div>
-            <div class="sp-best">🏆 Best: ${s.best} days</div>
+          <div class="sp-ring-wrap">
+            <canvas id="streak-ring-canvas" width="130" height="130"></canvas>
+            <div class="sp-ring-center">
+              <div class="sp-ring-num" id="sp-cur">${s.current}</div>
+              <div class="sp-ring-lbl">days</div>
+            </div>
+          </div>
+          <div class="sp-hero-stats">
+            <div class="sp-hstat">
+              <div class="sp-hstat-num">${s.best}</div>
+              <div class="sp-hstat-lbl">🏆 Best streak</div>
+            </div>
+            <div class="sp-hstat-div"></div>
+            <div class="sp-hstat">
+              <div class="sp-hstat-num">${s.xp}</div>
+              <div class="sp-hstat-lbl">⭐ Total XP</div>
+            </div>
+            <div class="sp-hstat-div"></div>
+            <div class="sp-hstat">
+              <div class="sp-hstat-num" style="color:#F59E0B">${s.xpToday}</div>
+              <div class="sp-hstat-lbl">⚡ XP today</div>
+            </div>
+            <div class="sp-hstat-div"></div>
+            <div class="sp-hstat">
+              <div class="sp-hstat-num">${s.total}</div>
+              <div class="sp-hstat-lbl">📊 Activities</div>
+            </div>
           </div>
         </div>
 
-        <!-- Stats rápidas -->
-        <div class="sp-stats">
-          <div class="sp-stat"><div class="sps-num" id="sps-xp">${s.xp}</div><div class="sps-lbl">XP Total</div></div>
-          <div class="sp-stat"><div class="sps-num">${s.xpToday}</div><div class="sps-lbl">XP today</div></div>
-          <div class="sp-stat"><div class="sps-num">${s.todayCount}</div><div class="sps-lbl">Today</div></div>
-          <div class="sp-stat"><div class="sps-num">${s.total}</div><div class="sps-lbl">Total</div></div>
+        <!-- Weekly Calendar -->
+        <div class="sp-week">
+          <div class="sp-week-header">
+            <span class="sp-week-title">📅 This week</span>
+            <span class="sp-week-sub">${weekData.filter((d) => d.active).length} / 7 days active</span>
+          </div>
+          <div class="sp-week-grid">
+            ${weekData
+              .map(
+                (d) => `
+              <div class="sp-day ${d.isToday ? "sp-day-today" : ""} ${d.active ? "sp-day-active" : ""} ${d.isFuture ? "sp-day-future" : ""}">
+                <div class="sp-day-name">${d.name}</div>
+                <div class="sp-day-ico">${d.active ? "🔥" : d.isToday ? "⭕" : d.isFuture ? "·" : "✗"}</div>
+                <div class="sp-day-xp">${d.xp > 0 ? "+" + d.xp : ""}</div>
+              </div>`,
+              )
+              .join("")}
+          </div>
         </div>
 
         <!-- Next milestone -->
         ${
           nextM
             ? `
-        <div class="sp-milestone-progress">
-          <div class="smp-header">
-            <span>${nextM.icon} Next milestone: ${nextM.label}</span>
-            <span class="smp-count">${s.current} / ${nextM.at} days</span>
+        <div class="sp-milestone-wrap">
+          <div class="sp-milestone-header">
+            <span class="sp-milestone-icon">${nextM.icon}</span>
+            <div>
+              <div class="sp-milestone-name">Next: ${nextM.label}</div>
+              <div class="sp-milestone-days">${nextM.at - s.current} more day${nextM.at - s.current !== 1 ? "s" : ""} to go</div>
+            </div>
+            <span class="sp-milestone-badge">${s.current}/${nextM.at}</span>
           </div>
-          <div class="smp-bar"><div class="smp-fill" style="width:${xpBar}%"></div></div>
-          <div class="smp-hint">${nextM.at - s.current} days to go</div>
+          <div class="sp-milestone-bar">
+            <div class="sp-milestone-fill" style="width:${xpBar}%;background:${nextM.color}"></div>
+          </div>
         </div>`
             : `
-        <div class="sp-milestone-progress sp-max">
+        <div class="sp-milestone-wrap sp-milestone-max">
           <span>👑 You've reached the top milestone! You're a STEM legend.</span>
         </div>`
         }
 
-        <!-- Unlocked milestones -->
+        <!-- Milestones row -->
         <div class="sp-milestones-row">
           ${MILESTONES.map(
             (m) => `
-            <div class="spm-item ${s.best >= m.at ? "earned" : ""}" title="${m.label} (${m.at} days)">
+            <div class="spm-item ${s.best >= m.at ? "spm-earned" : ""}" title="${m.label} — ${m.at} days">
               <div class="spm-icon">${m.icon}</div>
               <div class="spm-at">${m.at}d</div>
             </div>`,
           ).join("")}
         </div>
 
-        <!-- Recent history -->
-        <div class="sp-history-label">Recent activity</div>
+        <!-- Recent activity -->
+        <div class="sp-history-title">
+          <span>Recent activity</span>
+          <span class="sp-hist-count">${s.todayCount} today</span>
+        </div>
         <div class="sp-history" id="sp-history">
           ${
-            todayActs.length
-              ? todayActs
+            s.history.slice(0, 8).length
+              ? s.history
+                  .slice(0, 8)
                   .map(
                     (h) => `
             <div class="sp-hist-item">
-              <span class="shi-icon">${h.icon}</span>
+              <div class="shi-icon-wrap">${h.icon}</div>
               <div class="shi-info">
-                <span class="shi-label">${h.label}</span>
-                <span class="shi-time">${h.time}</span>
+                <div class="shi-label">${h.label}</div>
+                <div class="shi-time">${h.time}</div>
               </div>
-              <span class="shi-xp">+${h.xp} XP</span>
+              <div class="shi-xp">+${h.xp} XP</div>
             </div>`,
                   )
                   .join("")
@@ -368,22 +416,63 @@ const Streak = (() => {
 
         <!-- CTA -->
         <button class="sp-cta" onclick="Streak.closePanel();go('practica')">
-          🎯 Hacer una pregunta ahora
+          🎯 Practice now →
         </button>
+
       </div>`;
 
     document.body.appendChild(panel);
-
-    // Animar el ring
-    setTimeout(() => {
-      drawRing(s.current, s.best);
-      animateFire(s.current);
-    }, 100);
-
-    // Close al click fuera
     panel.addEventListener("click", (e) => {
       if (e.target === panel) closePanel();
     });
+
+    setTimeout(() => {
+      drawRing(s.current, s.best);
+      animateFire(s.current);
+    }, 120);
+  }
+
+  // ── DATOS DE LA SEMANA ────────────────────────────────────────
+  function getWeekData() {
+    const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const now = new Date();
+    const today = now.toISOString().slice(0, 10);
+    const result = [];
+
+    // Lunes a domingo de la semana actual
+    const day = now.getDay(); // 0=Sun
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      const ds = d.toISOString().slice(0, 10);
+      const isFuture = ds > today;
+      const isToday = ds === today;
+
+      // Buscar XP del día en historial
+      const dayActs = (state?.history || []).filter((h) => {
+        if (!h.date) return false;
+        return h.date.slice(0, 10) === ds;
+      });
+      const xp = dayActs.reduce((a, h) => a + (h.xp || 0), 0);
+      const active =
+        !isFuture &&
+        (dayActs.length > 0 ||
+          (isToday && (state?.todayCount || 0) > 0) ||
+          state?.lastDate === ds);
+
+      result.push({
+        name: DAY_NAMES[d.getDay()],
+        date: ds,
+        isToday,
+        isFuture,
+        active,
+        xp,
+      });
+    }
+    return result;
   }
 
   // ── RING CIRCULAR (canvas) ───────────────────────────────────
@@ -534,7 +623,68 @@ const Streak = (() => {
     register("login");
   }
 
-  return { register, openPanel, closePanel, getState, reset, init, syncAllUI };
+  // ── BANNER SEMANAL EN HOME ────────────────────────────────────
+  function renderWeeklyBanner() {
+    const banner = document.getElementById("wsb-days");
+    const countEl = document.getElementById("wsb-count");
+    const subEl = document.getElementById("wsb-sub");
+    if (!banner) return;
+    if (!state) load();
+
+    const DAY_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
+    const now = new Date();
+    const today = now.toISOString().slice(0, 10);
+    const day = now.getDay();
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+
+    let html = "";
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      const ds = d.toISOString().slice(0, 10);
+      const isFuture = ds > today;
+      const isToday = ds === today;
+      const dayActs = (state.history || []).filter(
+        (h) => h.date && h.date.slice(0, 10) === ds,
+      );
+      const active =
+        !isFuture &&
+        (dayActs.length > 0 ||
+          (isToday && (state.todayCount || 0) > 0) ||
+          state.lastDate === ds);
+      html += `
+        <div class="wsb-day ${active ? "wsb-active" : ""} ${isToday ? "wsb-today" : ""} ${isFuture ? "wsb-future" : ""}">
+          <div class="wsb-day-name">${DAY_NAMES[d.getDay()]}</div>
+          <div class="wsb-day-dot">${active ? "🔥" : isToday ? "○" : "·"}</div>
+        </div>`;
+    }
+    banner.innerHTML = html;
+
+    // Actualizar contador y subtítulo
+    const cur = state.current || 0;
+    if (countEl) countEl.textContent = cur;
+
+    if (subEl) {
+      if (cur === 0) subEl.textContent = "Start today — do any activity!";
+      else if (cur < 3) subEl.textContent = `${cur} day streak — keep going!`;
+      else if (cur < 7)
+        subEl.textContent = `🔥 ${cur} days strong — almost a week!`;
+      else if (cur < 14) subEl.textContent = `⚡ ${cur} days — unstoppable!`;
+      else subEl.textContent = `👑 ${cur} days — STEM legend!`;
+    }
+  }
+
+  return {
+    register,
+    openPanel,
+    closePanel,
+    getState,
+    reset,
+    init,
+    syncAllUI,
+    renderWeeklyBanner,
+  };
 })();
 
 // ── INICIALIZAR automáticamente cuando el DOM esté listo ──────

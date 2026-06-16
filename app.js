@@ -1752,6 +1752,7 @@ function go(id) {
     initHeroCanvas();
     updateHomeElo();
     if (typeof Events !== "undefined") Events.init();
+    if (typeof Streak !== "undefined") Streak.renderWeeklyBanner();
     setTimeout(initScrollReveal, 100);
   }
   // Footer solo en home

@@ -712,6 +712,30 @@
 
             <!-- ══ BANNERS + MISIONES DIARIAS ══ -->
             <div id="events-zone" class="events-zone">
+              <!-- WEEKLY STREAK BANNER -->
+              <div
+                class="weekly-streak-banner"
+                id="weekly-streak-banner"
+                onclick="Streak.openPanel()"
+              >
+                <div class="wsb-left">
+                  <div class="wsb-fire">🔥</div>
+                  <div>
+                    <div class="wsb-title">Your streak this week</div>
+                    <div class="wsb-sub" id="wsb-sub">
+                      Keep going — don't break the chain!
+                    </div>
+                  </div>
+                </div>
+                <div class="wsb-days" id="wsb-days">
+                  <!-- Generado por JS -->
+                </div>
+                <div class="wsb-right">
+                  <div class="wsb-count" id="wsb-count">0</div>
+                  <div class="wsb-lbl">day streak</div>
+                </div>
+              </div>
+
               <!-- BANNER 1 — Season Challenge -->
               <div class="ev-banner banner-season" id="banner-season">
                 <div class="evb-bg-shapes">
