@@ -1446,6 +1446,233 @@ const Onboarding = (() => {
   return { show, next, finish, maybeShow };
 })();
 
+/* ══════════════════════════════════════════════════════════════
+   SHARE APP — Compartir Yachay Lab + racha
+══════════════════════════════════════════════════════════════ */
+const ShareApp = (() => {
+  const URL = "https://yachay-lab.vercel.app";
+
+  function open() {
+    // Actualizar datos del usuario en el modal
+    const st = JSON.parse(localStorage.getItem("yl_streak_v2") || "{}");
+    const ps = JSON.parse(localStorage.getItem("yl_pstats") || "{}");
+    const days = st.current || 0;
+    const elo = ps.maxElo || 1000;
+
+    const daysEl = document.getElementById("ssc-days");
+    const eloEl = document.getElementById("ssc-elo");
+    if (daysEl)
+      daysEl.textContent = `${days} day${days !== 1 ? "s" : ""} streak`;
+    if (eloEl) eloEl.textContent = `Elo ${elo}`;
+
+    const modal = document.getElementById("share-modal");
+    if (modal) {
+      modal.style.display = "flex";
+      modal.style.animation = "fadeIn .25s ease";
+    }
+  }
+
+  function close() {
+    const modal = document.getElementById("share-modal");
+    if (modal) {
+      modal.style.animation = "fadeOut .2s ease forwards";
+      setTimeout(() => {
+        modal.style.display = "none";
+      }, 200);
+    }
+  }
+
+  function copyUrl() {
+    navigator.clipboard
+      ?.writeText(URL)
+      .then(() => {
+        const btn = document.getElementById("sm-copy-btn");
+        if (btn) {
+          btn.textContent = "✅ Copied!";
+          setTimeout(() => (btn.textContent = "📋 Copy"), 2000);
+        }
+      })
+      .catch(() => {
+        // Fallback
+        const inp = document.getElementById("sm-url");
+        if (inp) {
+          inp.select();
+          document.execCommand("copy");
+        }
+      });
+  }
+
+  function via(platform) {
+    const st = JSON.parse(localStorage.getItem("yl_streak_v2") || "{}");
+    const ps = JSON.parse(localStorage.getItem("yl_pstats") || "{}");
+    const days = st.current || 0;
+    const elo = ps.maxElo || 1000;
+
+    const msg =
+      days > 0
+        ? `🔥 I have a ${days}-day streak on Yachay Lab! Free virtual STEM lab with AI tutor, 17 simulators and real-time battles. My Elo: ${elo} 🚀`
+        : `⚗️ Check out Yachay Lab — free virtual STEM laboratory with AI tutor, 17 interactive simulators and real-time battles!`;
+
+    const encoded = encodeURIComponent(msg + "\n" + URL);
+
+    const urls = {
+      whatsapp: `https://wa.me/?text=${encoded}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encoded}`,
+    };
+
+    if (urls[platform]) window.open(urls[platform], "_blank");
+  }
+
+  function native() {
+    const st = JSON.parse(localStorage.getItem("yl_streak_v2") || "{}");
+    const ps = JSON.parse(localStorage.getItem("yl_pstats") || "{}");
+    const days = st.current || 0;
+
+    const shareData = {
+      title: "Yachay Lab — Free Virtual STEM Lab",
+      text:
+        days > 0
+          ? `🔥 ${days}-day streak on Yachay Lab! Free AI-powered STEM lab with 17 simulators.`
+          : "⚗️ Free virtual STEM lab with AI tutor and 17 interactive simulators!",
+      url: URL,
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch(() => {});
+    } else {
+      copyUrl();
+      showToast("🔗 Link copied! Share it anywhere.", 3000);
+    }
+  }
+
+  function shareStreakImage() {
+    const st = JSON.parse(localStorage.getItem("yl_streak_v2") || "{}");
+    const ps = JSON.parse(localStorage.getItem("yl_pstats") || "{}");
+    const prof = JSON.parse(localStorage.getItem("yl_profile") || "{}");
+    const ses = JSON.parse(localStorage.getItem("yl_session") || "{}");
+
+    const days = st.current || 0;
+    const elo = ps.maxElo || 1000;
+    const name = prof.name || ses.name || "Student";
+    const xp = st.xp || 0;
+
+    // Generar imagen con Canvas
+    const cv = document.createElement("canvas");
+    cv.width = 600;
+    cv.height = 320;
+    const ctx = cv.getContext("2d");
+
+    // Fondo
+    const bg = ctx.createLinearGradient(0, 0, 600, 320);
+    bg.addColorStop(0, "#080D1E");
+    bg.addColorStop(1, "#0F1735");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, 600, 320);
+
+    // Borde
+    ctx.strokeStyle = "rgba(90,95,224,.5)";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(4, 4, 592, 312);
+
+    // Logo
+    ctx.fillStyle = "#fff";
+    ctx.font = "bold 14px Plus Jakarta Sans,sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText("⚗️  YACHAY LAB", 24, 36);
+    ctx.fillStyle = "rgba(255,255,255,.3)";
+    ctx.font = "11px Plus Jakarta Sans,sans-serif";
+    ctx.fillText("Free Virtual STEM Laboratory", 24, 54);
+
+    // Línea
+    ctx.strokeStyle = "rgba(255,255,255,.08)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(24, 68);
+    ctx.lineTo(576, 68);
+    ctx.stroke();
+
+    // Streak grande
+    ctx.font = "bold 80px Plus Jakarta Sans,sans-serif";
+    ctx.fillStyle = "#F59E0B";
+    ctx.textAlign = "center";
+    ctx.fillText("🔥", 120, 185);
+
+    ctx.font = "bold 64px Plus Jakarta Sans,sans-serif";
+    ctx.fillStyle = "#fff";
+    ctx.fillText(days, 210, 185);
+
+    ctx.font = "bold 18px Plus Jakarta Sans,sans-serif";
+    ctx.fillStyle = "rgba(255,255,255,.6)";
+    ctx.fillText(`day${days !== 1 ? "s" : ""} streak`, 210, 215);
+
+    // Separador vertical
+    ctx.strokeStyle = "rgba(255,255,255,.12)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(300, 100);
+    ctx.lineTo(300, 230);
+    ctx.stroke();
+
+    // Stats derechos
+    ctx.textAlign = "left";
+    ctx.font = "bold 36px Plus Jakarta Sans,sans-serif";
+    ctx.fillStyle = "#5A5FE0";
+    ctx.fillText(`${elo}`, 330, 165);
+    ctx.font = "13px Plus Jakarta Sans,sans-serif";
+    ctx.fillStyle = "rgba(255,255,255,.45)";
+    ctx.fillText("Elo rating", 330, 188);
+
+    ctx.font = "bold 24px Plus Jakarta Sans,sans-serif";
+    ctx.fillStyle = "#10B981";
+    ctx.fillText(`+${xp} XP`, 330, 220);
+
+    // Nombre
+    ctx.fillStyle = "rgba(255,255,255,.5)";
+    ctx.font = "13px Plus Jakarta Sans,sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(name, 300, 270);
+
+    // URL
+    ctx.fillStyle = "rgba(165,180,255,.6)";
+    ctx.font = "bold 11px Plus Jakarta Sans,sans-serif";
+    ctx.fillText("yachay-lab.vercel.app", 300, 298);
+
+    // Descargar o compartir
+    cv.toBlob(async (blob) => {
+      const file = new File([blob], "yachay-streak.png", { type: "image/png" });
+      if (
+        navigator.share &&
+        navigator.canShare &&
+        navigator.canShare({ files: [file] })
+      ) {
+        await navigator.share({
+          title: `My ${days}-day streak on Yachay Lab!`,
+          text: `🔥 ${days} days learning STEM — Elo ${elo}. Join me at Yachay Lab!`,
+          files: [file],
+        });
+      } else {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "yachay-streak.png";
+        a.click();
+        showToast("📥 Streak image downloaded!", 3000);
+      }
+    });
+    close();
+  }
+
+  function showToast(msg, ms = 3000) {
+    const el = document.getElementById("toast");
+    if (!el) return;
+    el.textContent = msg;
+    el.style.display = "block";
+    clearTimeout(el._st);
+    el._st = setTimeout(() => (el.style.display = "none"), ms);
+  }
+
+  return { open, close, copyUrl, via, native, shareStreakImage };
+})();
+
 // ── INIT ──
 document.addEventListener("DOMContentLoaded", () => {
   setLang(LANG);
@@ -4327,10 +4554,10 @@ function simulateExercise() {
 const GROQ_KEY = window.GROQ_KEY_LOCAL || "";
 window.GROQ_KEY_APP = GROQ_KEY;
 const GROQ_MODEL = "llama-3.3-70b-versatile";
-const GROQ_SYS = `Eres Yachay, tutor socrático de física y química para estudiantes de secundaria y preuniversitaria que ayuda en ejercicios de fisica,matematicas,quimica ,siempre hablas en ingles mientras que el usuario te pida que hables en otro idioma hablas ese idioma.
+const GROQ_SYS = `You are Yachay, a Socratic STEM tutor for high school students around the world.
 Reglas estrictas:
 - Responde en máximo 4 oraciones claras y naturales.
-- Usa analogías con la naturaleza amazónica (ríos, árboles, animales de la selva).
+- Use relatable analogies from everyday life and nature.
 - Termina SIEMPRE con una pregunta para guiar el pensamiento del estudiante.
 - NUNCA des la respuesta directa; guía al estudiante para que la descubra.
 - Responde en el mismo idioma del estudiante (español o inglés).
@@ -4424,14 +4651,14 @@ async function sendChat() {
 // Cada tema tiene múltiples respuestas para evitar repetición
 const _botResponses = {
   mru: [
-    "In URM, velocity never changes — like a canoe drifting on a calm river with no current. The formula is x = x₀ + v·t. If the river had a current, would the velocity still be constant? 🌊",
+    "In URM, velocity never changes — like a vehicle drifting on a calm river with no current. The formula is x = x₀ + v·t. If the river had a current, would the velocity still be constant? 🌊",
     "Uniform Rectilinear Motion means zero acceleration — the object moves at exactly the same speed forever. Using x = v·t, if v = 5 m/s and t = 3 s, how far does it travel? 🎯",
     "Think of URM as a ball rolling on a perfectly flat, frictionless surface. x = x₀ + v·t tells us position at any moment. What do you think happens to the graph of position vs time? 📈",
   ],
   mrua: [
     "In MRUA, acceleration is constant — like a stone rolling down a hill that gains speed at a fixed rate. The key formulas are v = v₀ + at and x = x₀ + v₀t + ½at². How is this different from URM? 🪨",
     "MRUA means the velocity changes by the same amount every second. If a = 2 m/s², after 3 seconds the velocity increases by 6 m/s. What would the velocity-time graph look like? 📊",
-    "Imagine a ball dropped from a tree in the Amazon — it speeds up as it falls. That's MRUA with a = g = 9.8 m/s². What do you think determines how fast it reaches the ground? 🌳",
+    "Imagine a ball dropped from a tree in the Amazon — it speeds up as it falls. That's MRUA with a = g = 9.8 m/s². What do you think determines how fast it reaches the ground? 🌿",
   ],
   caida: [
     "In free fall, only gravity acts on the object — no air resistance. On Earth g = 9.8 m/s². Interestingly, a feather and a rock fall at the same rate in a vacuum. Why do you think air changes this? 🍃",
@@ -4461,20 +4688,20 @@ const _botResponses = {
   gases: [
     "PV = nRT: Pressure × Volume = moles × R × Temperature. If you compress a gas (decrease V) at constant T, pressure must increase. This is why a bicycle pump gets warm — can you explain why? 💨",
     "Ideal gas law PV = nRT assumes molecules have no volume and no interactions. Real gases deviate at high pressure. If T doubles at constant V and n, what happens to P? 🌡️",
-    "Think of gas molecules like bees in a jar — the more you heat them, the faster they move and the harder they hit the walls (pressure). If you double T (in Kelvin) and keep V constant, P doubles. Why Kelvin and not Celsius? 🐝",
+    "Think of gas molecules like molecules in a container — the more you heat them, the faster they move and the harder they hit the walls (pressure). If you double T (in Kelvin) and keep V constant, P doubles. Why Kelvin and not Celsius? 🐝",
   ],
   ohm: [
-    "Ohm's Law: V = I·R. If resistance doubles and voltage stays the same, current halves. Think of it like a river: voltage is the slope, current is the water flow, resistance is the narrowness of the channel. What happens if you widen the channel? ⚡",
+    "Ohm's Law: V = I·R. If resistance doubles and voltage stays the same, current halves. Think of it like a water pipe: voltage is the pressure, current is the flow, resistance is the pipe width. What happens if you widen the channel? ⚡",
     "V = I·R means current (I) is driven by voltage (V) and limited by resistance (R). If V = 12V and R = 4Ω, what is I? And what would happen to I if R doubled? 🔌",
     "Power P = V·I = V²/R = I²·R. That's why high-resistance components get hot — they dissipate more power as heat. If I doubles (same R), how does power change? 💡",
   ],
   newton: [
     "Newton's Second Law: F = m·a. If you apply the same force to a heavy truck and a bicycle, the bicycle accelerates much more. Why? What does this tell you about the relationship between mass and acceleration? 🚲",
     "F = m·a means force causes acceleration — not velocity! A constant force produces constant acceleration. If m = 5 kg and F = 20 N, what is a? And what if mass doubled? ⚖️",
-    "Think of F = m·a like paddling in the Amazon: the harder you paddle (F), the faster you accelerate (a), but a heavier canoe (m) responds less. Can you apply this to a rocket launch? 🚀",
+    "Think of F = m·a like pushing an object: the harder you paddle (F), the faster you accelerate (a), but a heavier vehicle (m) responds less. Can you apply this to a rocket launch? 🚀",
   ],
   energia: [
-    "Energy conservation: Ep + Ec = constant. As a bird dives from a tree, potential energy (mgh) converts to kinetic energy (½mv²). At the lowest point, all energy is kinetic. Where is all the potential energy? 🦅",
+    "Energy conservation: Ep + Ec = constant. As a object falls, potential energy (mgh) converts to kinetic energy (½mv²). At the lowest point, all energy is kinetic. Where is all the potential energy? 🦅",
     "Ep = mgh and Ec = ½mv². At the top of a waterfall, a droplet has maximum Ep. As it falls, Ep converts to Ec. If the fall is 20m, what is the speed at the bottom? (Use energy conservation) 💧",
     "A pendulum perfectly demonstrates energy conservation: maximum Ep at the peaks, maximum Ec at the bottom. In real life, the pendulum slows down — where does the energy go? ⏱️",
   ],
@@ -4482,7 +4709,7 @@ const _botResponses = {
     "Great question! In science, we always start by identifying the variables involved. What quantities do you think are changing in this situation? 🌿",
     "Interesting! Before I guide you, what do you already know about this topic? Sometimes the answer is closer than you think. 🤔",
     "Let's think about this step by step. First, what is the system we're analyzing? What forces, quantities or relationships are involved? 🔬",
-    "Good question! Think of an analogy from nature: rivers, trees, animals. Can you find a parallel between this concept and something you've observed in real life? 🌳",
+    "Good question! Think of an analogy from nature: rivers, trees, animals. Can you find a parallel between this concept and something you've observed in real life? 🌿",
     "This is a fundamental concept! Start by drawing a diagram or writing down the known variables. What information do you have, and what are you trying to find? 📐",
   ],
 };

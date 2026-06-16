@@ -4715,3 +4715,262 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+
+/* ══════════════════════════════════════════════════════
+   SHARE BUTTON + MODAL
+══════════════════════════════════════════════════════ */
+
+/* Botón Share en topbar */
+.tb-share-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  padding: 6px 13px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: inherit;
+  box-shadow: 0 2px 10px rgba(90, 95, 224, 0.3);
+  white-space: nowrap;
+}
+.tb-share-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(90, 95, 224, 0.45);
+}
+
+/* Modal backdrop */
+.share-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Modal box */
+.share-modal-box {
+  background: var(--surface, #fff);
+  border: 1.5px solid var(--border, #e4e8f5);
+  border-radius: 20px;
+  padding: 28px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s cubic-bezier(0.34, 1.2, 0.64, 1);
+}
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+.share-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  color: var(--t3);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.15s;
+}
+.share-close:hover {
+  background: var(--red-lt, #fef2f2);
+  color: var(--red, #ef4444);
+}
+
+/* Header */
+.sm-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.sm-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+.sm-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--t1);
+  margin-bottom: 4px;
+}
+.sm-sub {
+  font-size: 13px;
+  color: var(--t3);
+}
+
+/* Streak card */
+.sm-streak-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #080d1e, #0f1735);
+  border: 1.5px solid rgba(90, 95, 224, 0.3);
+  border-radius: 14px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+}
+.ssc-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ssc-fire {
+  font-size: 32px;
+}
+.ssc-days {
+  font-size: 18px;
+  font-weight: 800;
+  color: #f59e0b;
+}
+.ssc-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 2px;
+}
+.ssc-elo {
+  font-size: 22px;
+  font-weight: 900;
+  color: #a5b4ff;
+  font-family: "JetBrains Mono", monospace;
+  text-align: right;
+}
+
+/* URL row */
+.sm-url-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.sm-url-input {
+  flex: 1;
+  padding: 9px 12px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  font-size: 12.5px;
+  color: var(--t2);
+  font-family: "JetBrains Mono", monospace;
+  outline: none;
+}
+.sm-copy-btn {
+  padding: 9px 14px;
+  background: var(--p-lt);
+  border: 1.5px solid rgba(90, 95, 224, 0.2);
+  color: var(--p);
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.15s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.sm-copy-btn:hover {
+  background: var(--p);
+  color: #fff;
+}
+
+/* Share buttons */
+.sm-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.sm-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: inherit;
+  background: var(--bg);
+  color: var(--t1);
+}
+.sm-btn:hover {
+  transform: translateY(-2px);
+}
+.sm-whatsapp:hover {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #16a34a;
+}
+.sm-twitter:hover {
+  background: #eff6ff;
+  border-color: #3b82f6;
+  color: #1d4ed8;
+}
+.sm-native:hover {
+  background: var(--p-lt);
+  border-color: var(--p);
+  color: var(--p);
+}
+
+/* Share streak image button */
+.sm-share-img-btn {
+  width: 100%;
+  padding: 11px;
+  background: linear-gradient(135deg, var(--p), var(--p2));
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: inherit;
+  box-shadow: 0 3px 12px rgba(90, 95, 224, 0.3);
+}
+.sm-share-img-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 18px rgba(90, 95, 224, 0.45);
+}
+
+@media (max-width: 480px) {
+  .tb-share-btn span {
+    display: none;
+  }
+  .tb-share-btn {
+    padding: 6px 10px;
+  }
+  .share-modal-box {
+    padding: 20px;
+  }
+  .sm-buttons {
+    grid-template-columns: 1fr 1fr;
+  }
+}
